@@ -1,0 +1,250 @@
+/**
+ * Created by lyan2 on 16/9/23.
+ */
+import React  from 'react';
+import {
+    View,
+    Text,
+    TouchableHighlight,
+    Platform,
+    Alert
+} from 'react-native';
+import styles from './style';
+import Toolbar from '../../components/toolbar';
+import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
+import { Token, toast, request } from '../../utils/common';
+import _ from 'lodash';
+import * as WechatAPI from 'react-native-wx';
+
+var chevronRightIcon = <Icon style={[styles.messageLinkIcon]} size={16} name="angle-right"/>;
+
+class SecurityPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            'WEIXIN': {},
+            'WEIBO': {},
+            'QQ': {},
+            'TAOBAO': {},
+            'ZHIFUBAO': {}
+        }
+    }
+
+    componentWillMount() {
+        const {navigator } = this.props;
+        Token.getToken(navigator).then((token) => {
+                if (token) {
+                    request('user/bindings', 'get', '', token)
+                        .then((res) => {
+                            if (res.resultCode === 0) {
+                                _.each(res.resultValues, (v, k)=> {
+                                    if (v.bindingChannel === 'WEIXIN') {
+                                        this.setState({'WEIXIN': v});
+                                    }
+                                    if (v.bindingChannel === 'WEIBO') {
+                                        this.setState({'WEIBO': v});
+                                    }
+                                    if (v.bindingChannel === 'QQ') {
+                                        this.setState({'QQ': v});
+                                    }
+                                    if (v.bindingChannel === 'TAOBAO') {
+                                        this.setState({'TAOBAO': v});
+                                    }
+                                    if (v.bindingChannel === 'ZHIFUBAO') {
+                                        this.setState({'ZHIFUBAO': v});
+                                    }
+                                });
+                            }
+                        }, function (error) {
+                            console.log(error);
+                        })
+                        .catch(() => {
+                            console.log('network error');
+                        });
+                }
+            }
+        );
+    }
+
+    _unbind(channel) {
+        const the = this;
+        if(channel !== 'WEIXIN')
+            return false;
+        if (this.state[channel].isBound) {
+            Alert.alert(
+                '解除绑定',
+                '确定解除绑定吗？',
+                [
+                    {text: '取消', onPress: () => console.log('still bind')},
+                    {
+                        text: '确定', onPress: () => {
+                        const {navigator } = this.props;
+                        Token.getToken(navigator).then((token) => {
+                                if (token) {
+                                    request('user/unbind/' + channel, 'post', '', token)
+                                        .then((res) => {
+                                            if (res.resultCode === 0) {
+                                                let obj = this.state[channel];
+                                                obj.isBound = false;
+                                                if (channel === 'WEIXIN')
+                                                    this.setState({'WEIXIN': obj});
+                                                if (channel === 'WEIBO')
+                                                    this.setState({'WEIBO': obj});
+                                                if (channel === 'QQ')
+                                                    this.setState({'QQ': obj});
+                                                if (channel === 'TAOBAO')
+                                                    this.setState({'TAOBAO': obj});
+                                                if (channel === 'ZHIFUBAO')
+                                                    this.setState({'ZHIFUBAO': obj});
+                                                toast('成功解除绑定');
+                                            }
+                                        }, function (error) {
+                                            console.log(error);
+                                        })
+                                        .catch(() => {
+                                            console.log('network error');
+                                        });
+                                }
+                            }
+                        );
+
+                    }
+                    }
+                ]
+            );
+        } else {
+            Alert.alert(
+                '绑定',
+                '需要绑定账号吗？',
+                [
+                    {text: '取消', onPress: () => console.log('still bind')},
+                    {
+                        text: '确定', onPress: () => {
+                        the._JumpToWeiXin();
+                    }
+                    }
+                ]
+            );
+        }
+
+    }
+
+    _JumpToWeiXin() {
+        var the = this;
+        const config = {
+            scope: 'snsapi_userinfo', // 默认 'snsapi_userinfo'
+        };
+        WechatAPI.isWXAppInstalled()
+            .then((res) => {
+                if (!res)
+                    toast('您还未安装微信');
+                else
+                    return WechatAPI.login(config);
+            })
+            .then((res) => {
+                the._bindingWeixin(res);
+            })
+    }
+
+    _bindingWeixin(res) {
+        const { navigator } = this.props;
+        Token.getToken(navigator).then((token) => {
+                if (token) {
+                    let body = {
+                        code: res.code
+                    };
+                    body = JSON.stringify(body);
+                    request('/user/bindings/weixin', 'POST', body, token)
+                        .then((res) => {
+                            if (res.resultCode === 0) {
+                                toast('绑定微信成功');
+                                let obj = this.state['WEIXIN'];
+                                obj.isBound = true;
+                                this.setState({'WEIXIN': obj});
+                            }
+                        }, function (error) {
+                            console.log(error);
+                        })
+                        .catch(() => {
+                            console.log('network error');
+                        });
+                }
+            }
+        );
+    }
+
+    render() {
+        return (
+            <View style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                <Toolbar
+                    title="账号与安全"
+                    navigator={this.props.navigator}
+                    hideDrop={true}
+                    />
+
+                <TouchableHighlight>
+                    <View style={styles.row}>
+                        <Text style={styles.text}>手机号</Text>
+                        <Text style={styles.phoneText}>13585979772</Text>
+                        {chevronRightIcon}
+                    </View>
+                </TouchableHighlight>
+                <View style={styles.separatorHorizontal}/>
+
+                <TouchableHighlight onPress={() => this._unbind('WEIXIN')}>
+                    <View style={styles.row}>
+                        <Text style={styles.text}>微信</Text>
+                        <Text
+                            style={[styles.baseText,styles.dimText, (this.state.WEIXIN.bindingChannel && styles.boundText) ]}>{this.state.WEIXIN.bindingChannel ? '已绑定' : '马上绑定'}</Text>
+                        {chevronRightIcon}
+                    </View>
+                </TouchableHighlight>
+                <View style={styles.separatorHorizontal}/>
+                {
+                    //<TouchableHighlight onPress={() => this._unbind('WEIBO')}>
+                    //    <View style={styles.row}>
+                    //        <Text style={styles.text}>微博</Text>
+                    //        <Text
+                    //            style={[styles.baseText,styles.dimText, (this.state.WEIBO.isBound && styles.boundText) ]}>{this.state.WEIBO.isBound ? '已绑定' : '马上绑定'}</Text>
+                    //        {chevronRightIcon}
+                    //    </View>
+                    //</TouchableHighlight>
+                    //<View style={styles.separatorHorizontal}/>
+                    //
+                    //<TouchableHighlight onPress={() => this._unbind('QQ')}>
+                    //<View style={styles.row}>
+                    //<Text style={styles.text}>QQ</Text>
+                    //<Text
+                    //style={[styles.baseText,styles.dimText, (this.state.QQ.isBound && styles.boundText) ]}>{this.state.QQ.isBound ? '已绑定' : '马上绑定'}</Text>
+                    //{chevronRightIcon}
+                    //</View>
+                    //</TouchableHighlight>
+                    //<View style={styles.separatorHorizontal}/>
+                }
+
+
+                <TouchableHighlight onPress={() => this._unbind('TAOBAO')}>
+                    <View style={styles.row}>
+                        <Text style={styles.text}>淘宝</Text>
+                        <Text
+                            style={[styles.baseText,styles.dimText, (this.state.TAOBAO.bindingChannel && styles.boundText) ]}>{this.state.TAOBAO.bindingChannel ? '已绑定' : '马上绑定'}</Text>
+                        {chevronRightIcon}
+                    </View>
+                </TouchableHighlight>
+                <View style={styles.separatorHorizontal}/>
+
+                <TouchableHighlight onPress={() => this._unbind('ZHIFUBAO')}>
+                    <View style={styles.row}>
+                        <Text style={styles.text}>支付宝</Text>
+                        <Text
+                            style={[styles.baseText,styles.dimText, (this.state.ZHIFUBAO.isBound && styles.boundText) ]}>{this.state.ZHIFUBAO.isBound ? '已绑定' : '马上绑定'}</Text>
+                        {chevronRightIcon}
+                    </View>
+                </TouchableHighlight>
+
+            </View>
+        )
+    }
+}
+
+export default SecurityPage;

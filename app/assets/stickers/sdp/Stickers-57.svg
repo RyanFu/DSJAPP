@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="126.876px" height="112.438px" viewBox="0 0 126.876 112.438" enable-background="new 0 0 126.876 112.438"
+	 xml:space="preserve">
+<rect fill="#FFFFFF" width="126.876" height="112.438"/>
+<rect x="18.492" y="47.673" width="92" height="18.86"/>
+<text transform="matrix(1 0 0 1 21.6084 61.0898)" fill="#FFFFFF" font-family="'DFWaWaSC-W5-GBpc-EUC-H'" font-size="14.2142">白富美的日常</text>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="47.608" y1="68.001" x2="47.608" y2="76.562"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="76.275" y1="68.351" x2="76.275" y2="76.128"/>
+<text transform="matrix(1 0 0 1 21.6084 74.3926)" font-family="'Helvetica'" font-size="5.0554">FASHION</text>
+<text transform="matrix(1 0 0 1 52.3926 74.3926)" font-family="'Helvetica'" font-size="5.0554">BEAUTY</text>
+<text transform="matrix(1 0 0 1 81.2744 74.3057)" font-family="'Helvetica'" font-size="5.0554">LIFESTYLE</text>
+<g>
+	<path fill="#FFFFFF" d="M20.656,45.996h2.268c1.115,0,2.018-0.903,2.018-2.018v-6.957c0-2.024-0.87-4.006-2.502-5.201
+		c-5.926-4.336-3.675-12.17-2.75-14.662h11.857c0.924,2.492,3.176,10.326-2.75,14.662c-1.633,1.195-2.502,3.177-2.502,5.201v6.957
+		c0,1.114,0.902,2.018,2.02,2.018h2.266c0.714,0,1.293,0.579,1.293,1.294H19.362C19.362,46.575,19.942,45.996,20.656,45.996z"/>
+	<g>
+		<path fill="#611A18" d="M31.065,27.916c-0.688,1.48-1.781,2.702-3.267,3.649c-1.342,0.855-3.019,0.855-4.359,0
+			c-1.486-0.945-2.581-2.165-3.268-3.646c-0.604-1.304-0.844-2.696-0.88-4.042h12.652C31.91,25.223,31.668,26.615,31.065,27.916z"/>
+		<path fill="#2D0304" d="M25.618,31.399c0.614,0,1.218-0.177,1.747-0.516c1.353-0.859,2.351-1.973,2.969-3.307
+			c0.396-0.856,0.649-1.829,0.755-2.896c-2.537,4.213-4.384,0.598-9.653,0.063c-0.684-0.068-1.232,0.563-1.076,1.233
+			c0.131,0.569,0.313,1.104,0.543,1.601c0.617,1.332,1.617,2.445,2.971,3.309C24.399,31.223,25.004,31.399,25.618,31.399
+			L25.618,31.399z"/>
+		<path fill="#CBE5F3" d="M22.319,17.963h6.597c1.279,0,2.381,0.89,2.648,2.141c0.242,1.12,0.416,2.424,0.38,3.773H19.292
+			c-0.036-1.35,0.138-2.653,0.379-3.773C19.938,18.853,21.041,17.963,22.319,17.963z"/>
+	</g>
+</g>
+</svg>
