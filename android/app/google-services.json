@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "141041616019",
+    "firebase_url": "https://duoshouji-155202.firebaseio.com",
+    "project_id": "duoshouji-155202",
+    "storage_bucket": "duoshouji-155202.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141041616019:android:e8357e01f92f3676",
+        "android_client_info": {
+          "package_name": "com.duoshouji.appreact"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141041616019-6cp4p6bjr64bnlne6n3895gkdkbj8mqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLLq0JUfcxF7VBFa7d9XiJSTlZK3kLsbk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
