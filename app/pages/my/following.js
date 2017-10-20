@@ -11,7 +11,6 @@ import {
     Dimensions,
     Animated,
     InteractionManager,
-    Navigator,
     Platform,
     AsyncStorage
 } from 'react-native';
@@ -28,6 +27,8 @@ import Spinner from 'react-native-spinkit';
 import { connect } from 'react-redux';
 import {fetchFollowingList} from '../../actions/follow';
 import StorageKeys from '../../constants/StorageKeys';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const {height, width} = Dimensions.get('window');
 var backImg = require('../../assets/upload/rg_left.png');

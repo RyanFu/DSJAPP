@@ -4,7 +4,6 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Navigator,
     InteractionManager,
     Platform,
     ScrollView,

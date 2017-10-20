@@ -13,7 +13,6 @@ import {
     Dimensions,
     Animated,
     InteractionManager,
-    Navigator,
     Platform
 } from 'react-native';
 import styles from './style';
@@ -26,6 +25,8 @@ import images from '../../constants/images';
 import UserPage from '../../pages/user';
 import _ from 'lodash';
 import Spinner from 'react-native-spinkit';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const {height, width} = Dimensions.get('window');
 var backImg = require('../../assets/upload/rg_left.png');

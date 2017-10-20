@@ -26,6 +26,8 @@ import _ from 'lodash';
 let faceIcon = <Icon name="smile-o" size={25} color="#9b9b9b"/>;
 const dismissKeyboard = require('dismissKeyboard');
 import StarRating from 'react-native-star-rating';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 class Comment extends React.Component {
     constructor(props) {

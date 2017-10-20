@@ -7,7 +7,6 @@ import {
     Dimensions,
     Image,
     ListView,
-    Navigator,
     Platform,
     StyleSheet,
     Text,

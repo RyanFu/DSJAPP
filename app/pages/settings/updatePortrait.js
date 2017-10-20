@@ -3,7 +3,6 @@ import {
     CameraRoll,
     Dimensions,
     Image,
-    Navigator,
     Platform,
     StyleSheet,
     Text,

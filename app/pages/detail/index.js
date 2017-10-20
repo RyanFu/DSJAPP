@@ -11,7 +11,6 @@ import {
     TouchableWithoutFeedback,
     ListView,
     InteractionManager,
-    Navigator,
     Platform,
     DeviceEventEmitter,
     AsyncStorage
@@ -37,6 +36,8 @@ import * as Emoticons from 'react-native-emoticons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Webview from '../../components/webview';
 import StorageKeys from '../../constants/StorageKeys';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const shareImg = require('../../assets/note/transfer.png');
 const uri = ['https://hbimg.b0.upaiyun.com/fd0af542aae5ceb16f67c54c080a6537111d065b94beb-brWmWp_fw658',

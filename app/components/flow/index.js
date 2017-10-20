@@ -17,7 +17,6 @@ import {
     RefreshControl,
     ScrollView,
     InteractionManager,
-    Navigator,
     ActivityIndicator,
     Button,
     DeviceEventEmitter,
@@ -40,6 +39,8 @@ import images from '../../constants/images';
 import StarRating from 'react-native-star-rating';
 import IconAS from 'react-native-vector-icons/FontAwesome';
 import StorageKeys from '../../constants/StorageKeys';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const {height, width} = Dimensions.get('window');
 let fetchParams = {

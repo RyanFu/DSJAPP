@@ -9,7 +9,6 @@ import {
     ImageStore,
     ListView,
     Modal,
-    Navigator,
     Platform,
     ScrollView,
     Slider,
@@ -46,6 +45,8 @@ import {fabrics} from '../../constants/fabrics';
 import {fabricContrast} from '../../constants/imageFilters';
 const arrowImg = require('../../assets/header/arrow.png');
 import styles from './style';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const originImg = require('../../assets/photo/origin.png');
 const sepia2Img = require('../../assets/photo/sepia2.jpg');

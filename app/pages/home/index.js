@@ -33,6 +33,7 @@ import baiChuanApi from 'react-native-taobao-baichuan-api';
 import RedPacket from '../redPacket';
 import {fetchMessageNum} from '../../actions/message';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const addImg = require('../../assets/header/add.png');
 const searchImg = require('../../assets/header/search.png');

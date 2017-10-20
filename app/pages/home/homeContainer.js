@@ -9,6 +9,7 @@ import AddFriends from '../addFriends';
 import {showorHideFilter} from '../../actions/home';
 import SearchPage from '../search';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const ReactNative = require('react-native');
 const {

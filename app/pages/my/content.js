@@ -13,7 +13,6 @@ import {
     Image,
     NavigatorIOS,
     RecyclerViewBackedScrollView,
-    Navigator,
     DeviceEventEmitter,
     Modal,
     TouchableWithoutFeedback
@@ -36,6 +35,8 @@ import images from '../../constants/images';
 import Spinner from 'react-native-spinkit';
 import FollowingPage from './following';
 import FollowerPage from './follower';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 var womanIcon = <Icon style={{marginLeft:3,alignItems:'center',color:'#FF0087'}} size={16} name="venus"/>;
 var manIcon = <Icon style={{marginLeft:3,alignItems:'center',color:'#FF0087'}} size={16} name="mars"/>;

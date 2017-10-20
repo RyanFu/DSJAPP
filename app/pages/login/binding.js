@@ -7,8 +7,7 @@ import {
     Alert,
     DeviceEventEmitter,
     Platform,
-    InteractionManager,
-    Navigator
+    InteractionManager
 } from 'react-native';
 import styles from './bindingStyle';
 import Toolbar from '../../components/toolbar';
@@ -16,6 +15,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Token, toast, request } from '../../utils/common';
 import { connect } from 'react-redux';
 import SendCodePage from './sendCode';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 class Binding extends React.Component {
     constructor(props) {

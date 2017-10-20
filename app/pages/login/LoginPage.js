@@ -15,7 +15,6 @@ import {
     Picker,
     Platform,
     ActivityIndicatorIOS,
-    Navigator,
     KeyboardAvoidingView,
     AsyncStorage
 } from 'react-native';
@@ -34,6 +33,8 @@ import {
 } from '../../utils/common';
 import StorageKeys from '../../constants/StorageKeys';
 import {fetchUserInfo} from '../../actions/user';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const myIcon = (<Icon name="rocket" size={30} color="#900"/>)
 

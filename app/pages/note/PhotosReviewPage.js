@@ -6,7 +6,6 @@ import {
     CameraRoll,
     Dimensions,
     Image,
-    Navigator,
     Platform,
     ScrollView,
     StyleSheet,

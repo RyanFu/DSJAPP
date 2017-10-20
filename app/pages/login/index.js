@@ -3,13 +3,14 @@
 import React, { Component } from 'react';
 import {
     AppRegistry,
-    Navigator,
     StyleSheet,
     Text,
     View
 } from 'react-native';
 
 import LoginPage from './LoginPage';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 class Login extends Component {
     constructor(props) {

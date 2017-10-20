@@ -4,7 +4,6 @@ import {
     View,
     ScrollView,
     InteractionManager,
-    Navigator,
     Text,
     AsyncStorage,
     DeviceEventEmitter,
@@ -18,6 +17,8 @@ import AddFriends from '../addFriends';
 import {fetchUserInfo, fetchUserNotes} from '../../actions/user';
 import { connect } from 'react-redux';
 import StorageKeys from '../../constants/StorageKeys';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 const addImg = require('../../assets/header/add.png');
 const settingImg = require('../../assets/personal/setting.png');

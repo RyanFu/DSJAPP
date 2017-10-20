@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-    Navigator,
     StyleSheet,
     Text,
     View
@@ -11,6 +10,8 @@ import { connect } from 'react-redux';
 import StoreActions from '../../constants/actions';
 import Toolbar from '../../components/toolbar';
 import MyMessagesPage from './MyMessagesPage';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 class MessagesPage extends Component {
     constructor(props) {

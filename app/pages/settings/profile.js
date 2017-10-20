@@ -6,7 +6,6 @@ import {
     Platform,
     Image,
     AsyncStorage,
-    Navigator,
     Picker,
     TouchableOpacity,
     DeviceEventEmitter,
@@ -22,6 +21,8 @@ import StorageKeys from '../../constants/StorageKeys';
 import images from '../../constants/images';
 import portraitPage from '../settings/portrait';
 import { toast, Token, request } from '../../utils/common';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 var chevronRightIcon = <Icon style={[styles.messageLinkIcon]} size={16} name="angle-right"/>;
 

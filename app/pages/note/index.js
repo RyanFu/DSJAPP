@@ -7,7 +7,6 @@ import {
     Dimensions,
     Image,
     InteractionManager,
-    Navigator,
     Platform,
     StyleSheet,
     Text,

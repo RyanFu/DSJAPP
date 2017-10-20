@@ -9,7 +9,6 @@ import {
     Image,
     ListView,
     InteractionManager,
-    Navigator,
     DeviceEventEmitter,
     Platform,
     TouchableWithoutFeedback,
@@ -26,6 +25,8 @@ import images from '../../constants/images';
 import * as Emoticons from 'react-native-emoticons';
 import StorageKeys from '../../constants/StorageKeys';
 import {fetchCommentsList} from '../../actions/comments';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 class CommentList extends React.Component {
     constructor(props) {

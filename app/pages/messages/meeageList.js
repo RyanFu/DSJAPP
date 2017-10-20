@@ -7,7 +7,6 @@ import {
     Image,
     ListView,
     InteractionManager,
-    Navigator,
     DeviceEventEmitter,
     Platform,
     TouchableWithoutFeedback,
@@ -25,6 +24,8 @@ import {fetchMessageList,markAsRead} from '../../actions/message';
 import CommentListPage from '../../pages/commentList';
 import FollowerPage from '../../pages/my/follower';
 import StorageKeys from '../../constants/StorageKeys';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 class MessageList extends React.Component {
     constructor(props) {
