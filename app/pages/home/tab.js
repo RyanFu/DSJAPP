@@ -4,7 +4,6 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Navigator,
     InteractionManager,
     Platform,
     Image
@@ -13,6 +12,8 @@ import styles from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LoginPage from '../../pages/login';
 import { Token } from '../../utils/common';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 let tabIcons = [];
 let tabTitle = [];

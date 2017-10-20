@@ -16,7 +16,6 @@ import {
     InteractionManager,
     AsyncStorage,
     Dimensions,
-    Navigator,
     Animated
 } from 'react-native';
 import styles from './style';
@@ -37,6 +36,8 @@ const searchImg = require('../../assets/header/search.png');
 import AddFriends from '../addFriends';
 import SearchPage from '../search';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 class RedPacket extends React.Component {
     constructor(props) {
