@@ -4,7 +4,7 @@ import React from 'react';
 import {
     StyleSheet,
     StatusBar,
-    BackAndroid,
+    BackHandler,
     View,
     DeviceEventEmitter
 } from 'react-native';
@@ -24,7 +24,7 @@ class Nav extends React.Component {
         this._renderScene = this._renderScene.bind(this);
         this._goBack = this._goBack.bind(this);
 
-        BackAndroid.addEventListener('hardwareBackPress', this._goBack);
+        BackHandler.addEventListener('hardwareBackPress', this._goBack);
         this.state = {
             animated: true,
             hidden: false
