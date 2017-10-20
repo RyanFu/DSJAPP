@@ -85,8 +85,8 @@ class App extends React.Component {
 
         //PushNotification.requestPermissions();
 
-        NetInfo.fetch().done((reach) => {
-            if(reach === 'none'){
+        NetInfo.getConnectionInfo().done((connectionInfo) => {
+            if(connectionInfo === 'none'){
                 toast('网络连接不可用，请检查你的网络！');
             }
         });
