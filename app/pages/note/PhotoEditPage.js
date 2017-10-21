@@ -189,7 +189,7 @@ class PhotoEditPage extends Component {
                         let sImageBase64Data = "data:" + this.state.avatarSource.type + ";base64," + base64Data.replace(/\n|\r/g, "");
                         //console.log('data:' + sImageBase64Data);
 
-                        webviewbridge.sendToBridge(JSON.stringify({
+                        webviewbridge.postMessage(JSON.stringify({
                             type: "imageReady",
                             window: {width: width, height: height},
                             image: displaySize,
@@ -223,7 +223,7 @@ class PhotoEditPage extends Component {
 
         dispatch({type: StoreActions.ADD_TAGS, tags: this.state.tags.slice()});
 
-        webviewbridge.sendToBridge(JSON.stringify({type: 'continue'}));
+        webviewbridge.postMessage(JSON.stringify({type: 'continue'}));
 
     }
 
@@ -233,7 +233,7 @@ class PhotoEditPage extends Component {
      */
     _onChangeTab(args) {
         const { webviewbridge } = this.refs;
-        webviewbridge.sendToBridge(JSON.stringify({type: 'changeTab', imageClickable: (args.i == 1)}));
+        webviewbridge.postMessage(JSON.stringify({type: 'changeTab', imageClickable: (args.i == 1)}));
     }
 
     _onCurrencyInputFocus() {
@@ -324,7 +324,7 @@ class PhotoEditPage extends Component {
         console.log(data);
 
         tags.push(tagData);
-        webviewbridge.sendToBridge(JSON.stringify({type: 'addTag', data: data}));
+        webviewbridge.postMessage(JSON.stringify({type: 'addTag', data: data}));
 
         this.state.tags = tags;
         this.setState({tagOverlayVisible: false});
@@ -346,7 +346,7 @@ class PhotoEditPage extends Component {
     _onPressRotate() {
         const { webviewbridge } = this.refs;
         this.setState({bHandlingFilter: true});
-        webviewbridge.sendToBridge(JSON.stringify({type: 'beautify', beautify: 'rotate'}));
+        webviewbridge.postMessage(JSON.stringify({type: 'beautify', beautify: 'rotate'}));
     }
 
     _resetTabBars() {
@@ -356,14 +356,14 @@ class PhotoEditPage extends Component {
     _adjustImageBrightness(value) {
         const { webviewbridge } = this.refs;
         this.setState({bHandlingFilter: true});
-        webviewbridge.sendToBridge(JSON.stringify({type: 'beautify', beautify: 'brightness', value: value}));
+        webviewbridge.postMessage(JSON.stringify({type: 'beautify', beautify: 'brightness', value: value}));
         this.state.beautify.brightness.newValue = value;
     }
 
     _adjustImageContrast(value) {
         const { webviewbridge } = this.refs;
         this.setState({bHandlingFilter: true});
-        webviewbridge.sendToBridge(JSON.stringify({type: 'beautify', beautify: 'contrast', value: value}));
+        webviewbridge.postMessage(JSON.stringify({type: 'beautify', beautify: 'contrast', value: value}));
         this.state.beautify.contrast.newValue = value;
     }
 
@@ -372,7 +372,7 @@ class PhotoEditPage extends Component {
             return;
         const { webviewbridge } = this.refs;
         this.setState({bHandlingFilter: true});
-        webviewbridge.sendToBridge(JSON.stringify({type: 'filter', value: filter}));
+        webviewbridge.postMessage(JSON.stringify({type: 'filter', value: filter}));
         this.setState({currentFilter: filter});
     }
 
@@ -381,7 +381,7 @@ class PhotoEditPage extends Component {
         const { webviewbridge } = this.refs;
 
         //console.log(message);
-
+        message = message.nativeEvent.data;
         if (message.startsWith("{")) {
             message = JSON.parse(message);
             switch (message.type) {
@@ -423,12 +423,12 @@ class PhotoEditPage extends Component {
         if (!stickerInfo.added) {
             stickerInfo.added = true;
             this.state.updatedSticks[rowID] = true;
-            webviewbridge.sendToBridge(JSON.stringify({type: "addSticker", name: rowID}));
+            webviewbridge.postMessage(JSON.stringify({type: "addSticker", name: rowID}));
             //this.setState({stickersDataSource: this.stickersDataSource.cloneWithRowsAndSections(this.state.stickers)});
         } else {
             stickerInfo.added = false;
             this.state.updatedSticks[rowID] = true;
-            webviewbridge.sendToBridge(JSON.stringify({type: "removeSticker", name: rowID}));
+            webviewbridge.postMessage(JSON.stringify({type: "removeSticker", name: rowID}));
             //this.setState({stickersDataSource: this.stickersDataSource.cloneWithRowsAndSections(this.state.stickers)});
         }
 
@@ -469,7 +469,7 @@ class PhotoEditPage extends Component {
 
     _toSvg() {
         const { webviewbridge } = this.refs;
-        webviewbridge.sendToBridge(JSON.stringify({type: 'toSvg'}));
+        webviewbridge.postMessage(JSON.stringify({type: 'toSvg'}));
     }
 
     _showWebview() {
@@ -531,18 +531,18 @@ class PhotoEditPage extends Component {
                     {
                         Platform.OS === 'android' ?
                             <WebViewBridge ref="webviewbridge" javaScriptEnabled={true}
-                                           onBridgeMessage={this._onBridgeMessage.bind(this)}
+                                           onMessage={this._onBridgeMessage.bind(this)}
                                            scrollEnabled={false} allowFileAccessFromFileURLs={true}
                                            allowUniversalAccessFromFileURLs={true}
                                            domStorageEnabled={true}
                                            source={photoHtmlAndroid}>
                             </WebViewBridge> :
                             <WebViewBridge ref="webviewbridge" javaScriptEnabled={true}
-                                           onBridgeMessage={this._onBridgeMessage.bind(this)}
+                                           onMessage={this._onBridgeMessage.bind(this)}
                                            scrollEnabled={false} allowFileAccessFromFileURLs={true}
                                            allowUniversalAccessFromFileURLs={true}
                                            domStorageEnabled={true}
-                                           source={{html:photoHtmlIos}}>
+                                           source={photoHtmlAndroid}>
                             </WebViewBridge>
                     }
 
