@@ -34,7 +34,8 @@ export default styles = StyleSheet.create({
         borderBottomColor: '#ccc'
     },
     messageHeaderTitle: {
-        fontSize: 20
+        fontSize: 20,
+        textAlign: 'center'
     },
     messageRow: {
         flexDirection:'row',
