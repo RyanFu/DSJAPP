@@ -8,7 +8,8 @@ import {
     StyleSheet,
     Text,
     View,
-    Dimensions
+    Dimensions,
+    ImageBackground
 } from 'react-native';
 import Spinner from 'react-native-spinkit';
 import _ from 'lodash';
@@ -96,7 +97,7 @@ class PrefetchImage extends React.Component {
     render() {
         const resizeMode = this.props.resizeMode;
         return (
-            <Image
+            <ImageBackground
                 source={{uri:this.state.imageUri}}
                 resizeMode={resizeMode}
                 style={[this.props.imageStyle, {height: this.state.height}]}
@@ -106,7 +107,7 @@ class PrefetchImage extends React.Component {
                         <Spinner style={styles.spinner} isVisible size={40} type="ThreeBounce" color={'#C3CCDB'}/>
                     </View>
                     : null}
-            </Image>
+            </ImageBackground>
 
         );
     }
