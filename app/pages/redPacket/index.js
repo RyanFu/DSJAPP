@@ -271,17 +271,18 @@ class RedPacket extends React.Component {
         let dataSource = this.state.buySource;
         if (type === 'view'){
             dataSource = this.state.viewSource;
-            return (
-                <ListView
-                    contentContainerStyle={styles.itemList}
-                    dataSource={dataSource}
-                    renderRow={this._renderItemRow.bind(this)}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    enableEmptySections={true}
-                    />
-            )
+
         }
+        return (
+            <ListView
+                contentContainerStyle={styles.itemList}
+                dataSource={dataSource}
+                renderRow={this._renderItemRow.bind(this)}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                enableEmptySections={true}
+                />
+        )
 
     }
 
