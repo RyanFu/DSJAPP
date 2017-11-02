@@ -108,7 +108,8 @@ class RedPacket extends React.Component {
     }
 
     componentWillReceiveProps() {
-        const view = _.reverse(this.props.recent.recentView);
+        const copy = _.cloneDeep(this.props.recent.recentView);
+        const view = _.reverse(copy);
         this.setState({viewSource: this.ds.cloneWithRows(view)});
     }
 
@@ -126,11 +127,13 @@ class RedPacket extends React.Component {
         });
 
         dispatch(fetchRecentView()).then(()=> {
-            the.setState({viewSource: this.ds.cloneWithRows(_.reverse(the.props.recent.recentView))});
+            const copy = _.cloneDeep(this.props.recent.recentView);
+            the.setState({viewSource: this.ds.cloneWithRows(_.reverse(copy))});
         });
         DeviceEventEmitter.addListener('newView', ()=> {
             dispatch(fetchRecentView()).then(()=> {
-                the.setState({viewSource: this.ds.cloneWithRows(_.reverse(the.props.recent.recentView))});
+                const copy = _.cloneDeep(this.props.recent.recentView);
+                the.setState({viewSource: this.ds.cloneWithRows(_.reverse(copy))});
             });
         });
 
@@ -293,6 +296,7 @@ class RedPacket extends React.Component {
                             resizeMode="cover"
                             width={width/3-5}
                             height={width/3-5}
+                            key={rowData.itemPicUrl}
                             />
                         <View style={styles.recFlowPrice}>
                             <Animated.Text
