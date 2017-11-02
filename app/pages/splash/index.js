@@ -22,7 +22,7 @@ class Splash extends React.Component {
         this.state = {
             hidden: true,
             position: 0,
-            countDown: 1
+            countDown: 2
         }
     }
 

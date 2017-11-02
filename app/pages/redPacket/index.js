@@ -138,14 +138,15 @@ class RedPacket extends React.Component {
         });
 
         Token.getToken().then((token) => {
-            if(token){
+            if(!token){
                 return;
             }
             const params = {
                 token: token
             };
             dispatch(fetchRecentBuy(params)).then(()=> {
-                the.setState({buySource: this.ds.cloneWithRows(_.reverse(the.props.recent.recentBuy))});
+                const copy = _.cloneDeep(this.props.recent.recentBuy);
+                the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
             });
         });
 
