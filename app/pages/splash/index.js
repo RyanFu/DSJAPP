@@ -22,7 +22,7 @@ class Splash extends React.Component {
         this.state = {
             hidden: true,
             position: 0,
-            countDown: 2
+            countDown: 6
         }
     }
 
@@ -57,6 +57,17 @@ class Splash extends React.Component {
         clearTimeout(this.timer);
     }
 
+    _onCountDownPress() {
+        const { navigator } = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.resetTo({
+                component: Home,
+                name: 'Home',
+                params: {store: this.props.store}
+            });
+        });
+    }
+
     render() {
         // This will be replaced to webView for ads or user guide
         let images = [];
@@ -79,6 +90,7 @@ class Splash extends React.Component {
                 position={this.state.position}
                 onPositionChanged={position => this.setState({position})}
                 countDown={this.state.countDown}
+                onCountDownPress={this._onCountDownPress.bind(this)}
                 />
 
         );

@@ -51,9 +51,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(74,73,74,0.3)',
         borderRadius: 18
     },
+    countContainer: {
+
+    },
+    jumpText: {
+        color: '#fff',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 3
+    },
     countText: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 10,
+        textAlign: 'center'
     },
 });
 
@@ -67,7 +77,8 @@ export default class ImageSlider extends Component {
             left: new Animated.Value(0),
             scrolling: false,
             timeout: null,
-            countDown: this.props.countDown? this.props.countDown : 0
+            countDown: this.props.countDown? this.props.countDown : 0,
+            interval: null
         };
 
         // Enable LayoutAnimation under Android
@@ -205,11 +216,11 @@ export default class ImageSlider extends Component {
         let interval = null;
         let the = this;
         if(this.props.countDown)
-            interval = setInterval(()=>{
+            this.state.interval = setInterval(()=>{
                 if(  the.state.countDown > 1)
                     the.setState({countDown: the.state.countDown-1});
                 else
-                    clearInterval(interval);
+                    clearInterval(this.state.interval);
             }, 1000);
     }
 
@@ -232,6 +243,16 @@ export default class ImageSlider extends Component {
         };
         LayoutAnimation.configureNext(CustomLayoutAnimation);
         //LayoutAnimation.linear();
+    }
+
+    _onCountDownPress(){
+        if(this.props.onCountDownPress){
+            if(this.state.interval){
+                clearInterval(this.state.interval);
+            }
+            this.props.onCountDownPress();
+        }
+
     }
 
     render() {
@@ -283,9 +304,12 @@ export default class ImageSlider extends Component {
                 <Text style={styles.sequence}>{position+1}/{this.props.images.length}</Text>
             </View>
             {
-                this.props.countDown ?  <View style={styles.count}>
-                    <Text style={styles.countText}>{this.state.countDown}s</Text>
-                </View>: null
+                this.props.countDown ?  <TouchableHighlight onPress={()=>this._onCountDownPress()} style={styles.count}>
+                    <View style={styles.countContainer}>
+                        <Text style={styles.jumpText}>跳过</Text>
+                        <Text style={styles.countText}>{this.state.countDown}s</Text>
+                    </View>
+                </TouchableHighlight>: null
             }
 
         </View>);
