@@ -570,6 +570,7 @@ class PhotoEditPage extends Component {
                                     textStyle={{ fontSize: 14, marginTop: 8 }}
                                     style={{height: 38}}
                                     underlineColor="#fc7d30"
+                                    scrollButton={false}
                                   />
                                 }
                         >

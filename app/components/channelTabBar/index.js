@@ -17,7 +17,7 @@ var {height, width} = Dimensions.get('window');
 let numberOfTabs;
 let tabsLength;
 let tabLength;
-let arrowWidth = 38;
+let arrowWidth = 0;
 
 const ChannelTabBar = createReactClass({
     propTypes: {
@@ -96,6 +96,7 @@ const ChannelTabBar = createReactClass({
     },
 
     render() {
+        arrowWidth = this.props.scrollButton ? arrowWidth : 0;
         //const containerWidth = this.props.containerWidth;
         numberOfTabs = this.props.tabs.length;
         tabsLength = Math.ceil(numberOfTabs / 5) * (width - arrowWidth);
@@ -130,12 +131,13 @@ const ChannelTabBar = createReactClass({
                 </View>
 
                 {
-                    <Button
-                        style={styles.arrow}
-                        onPress={() => this._scrollTo(_scrollView)}
-                        >
-                        <Image style={styles.magnifier} source={require('../../assets/channel/channel_more.png')}/>
-                    </Button>
+                    this.props.scrollButton ?
+                        <Button
+                            style={styles.arrow}
+                            onPress={() => this._scrollTo(_scrollView)}
+                            >
+                            <Image style={styles.magnifier} source={require('../../assets/channel/channel_more.png')}/>
+                        </Button> : null
                 }
 
             </View>
