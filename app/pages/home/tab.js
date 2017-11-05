@@ -108,9 +108,9 @@ class TabBar extends React.Component {
                     {
                         i == 0 ?
                             <Image
-                                style={{width: 24,height: 24,marginBottom:4,marginTop: 4}}
+                                style={{width: 24,height: 24,marginBottom:3,marginTop: 5}}
                                 resizeMode={'contain'}
-                                source={require('../../assets/footer/red.png')}
+                                source={require('../../assets/footer/red_.png')}
                                 />:
                             <Icon
                                 name={tab}
