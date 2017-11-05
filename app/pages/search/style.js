@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     searchText: {
         height: 24,
         width: width - 66,
-        marginTop: 10,
+        marginTop: 0,
         marginLeft: 12,
         paddingLeft: 16,
         fontSize: 14,
