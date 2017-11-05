@@ -30,16 +30,18 @@ class SearchItem extends React.Component {
         this._renderRow = this._renderRow.bind(this);
         this._onScroll = this._onScroll.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
+        this._jumpToTaobaoPage = this._jumpToTaobaoPage.bind(this);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: this.ds.cloneWithRows(this.props.search.itemList)
+            dataSource: this.ds.cloneWithRows(this.props.search.itemList),
+            showTip: false
         };
     }
 
     _renderRow(rowData:string, sectionID:number, rowID:number) {
         return (
             <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}
-                              onPress={() => this._jumpToTaobaoPage(rowData.itemId.toString(),rowData)}>
+                              onPress={() => this._tip(rowData.itemId.toString(),rowData)}>
                 <View style={styles.itemRow}>
                     <Image style={styles.pic}
                            source={{uri: (rowData.itemPicUrl ? rowData.itemPicUrl : images.DEFAULT_PORTRAIT), width: 100, height: 100}}/>
@@ -124,7 +126,6 @@ class SearchItem extends React.Component {
         //data.orderId = '33351509422362798';
         //this._insertOrder(data);
         //return;
-
         const { navigator,dispatch } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
@@ -148,6 +149,11 @@ class SearchItem extends React.Component {
 
             }
         });
+    }
+
+    _tip(itemId, data) {
+        this.props.tipShow();
+        this.props.itemData(itemId, data, this._jumpToTaobaoPage);
     }
 
     _onScroll(event) {
@@ -212,6 +218,7 @@ class SearchItem extends React.Component {
                     scrollEventThrottle={200}
                     renderFooter={this._renderFooter}
                     />
+
             </View>
         )
 

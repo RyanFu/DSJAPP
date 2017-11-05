@@ -27,13 +27,22 @@ import ScrollableTabView,{ DefaultTabBar }  from 'react-native-scrollable-tab-vi
 import ConditionTab from './conditionTab';
 import StoreActions from '../../constants/actions';
 import Flow from '../../components/flow';
+import TbPopup from '../../components/tbPopup';
 
 class SearchResult extends React.Component {
     constructor(props) {
         super(props);
         this._onLeftIconClicked = this._onLeftIconClicked.bind(this);
+        this._tipShow = this._tipShow.bind(this);
+        this._getItemData = this._getItemData.bind(this);
+        this._onPressTipButton = this._onPressTipButton.bind(this);
         this.state = {
-            searching: false
+            searching: false,
+            showTip: false,
+            redPacket: 10,
+            itemId: null,
+            itemData: null,
+            callback: null
         };
     }
 
@@ -88,10 +97,32 @@ class SearchResult extends React.Component {
         })
     }
 
+    _tipShow() {
+        this.setState({showTip: true});
+    }
+
+    _getItemData(itemId, data, callback) {
+        //callback(itemId, data)
+        this.setState({redPacket: data.tkCommFee});
+        this.setState({itemId: itemId});
+        this.setState({itemDate: data});
+        this.setState({callback: callback})
+    }
+    _onPressTipButton() {
+        this.state.callback(this.state.itemId, this.state.data);
+    }
+
     render() {
         const page = this.props.route.type ? parseInt(this.props.route.type) : 0;
         return (
             <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                {
+                    this.state.showTip?<TbPopup
+                        onPressButton={this._onPressTipButton}
+                        redPacket={this.state.redPacket}
+                        show={true}
+                        /> : null
+                }
                 <View style={styles.searchHeader}>
                     <ImageButton
                         source={backImg}
@@ -147,10 +178,10 @@ class SearchResult extends React.Component {
                                 {
                                     this.state.searching ?
                                         <View style={[styles.center,{marginTop: 40}]}>
-                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -161,10 +192,10 @@ class SearchResult extends React.Component {
                                 {
                                     this.state.searching ?
                                         <View style={[styles.center,{marginTop: 40}]}>
-                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -175,10 +206,10 @@ class SearchResult extends React.Component {
                                 {
                                     this.state.searching ?
                                         <View style={[styles.center,{marginTop: 40}]}>
-                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -189,10 +220,10 @@ class SearchResult extends React.Component {
                                 {
                                     this.state.searching ?
                                         <View style={[styles.center,{marginTop: 40}]}>
-                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -208,10 +239,10 @@ class SearchResult extends React.Component {
                                 {
                                     this.state.searching ?
                                         <View style={[styles.center,{marginTop: 40}]}>
-                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                         </ScrollableTabView>

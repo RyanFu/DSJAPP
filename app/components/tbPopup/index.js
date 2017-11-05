@@ -24,7 +24,8 @@ class TbPopup extends React.Component {
         super(props);
         this.state = {
             countDown: 8,
-            interval: 8
+            interval: 8,
+            show: this.props.show
         }
     }
 
@@ -42,11 +43,13 @@ class TbPopup extends React.Component {
                 clearInterval(this.state.interval);
 
         }, 1000);
+        this.setState({show: true});
     }
 
     componentWillUnmount() {
         clearTimeout(this.state.timer);
         clearInterval(this.state.interval);
+        this.setState({show: false});
     }
 
     componentWillMount() {
@@ -57,11 +60,13 @@ class TbPopup extends React.Component {
             this.props.onPressButton();
             clearTimeout(this.state.timer);
             clearInterval(this.state.interval);
+            this.setState({show: false});
         }
-
     }
 
     render() {
+        if(!this.state.show)
+            return null;
         return (
             <View style={styles.container}>
                 <View style={styles.rectangle}>

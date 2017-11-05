@@ -287,6 +287,8 @@ class RedPacket extends React.Component {
     }
 
     _renderItemRow(rowData:string) {
+        if(!rowData)
+            return null
         return (
             <TouchableOpacity onPress={() => this._jumpToTaobaoPage(rowData.itemId.toString())}
                               underlayColor="transparent" activeOpacity={0.5}>
@@ -454,7 +456,6 @@ class RedPacket extends React.Component {
                             null}
                     </ScrollView>
                 }
-
 
             </View>
         )
