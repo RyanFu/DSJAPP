@@ -70,7 +70,17 @@ class TbPopup extends React.Component {
                         <Text style={styles.titleContent}>提示</Text>
                         <View style={styles.titleLine}/>
                     </View>
-                    <View style={{position: 'absolute', bottom:10, flexDirection:'column'}}>
+                    <View style={styles.content}>
+                        <Text style={styles.content1}>您即将进去淘宝购物</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.dimText}>“付款”</Text><Text style={styles.content2}>后即可获得</Text><Text style={styles.redPacket}>￥{this.props.redPacket}</Text><Text style={styles.content2}>红包</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.dimText}>“确认收货”</Text><Text style={styles.content3}>后即可红包提现</Text>
+                        </View>
+
+                    </View>
+                    <View style={{ bottom:10, flexDirection:'column'}}>
                         <Button style={styles.button}
                                 containerStyle={{ justifyContent: 'center'}}
                                 onPress={this._onPressButton.bind(this)}>知道了，继续购物</Button>
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
     },
     rectangle: {
         width: width * 2 / 3,
-        height: height / 2,
+        height: height *2 / 5,
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,1)',
@@ -136,6 +146,7 @@ const styles = StyleSheet.create({
     },
     title: {
         flexDirection: 'row',
+        height: 50
     },
     titleLine: {
         width: 40,
@@ -148,6 +159,34 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         fontSize: 18,
         fontWeight: 'bold'
+    },
+    content: {
+        flexDirection: 'column',
+        height: 120,
+        alignItems: 'center',
+    },
+    content1: {
+        fontSize: 18,
+        color: 'red',
+        marginBottom: 10
+    },
+    dimText:{
+        color: '#9b9b9b',
+    },
+    content2: {
+        fontSize: 12,
+        lineHeight:14,
+        marginLeft:4,
+        marginBottom: 6
+    },
+    content3: {
+        fontSize: 12,
+        lineHeight:14,
+        marginLeft:4
+    },
+    redPacket: {
+        fontSize: 14,
+        color: 'red',
     }
 });
 
