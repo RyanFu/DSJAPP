@@ -76,7 +76,7 @@ class TbPopup extends React.Component {
                         <View style={styles.titleLine}/>
                     </View>
                     <View style={styles.content}>
-                        <Text style={styles.content1}>您即将进去淘宝购物</Text>
+                        <Text style={styles.content1}>您即将进入淘宝购物</Text>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={styles.dimText}>“付款”</Text><Text style={styles.content2}>后即可获得</Text><Text style={styles.redPacket}>￥{this.props.redPacket}</Text><Text style={styles.content2}>红包</Text>
                         </View>
@@ -157,12 +157,12 @@ const styles = StyleSheet.create({
         width: 40,
         height: 2,
         backgroundColor: '#F37D30',
-        marginTop: 6,
+        marginTop: 10,
     },
     titleContent: {
         color: '#F37D30',
-        paddingHorizontal: 14,
-        fontSize: 18,
+        paddingHorizontal: 10,
+        fontSize: 22,
         fontWeight: 'bold'
     },
     content: {
