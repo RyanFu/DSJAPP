@@ -109,7 +109,7 @@ class SearchResult extends React.Component {
         this.setState({callback: callback})
     }
     _onPressTipButton() {
-        this.state.callback(this.state.itemId, this.state.data);
+        this.state.callback(this.state.itemId, this.state.itemDate);
         this.setState({showTip: false});
     }
 

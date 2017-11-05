@@ -229,7 +229,7 @@
         };
 
         window.document.addEventListener('message', function (e) {
-            const message = e.data;
+            var message = e.data;
             try {
                 message = JSON.parse(message);
             } catch (e) {

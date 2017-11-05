@@ -408,7 +408,7 @@ class Flow extends React.Component {
                     {
                         flow.refreshing || this.state.offlineReloading ? (
                             <View style={[styles.center,{marginTop: 40}]}>
-                                <Image resizeMode={Image.resizeMode.contain} style={{width:240}}
+                                <Image resizeMode={Image.resizeMode.contain} style={{width:160}}
                                        source={require('../../assets/gif/loading.gif')}/>
                             </View>
                         ) : (
