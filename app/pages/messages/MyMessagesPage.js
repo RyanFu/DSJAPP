@@ -58,9 +58,9 @@ class MyMessagesPage extends Component {
         this._getMessagesFromServer();
     }
 
-    async componentWillMount() {
+    componentWillMount() {
         // load old data to display
-        await this._loadInitialState();
+        //await this._loadInitialState();
     }
 
     componentDidMount() {
