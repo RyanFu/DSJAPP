@@ -215,8 +215,8 @@ class PostNotePage extends Component {
         }
 
         let data = {
-            title: this.state.title,
-            content: this.state.content,
+            title: emoticons.stringify(this.state.title),
+            content: emoticons.stringify(this.state.content),
             address: this.state.address,
             latitude: this.state.latitude,
             longitude: this.state.longitude
