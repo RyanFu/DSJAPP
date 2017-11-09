@@ -109,7 +109,12 @@ export default styles = StyleSheet.create({
     },
     messageListDetail: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+    },
+    messageListDetailPreView: {
+        paddingLeft: 10,
+        height: 30,
+        overflow: 'hidden'
     }
 });

@@ -25,6 +25,8 @@ import CommentListPage from '../../pages/commentList';
 import FollowerPage from '../../pages/my/follower';
 import StorageKeys from '../../constants/StorageKeys';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import Emoticons, * as emoticons from '../../components/emoticons';
+
 const Navigator = deprecatedComponents.Navigator;
 
 class MessageList extends React.Component {
@@ -65,7 +67,7 @@ class MessageList extends React.Component {
                 navigator.push({
                     component: CommentListPage,
                     name: 'CommentListPage',
-                    noteId: 1
+                    noteId: rowData.noteId
                 });
             });
         }
@@ -118,10 +120,12 @@ class MessageList extends React.Component {
                                     this.state.messageList[rowID]&& !this.state.messageList[rowID].isRead?<View style={[styles.unReadDot]}>
                                     </View>:null
                                 }
-
-                                <Text style={[styles.baseText,styles.messageListText,this.state.messageList[rowID]&&!this.state.messageList[rowID].isRead?{height: 26}:null]} >
-                                    {rowData.message}
+                                <Text style={[styles.baseText,styles.messageListText,this.state.messageList[rowID]&&!this.state.messageList[rowID].isRead?{}:null]} >
+                                    您有一条来自{rowData.commentAuthorNickname}关于《{rowData.noteTitle}》的评论：
                                 </Text>
+                            </View>
+                            <View style={[styles.messageListDetail,styles.messageListDetailPreView]}>
+                                <Text style={styles.dimText} numberOfLines={1} lineBreakMode={"tail"}>{emoticons.parse(rowData.commentContent)}</Text>
                             </View>
 
                         </View>
