@@ -26,7 +26,7 @@ import FollowerPage from '../../pages/my/follower';
 import StorageKeys from '../../constants/StorageKeys';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import Emoticons, * as emoticons from '../../components/emoticons';
-
+import _ from 'lodash';
 const Navigator = deprecatedComponents.Navigator;
 
 class MessageList extends React.Component {
@@ -50,6 +50,7 @@ class MessageList extends React.Component {
                 token: token
             };
             dispatch(fetchMessageList(params)).then(() => {
+                _.reverse(the.props.message.messageList);
                 the.setState({'dataSource': the.ds.cloneWithRows(the.props.message.messageList)});
                 the.state.messageList = the.props.message.messageList;
                 the.setState({messageList: the.state.messageList});
