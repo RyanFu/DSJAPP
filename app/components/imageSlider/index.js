@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         width: 45,
         bottom: 20,
         position: 'absolute',
-        right: 15,
+        left: Dimensions.get('window').width - 70,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -259,7 +259,7 @@ export default class ImageSlider extends Component {
         const customStyles = this.props.style ? this.props.style : {};
         const width = Dimensions.get('window').width;
         const position = this._getPosition();
-        return (<View>
+        return (<View style={{position: 'relative'}}>
             <Animated.View
                 style={[styles.container, customStyles, {height: this.state.height, width: width * this.props.images.length, transform: [{translateX: this.state.left}]}]}
                 {...this._panResponder.panHandlers}>

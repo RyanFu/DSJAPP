@@ -58,8 +58,7 @@ export function fetchList(params) {
                     'timestamp=' + params.timestamp
                     + '&pageSize=' + pageSize
                     + '&loadedSize=' + params.loadedSize
-                    + (params.myFollowOnly ? '&myFollowOnly' : '')
-                    + '&tagId=' + (params.tag !== 'all' ? params.tag : ''), 'get', '', token)
+                    + (params.myFollowOnly ? '&myFollowOnly' : ''), 'get', '', token)
                     .then((list) => {
                         if (list.resultCode === 0 && list.resultValues.length > 0) {
                             dispatch(receiveFlowList(list.resultValues, params.tag, false));
