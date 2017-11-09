@@ -406,8 +406,7 @@ class Detail extends React.Component {
                                             return (
                                                 <View key={key} style={styles.commentList}>
                                                     <Text style={styles.NickName} lineBreakMode={"tail"}
-                                                        >{val.authorNickname}</Text>
-                                                    <Text>：</Text>
+                                                        >{val.authorNickname}：</Text>
                                                     <Text style={styles.commentContent} lineBreakMode={'tail'}
                                                           numberOfLines={1}>{Emoticons.parse(val.comment)}</Text>
                                                 </View>

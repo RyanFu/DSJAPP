@@ -187,23 +187,24 @@ const styles = StyleSheet.create({
         top: 2
     },
     commentList: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'flex-start',
-        height: 30,
-        alignItems: 'center',
+        height: 45,
+        alignItems: 'flex-start',
         overflow: 'hidden'
     },
     NickName: {
         color: '#9b9b9b',
         fontSize: 13,
         marginRight: 5,
-        height: 16,
-        maxWidth: 50
+        height: 16
     },
     commentContent: {
         color: '#4a4a4a',
         fontSize: 13,
-        maxWidth: width-80
+        height: 22,
+        maxWidth: width-40,
+        lineHeight: 22
     },
     recommendByUser: {
         padding: 15
