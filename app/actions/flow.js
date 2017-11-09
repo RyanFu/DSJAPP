@@ -60,7 +60,7 @@ export function fetchList(params) {
                     + '&loadedSize=' + params.loadedSize
                     + (params.myFollowOnly ? '&myFollowOnly' : ''), 'get', '', token)
                     .then((list) => {
-                        if (list.resultCode === 0 && list.resultValues.length > 0) {
+                        if (list.resultCode === 0 && list.resultValues.length >= pageSize) {
                             dispatch(receiveFlowList(list.resultValues, params.tag, false));
                         } else {
                             dispatch(receiveFlowList(list.resultValues, params.tag, true));
