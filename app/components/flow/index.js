@@ -198,8 +198,8 @@ class Flow extends React.Component {
                     like(noteId, token).then((res) => {
                         let list = the.props.flow.flowList[tag];
                         let note = _.find(list, {noteId: noteId});
-                        note.isLikedByVisitor = !note.isLikedByVisitor;
-                        if (note.isLikedByVisitor)
+                        note.isLikedBySessionUser = !note.isLikedBySessionUser;
+                        if (note.isLikedBySessionUser)
                             note.likeCount++;
                         else
                             note.likeCount--;
@@ -305,7 +305,7 @@ class Flow extends React.Component {
                                         name={'ios-heart'}
                                         size={22}
 
-                                        color={ val.isLikedByVisitor?'#fc7d30':'#bebdbd'}
+                                        color={ val.isLikedBySessionUser?'#fc7d30':'#bebdbd'}
                                         style={{justifyContent: 'flex-start'}}
                                         />
                                 </TouchableOpacity>

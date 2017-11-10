@@ -194,7 +194,7 @@ class Detail extends React.Component {
                 follow(userId, token).then((res) => {
                     let notes = _.filter(detail.note, {userId: userId});
                     _.each(notes, function (note) {
-                        note.isAuthorFollowedByVisitor = true;
+                        note.isFollowedBySessionUser = true;
                     });
                     this.setState({noteUpdated: true});
                 });
@@ -209,8 +209,8 @@ class Detail extends React.Component {
                 if (token) {
                     like(noteId, token).then((res) => {
                         let note = detail.note[noteId];
-                        note.isLikedByVisitor = !note.isLikedByVisitor;
-                        if (note.isLikedByVisitor)
+                        note.isLikedBySessionUser = !note.isLikedBySessionUser;
+                        if (note.isLikedBySessionUser)
                             note.likeCount++;
                         else
                             note.likeCount--;
@@ -332,7 +332,7 @@ class Detail extends React.Component {
                             </TouchableOpacity>
 
                             {
-                                detail.note[noteId].isAuthorFollowedByVisitor && !detail.note[noteId].isAuthorFollowedByVisitor ?
+                                detail.note[noteId].isFollowedBySessionUser && !detail.note[noteId].isFollowedBySessionUser ?
                                     <TouchableOpacity style={styles.follow}
                                                       onPress={() => this._follow(detail.note[noteId].userId)}>
                                         <Image source={require('../../assets/note/follow.png')}/>
@@ -495,7 +495,7 @@ class Detail extends React.Component {
                     <TouchableOpacity style={styles.floatOp} onPress={()=> this._like(noteId)}>
                         <View style={styles.floatOpView}>
                             {
-                                detail.note[noteId] && detail.note[noteId].isLikedByVisitor ? (
+                                detail.note[noteId] && detail.note[noteId].isLikedBySessionUser ? (
                                     <Image style={styles.floatOpImage}
                                            source={ require('../../assets/note/heart.png') }/>
                                 ) : (
