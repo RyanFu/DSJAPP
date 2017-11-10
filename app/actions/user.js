@@ -39,7 +39,7 @@ export function fetchUserInfo(params) {
     }
 
     return dispatch => {
-        return request('/user/profile?userId=' + params.userId, 'get', '', params.token)
+        return request('/user'+params.userId+'/profile', 'get', '', params.token)
             .then((list) => {
                 if (list.resultCode == 0) {
                     dispatch(receiveInfo(list.resultValues));
