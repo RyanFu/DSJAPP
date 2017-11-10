@@ -39,7 +39,7 @@ export function fetchUserInfo(params) {
     }
 
     return dispatch => {
-        return request('/user'+params.userId+'/profile', 'get', '', params.token)
+        return request('/users/'+params.userId+'/profile', 'get', '', params.token)
             .then((list) => {
                 if (list.resultCode == 0) {
                     dispatch(receiveInfo(list.resultValues));
@@ -63,11 +63,12 @@ export function fetchUserNotes(params) {
     const pageSize = 10000;
     const loadedSize = 0;
     return dispatch => {
-        return request('/user/notes?' +
+        return request('/'+ (params.userId ? ('users/' + params.userId) : 'user') +'/notes?' +
             'timestamp=' + timestamp
             + '&pageSize=' + pageSize
-            + (params.userId ? ('&userId=' + params.userId) : '')
+            //+ (params.userId ? ('&userId=' + params.userId) : '')
             + '&loadedSize=' + loadedSize, 'get', '', params.token)
+        //return request('/users/'+ params.userId +'/notes', 'get', '', params.token)
             .then((list) => {
                 if (list.resultCode == 0) {
                     if (params.userId) {
