@@ -308,7 +308,7 @@ class RedPacket extends React.Component {
                             <Text style={[styles.baseText,styles.recFlowText]}>红包：￥{rowData.tkCommFee}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-                            <Text style={[styles.baseText,{paddingBottom:0}]} lineBreakMode={'tail'} numberOfLines={2}>
+                            <Text style={[styles.baseText,{paddingBottom:0,minHeight: 38}]} lineBreakMode={'tail'} numberOfLines={2}>
                                 {rowData.itemTitle}
                             </Text>
                         </View>
