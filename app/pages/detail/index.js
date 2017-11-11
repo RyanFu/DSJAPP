@@ -29,7 +29,7 @@ import {fetchCommentsList} from '../../actions/comments';
 import {fetchRecommendList} from '../../actions/recommend';
 import { connect } from 'react-redux';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
-import {Token, follow, timeFormat, like, request } from '../../utils/common';
+import {Token, follow, timeFormat, like, request, toast } from '../../utils/common';
 import _ from 'lodash';
 import imagesConstants from '../../constants/images';
 import * as Emoticons from 'react-native-emoticons';
@@ -192,11 +192,14 @@ class Detail extends React.Component {
         Token.getToken(navigator).then((token) => {
             if (token) {
                 follow(userId, token).then((res) => {
-                    let notes = _.filter(detail.note, {userId: userId});
-                    _.each(notes, function (note) {
-                        note.isFollowedBySessionUser = true;
+                    //let notes = _.filter(detail.note, {userId: userId});
+                    _.each(detail.note, function (note) {
+                        if(note.authorId == userId)
+                            note.isFollowedBySessionUser = true;
                     });
                     this.setState({noteUpdated: true});
+
+                    toast('关注成功');
                 });
             }
         });
@@ -208,12 +211,12 @@ class Detail extends React.Component {
         Token.getToken(navigator).then((token) => {
                 if (token) {
                     like(noteId, token).then((res) => {
-                        let note = detail.note[noteId];
-                        note.isLikedBySessionUser = !note.isLikedBySessionUser;
-                        if (note.isLikedBySessionUser)
-                            note.likeCount++;
+                        //let note = detail.note[noteId];
+                        detail.note[noteId].isLikedBySessionUser = !detail.note[noteId].isLikedBySessionUser;
+                        if (detail.note[noteId].isLikedBySessionUser)
+                            detail.note[noteId].likeCount++;
                         else
-                            note.likeCount--;
+                            detail.note[noteId].likeCount--;
                         this.setState({noteUpdated: true});
                     });
                 }
@@ -321,7 +324,7 @@ class Detail extends React.Component {
                     <View style={[styles.note,styles.block]}>
                         <View style={styles.user}>
                             <TouchableOpacity style={{flexDirection: 'row'}}
-                                              onPress={() => this._jumpToUserPage(detail.note[noteId].userId)}>
+                                              onPress={() => this._jumpToUserPage(detail.note[noteId].authorId)}>
                                 <Image style={styles.portrait}
                                        source={{uri: (detail.note[noteId]&&detail.note[noteId].portrait ? detail.note[noteId].portrait : imagesConstants.DEFAULT_PORTRAIT), width:34, height:34 }}/>
                                 <View style={styles.info}>
@@ -335,7 +338,7 @@ class Detail extends React.Component {
                             {
                                 !detail.note[noteId] || detail.note[noteId] && !detail.note[noteId].isFollowedBySessionUser ?
                                     <TouchableOpacity style={styles.follow}
-                                                      onPress={() => this._follow(detail.note[noteId].userId)}>
+                                                      onPress={() => this._follow(detail.note[noteId].authorId)}>
                                         <Image source={require('../../assets/note/follow.png')}/>
                                     </TouchableOpacity>
                                     :
@@ -497,8 +500,12 @@ class Detail extends React.Component {
                         <View style={styles.floatOpView}>
                             {
                                 detail.note[noteId] && detail.note[noteId].isLikedBySessionUser ? (
-                                    <Image style={styles.floatOpImage}
-                                           source={ require('../../assets/note/heart.png') }/>
+                                    <Icon
+                                        name={'ios-heart'}
+                                        size={18}
+                                        color={'#fc7d30'}
+                                        style={{justifyContent: 'flex-start'}}
+                                        />
                                 ) : (
                                     <Image style={styles.floatOpImage}
                                            source={ require('../../assets/note/heart.png')}/>
