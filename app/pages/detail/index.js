@@ -332,7 +332,7 @@ class Detail extends React.Component {
                             </TouchableOpacity>
 
                             {
-                                detail.note[noteId].isFollowedBySessionUser && !detail.note[noteId].isFollowedBySessionUser ?
+                                !detail.note[noteId] || detail.note[noteId] && !detail.note[noteId].isFollowedBySessionUser ?
                                     <TouchableOpacity style={styles.follow}
                                                       onPress={() => this._follow(detail.note[noteId].userId)}>
                                         <Image source={require('../../assets/note/follow.png')}/>

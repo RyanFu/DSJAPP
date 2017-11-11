@@ -1,25 +1,26 @@
 import types from '../constants/actions';
-import { request } from '../utils/common';
+import { request, Token } from '../utils/common';
 
 export function fetchDetail(noteId) {
     return dispatch => {
+        Token.getToken().then((token) => {
+            return request('/notes/' + noteId, 'get','',token)
+                .then((ret) => {
+                    if(ret.resultCode === 0 && ret.resultValues){
+                        dispatch(receiveNoteDetail(ret.resultValues, noteId));
+                    } else {
+                        dispatch(receiveNoteDetail());
+                    }
 
-        return request('/notes/' + noteId, 'get')
-            .then((ret) => {
-                if(ret.resultCode === 0 && ret.resultValues){
-                    dispatch(receiveNoteDetail(ret.resultValues, noteId));
-                } else {
+                }, function (error) {
                     dispatch(receiveNoteDetail());
-                }
-
-            }, function (error) {
-                dispatch(receiveNoteDetail());
-                console.log(error);
-            })
-            .catch(() => {
-                dispatch(receiveNoteDetail());
-                console.log('network error');
-            });
+                    console.log(error);
+                })
+                .catch(() => {
+                    dispatch(receiveNoteDetail());
+                    console.log('network error');
+                });
+        });
     };
 }
 function receiveNoteDetail(note, noteId) {
