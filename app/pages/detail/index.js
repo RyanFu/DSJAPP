@@ -269,7 +269,8 @@ class Detail extends React.Component {
                 images.push(image);
 
                 _.each(val.marks, (v, k)=> {
-                    marks.push(v);
+                    if(v.imageUrl && v.title && v.url)
+                        marks.push(v);
                 });
             }, this);
         } else {
