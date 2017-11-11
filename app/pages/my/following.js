@@ -45,10 +45,12 @@ class Following extends React.Component {
     }
 
     componentDidMount() {
-        const { dispatch, route } = this.props;
+        const { dispatch, route, navigator } = this.props;
         let the = this;
-        dispatch(fetchFollowingList(route.userId)).then(()=>{
-            the.setState({dataSource: the.ds.cloneWithRows(the.props.follow.followingList)});
+        Token.getToken(navigator).then((token) => {
+            dispatch(fetchFollowingList(route.userId, token)).then(()=>{
+                the.setState({dataSource: the.ds.cloneWithRows(the.props.follow.followingList)});
+            });
         });
     }
 
@@ -81,11 +83,37 @@ class Following extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
+                        {
+                            !rowData.isFollowedBySessionUser?
+                                <View style={styles.invite}>
+                                    <TouchableHighlight onPress={()=>this._follow(rowData)}
+                                                        style={styles.button}>
+                                        <Image source={require('../../assets/invite/follow.png')}></Image>
+                                    </TouchableHighlight>
+                                </View>: null
+                        }
 
                     </View>
                 </View>
             </TouchableOpacity>
         );
+    }
+
+    _follow(rowData) {
+        let {navigator} = this.props;
+        const the = this;
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                follow(rowData.userId, token).then((res) => {
+                    _.each(the.props.follow.followingList, function (list, key) {
+                        if(list.userId == rowData.userId)
+                            the.props.follow.followingList[key].isFollowedBySessionUser = true;
+                    });
+                    the.setState({dataSource: the.ds.cloneWithRows(the.props.follow.followingList)});
+                    toast('关注成功');
+                });
+            }
+        });
     }
 
     _jumpToUserPage(userId) {

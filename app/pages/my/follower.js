@@ -45,11 +45,14 @@ class Follower extends React.Component {
     }
 
     componentDidMount() {
-        const { dispatch, route } = this.props;
+        const { dispatch, route, navigator } = this.props;
         let the = this;
-        dispatch(fetchFollowerList(route.userId)).then(()=>{
-            the.setState({dataSource: the.ds.cloneWithRows(the.props.follow.followerList)});
+        Token.getToken(navigator).then((token) => {
+            dispatch(fetchFollowerList(route.userId, token)).then(()=>{
+                the.setState({dataSource: the.ds.cloneWithRows(the.props.follow.followerList)});
+            });
         });
+
     }
 
     componentWillMount() {
@@ -82,16 +85,37 @@ class Follower extends React.Component {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={styles.invite}>
-                            <TouchableHighlight onPress={()=>this._follow(rowData)}
-                                                style={styles.button}>
-                                <Image source={require('../../assets/invite/follow.png')}></Image>
-                            </TouchableHighlight>
-                        </View>
+                        {
+                            !rowData.isFollowedBySessionUser?
+                                <View style={styles.invite}>
+                                    <TouchableHighlight onPress={()=>this._follow(rowData)}
+                                                        style={styles.button}>
+                                        <Image source={require('../../assets/invite/follow.png')}></Image>
+                                    </TouchableHighlight>
+                                </View>: null
+                        }
+
                     </View>
                 </View>
             </TouchableOpacity>
         );
+    }
+
+    _follow(rowData) {
+        let {navigator} = this.props;
+        const the = this;
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                follow(rowData.userId, token).then((res) => {
+                    _.each(this.props.follow.followerList, function (list,key) {
+                        if(list.userId == rowData.userId)
+                            the.props.follow.followerList[key].isFollowedBySessionUser = true;
+                    });
+                    the.setState({dataSource: the.ds.cloneWithRows(the.props.follow.followerList)});
+                    toast('关注成功');
+                });
+            }
+        });
     }
 
     _jumpToUserPage(userId) {

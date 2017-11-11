@@ -1,10 +1,10 @@
 import types from '../constants/actions';
 import { request } from '../utils/common';
 
-export function fetchFollowingList(userId) {
+export function fetchFollowingList(userId, token) {
     return dispatch => {
 
-        return request('/users/'+ userId + '/followings', 'get')
+        return request('/users/'+ userId + '/followings', 'get','',  token)
             .then((list) => {
                 if(list.resultValues.length > 0){
                     dispatch(receiveFollowingList(list.resultValues));
@@ -23,10 +23,10 @@ export function fetchFollowingList(userId) {
     };
 }
 
-export function fetchFollowerList(userId) {
+export function fetchFollowerList(userId, token) {
     return dispatch => {
 
-        return request('/users/'+ userId + '/followers', 'get')
+        return request('/users/'+ userId + '/followers', 'get', '', token)
             .then((list) => {
                 if(list.resultValues.length > 0){
                     dispatch(receiveFollowerList(list.resultValues));
