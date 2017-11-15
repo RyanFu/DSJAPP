@@ -169,15 +169,17 @@ class Webview extends React.Component {
         const {route} = this.props;
         if (route.url)
             return false;
-        if (navState.url.indexOf('wvb://message') > -1)
+        if (navState.url.indexOf('wvb://message') > -1 || navState.url.indexOf('react-js-navigation://postMessage') > -1)
             return false;
         if (this.state.url === navState.url && !navState.isLoading) {
             this.setState({loading: false});
             return false;
         }
 
-        tag.url = navState.url;
-
+        var scheme = navState.url.split('://')[0];
+        if (scheme === 'http' || scheme === 'https') {
+            tag.url = navState.url;
+        }
 
         this.setState({
             canGoBack: navState.canGoBack,
@@ -201,7 +203,12 @@ class Webview extends React.Component {
     _onMessage(message) {
         const { navigator } = this.props;
 
-        message = JSON.parse(message.nativeEvent.data);
+        try {
+            message = JSON.parse(message.nativeEvent.data);
+        } catch (e) {
+            return;
+        }
+
         if(message.type === 'get'){
             tag.title = message.title;
             tag.imageUrl = message.imageUrl;
