@@ -73,11 +73,17 @@ const patchPostMessageFunction = function() {
 
     window.postMessage = patchedPostMessage;
 
-    window.document.addEventListener('message', function (cmd) {
-        cmd = JSON.parse(cmd);
-        alert('s')
-        if (cmd.type === 'getMessage') {
-            alert('s')
+    window.document.addEventListener('message', function (e) {
+        var message = {};
+        var data = e.data;
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            message.type = 'error';
+            window.postMessage(e.message);
+            return;
+        }
+        if (data.type === 'getMessage') {
             var title = document.title;
             if(title === '商品详情' && document.getElementsByClassName('title_share')[0]){
                 title = document.getElementsByClassName('title_share')[0].outerText;
@@ -87,6 +93,7 @@ const patchPostMessageFunction = function() {
                 imageUrl = document.images[0].src;
             }
             var message = {
+                type: 'get',
                 title: title,
                 imageUrl: imageUrl
             };
@@ -194,14 +201,16 @@ class Webview extends React.Component {
     _onMessage(message) {
         const { navigator } = this.props;
 
-        message = JSON.parse(message);
-        tag.title = message.title;
-        tag.imageUrl = message.imageUrl;
-        tag.url = encodeURI(tag.url);
-        clearTimeout(forceStopLoading);
+        message = JSON.parse(message.nativeEvent.data);
+        if(message.type === 'get'){
+            tag.title = message.title;
+            tag.imageUrl = message.imageUrl;
+            tag.url = encodeURI(tag.url);
+            clearTimeout(forceStopLoading);
 
-        DeviceEventEmitter.emit('newTag', tag);
-        navigator.pop();
+            DeviceEventEmitter.emit('newTag', tag);
+            navigator.pop();
+        }
     }
 
     _onLoadStart() {
