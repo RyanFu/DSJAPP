@@ -29,15 +29,18 @@ let WEBVIEW_REF = 'webview';
 var DEFAULT_URL = configs.mobileServiceUrl + 'eSearch';
 //let DEFAULT_URL = 'http://localhost:3000/esearch';
 let WebViewBridge = WebView;
-const injectedJavaScript = `
+const injectedJavaScript1 = `
     delete window.postMessage;
 
     (function () {
-        if (WebViewBridge) {
-
-            WebViewBridge.onMessage = function (cmd) {
+        //var listeners = window.getEventListeners(window);
+        alert('333)
+        //console.log(listeners.message)
+        //if (window.postMessage) {
+             window.addEventListener('message', function (cmd) {
                 cmd = JSON.parse(cmd);
                 if (cmd.type === 'getMessage') {
+                    alert('s')
                     var title = document.title;
                     if(title === '商品详情' && document.getElementsByClassName('title_share')[0]){
                         title = document.getElementsByClassName('title_share')[0].outerText;
@@ -51,12 +54,51 @@ const injectedJavaScript = `
                         imageUrl: imageUrl
                     };
                     message = JSON.stringify(message);
-                    WebViewBridge.send(message);
+                    window.postMessage(message);
                 }
-            };
-        }
+
+             },false);
+        //}
     }());
 `;
+const patchPostMessageFunction = function() {
+    var originalPostMessage = window.postMessage;
+    var patchedPostMessage = function(message, targetOrigin, transfer) {
+        originalPostMessage(message, targetOrigin, transfer);
+    };
+
+    patchedPostMessage.toString = function() {
+        return String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage');
+    };
+
+    window.postMessage = patchedPostMessage;
+
+    window.document.addEventListener('message', function (cmd) {
+        cmd = JSON.parse(cmd);
+        alert('s')
+        if (cmd.type === 'getMessage') {
+            alert('s')
+            var title = document.title;
+            if(title === '商品详情' && document.getElementsByClassName('title_share')[0]){
+                title = document.getElementsByClassName('title_share')[0].outerText;
+            }
+            var imageUrl = '';
+            if(document.images[0]){
+                imageUrl = document.images[0].src;
+            }
+            var message = {
+                title: title,
+                imageUrl: imageUrl
+            };
+            message = JSON.stringify(message);
+            window.postMessage(message);
+        }
+
+    },false);
+};
+
+const injectedJavaScript = '(' + String(patchPostMessageFunction) + ')();';
+
 const propTypes = {
     press: PropTypes.func
 };
@@ -80,7 +122,7 @@ class Webview extends React.Component {
         this._onLoadStart = this._onLoadStart.bind(this);
         this._onError = this._onError.bind(this);
         this._getItem = this._getItem.bind(this);
-
+        this._onShouldStartLoadWithRequest = this._onShouldStartLoadWithRequest.bind(this);
         this.state = {
             url: DEFAULT_URL,
             status: 'No Page Loaded',
@@ -121,10 +163,10 @@ class Webview extends React.Component {
         if (route.url)
             return false;
         if (navState.url.indexOf('wvb://message') > -1)
-            return;
+            return false;
         if (this.state.url === navState.url && !navState.isLoading) {
             this.setState({loading: false});
-            return;
+            return false;
         }
 
         tag.url = navState.url;
@@ -178,7 +220,7 @@ class Webview extends React.Component {
     }
 
     _getItem() {
-        this.refs[WEBVIEW_REF].sendToBridge(JSON.stringify({type: 'getMessage'}));
+        this.refs[WEBVIEW_REF].postMessage(JSON.stringify({type: 'getMessage'}));
     }
 
     _analyzeUrl(url) {
@@ -213,6 +255,13 @@ class Webview extends React.Component {
         return true;
     }
 
+    _onShouldStartLoadWithRequest (e){
+        var scheme = e.url.split('://')[0];
+        if (scheme === 'http' || scheme === 'https') {
+            return true;
+        }
+        return false;
+    }
     render() {
         return (
             <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
@@ -237,7 +286,8 @@ class Webview extends React.Component {
                     onLoadEnd={this._onLoadEnd}
                     onLoadStart={this._onLoadStart}
                     onError={this._onError}
-                    onBridgeMessage={this._onMessage}
+                    onMessage={this._onMessage}
+                    onShouldStartLoadWithRequest={this._onShouldStartLoadWithRequest}
                     >
                 </WebViewBridge>
                 {this.state.loading ? <Loading /> : null}
