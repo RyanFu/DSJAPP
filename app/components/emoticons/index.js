@@ -12,7 +12,8 @@ import {
     ScrollView,
     TouchableHighlight,
     AsyncStorage,
-    Platform
+    Platform,
+    ViewPropTypes
 } from 'react-native';
 import styles from './style';
 import emojiData from 'emoji-datasource';
@@ -348,7 +349,7 @@ class Emoticons extends React.Component {
 Emoticons.propTypes = {
     onEmoticonPress: PropTypes.func.isRequired,
     onBackspacePress: PropTypes.func,
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     show: PropTypes.bool,
     concise: PropTypes.bool,
     showHistoryBar: PropTypes.bool,

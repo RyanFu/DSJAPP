@@ -5,6 +5,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    ViewPropTypes
 } from 'react-native';
 
 import coalesceNonElementChildren from './coalesceNonElementChildren';
@@ -14,7 +15,7 @@ const systemButtonOpacity = 0.2;
 export default class Button extends Component {
     static propTypes = {
         ...TouchableOpacity.propTypes,
-        containerStyle: View.propTypes.style,
+        containerStyle: ViewPropTypes.style,
         disabled: PropTypes.bool,
         style: Text.propTypes.style,
         styleDisabled: Text.propTypes.style,

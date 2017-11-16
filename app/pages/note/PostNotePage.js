@@ -34,8 +34,8 @@ import Home from '../home';
 import {
     Token
 } from '../../utils/common';
-import Emoticons, * as emoticons from 'react-native-emoticons';
-//import Emoticons, * as emoticons from '../../components/emoticons';
+// import Emoticons, * as emoticons from 'react-native-emoticons';
+import Emoticons, * as emoticons from '../../components/emoticons';
 import _ from 'lodash';
 
 const dismissKeyboard = require('dismissKeyboard');

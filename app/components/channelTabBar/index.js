@@ -10,7 +10,8 @@ const {
     TouchableOpacity,
     Dimensions,
     ScrollView,
-    Image
+    Image,
+    ViewPropTypes
     } = ReactNative;
 const Button = require('./Button');
 var {height, width} = Dimensions.get('window');
@@ -30,7 +31,7 @@ const ChannelTabBar = createReactClass({
         activeTextColor: PropTypes.string,
         inactiveTextColor: PropTypes.string,
         textStyle: Text.propTypes.style,
-        tabStyle: View.propTypes.style,
+        tabStyle: ViewPropTypes.style,
     },
 
     getDefaultProps() {

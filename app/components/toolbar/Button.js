@@ -6,14 +6,15 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ViewPropTypes
 } from 'react-native';
 
 const propTypes = {
     onPress: PropTypes.func,
     disabled: PropTypes.bool,
     style: Text.propTypes.style,
-    containerStyle: View.propTypes.style,
+    containerStyle: ViewPropTypes.style,
     text: PropTypes.string
 };
 

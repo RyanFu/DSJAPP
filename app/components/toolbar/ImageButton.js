@@ -6,7 +6,8 @@ import React from 'react';
 import {
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    ViewPropTypes
 } from 'react-native';
 
 const propTypes = {
@@ -19,8 +20,8 @@ const propTypes = {
         // Opaque type returned by require('./image.jpg')
         PropTypes.number,
     ]),
-    style: View.propTypes.style,
-    containerStyle: View.propTypes.style
+    style: ViewPropTypes.style,
+    containerStyle: ViewPropTypes.style
 };
 
 class ImageButton extends React.Component {
