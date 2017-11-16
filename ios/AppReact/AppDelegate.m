@@ -115,7 +115,11 @@
 
 //****************** baichuan  **********************//
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
-  BOOL isHandled = [[AlibcTradeSDK sharedInstance] handleOpenURL:url]; // 如果百川处理过会返回YES
+//  BOOL isHandled = [[AlibcTradeSDK sharedInstance] handleOpenURL:url]; // 如果百川处理过会返回YES
+  BOOL isHandled = [[AlibcTradeSDK sharedInstance] application:application
+                                                       openURL:url
+                                             sourceApplication:sourceApplication
+                                                    annotation:annotation];
   if (!isHandled) {
     // 其他处理逻辑
     return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
@@ -124,6 +128,7 @@
   return YES;
 
 }
+
 //- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
 //  BOOL isHandled = [[AlibcTradeSDK sharedInstance] handleOpenURL:url]; // 如果百川处理过会返回YES
 //  if (!isHandled) {
