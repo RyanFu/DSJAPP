@@ -16,6 +16,7 @@ import {
 import Spinner from 'react-native-spinkit';
 import Button from '../../components/button/Button';
 import { toast } from '../../utils/common';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var {height, width} = Dimensions.get('window');
 
@@ -32,6 +33,23 @@ class TbPopup extends React.Component {
     componentDidMount() {
         const { navigator } = this.props;
         const the = this;
+        this.state.timer = setTimeout(() => {
+            if (this.props.onPressButton)
+                this.props.onPressButton();
+        }, this.state.countDown * 1000);
+        this.state.interval = setInterval(()=> {
+            if (the.state.countDown > 1)
+                the.setState({countDown: the.state.countDown - 1});
+            else
+                clearInterval(this.state.interval);
+
+        }, 1000);
+        this.setState({show: true});
+    }
+
+    componentWillReceiveProps(){
+        const the = this;
+        this.state.countDown = 8;
         this.state.timer = setTimeout(() => {
             if (this.props.onPressButton)
                 this.props.onPressButton();
@@ -64,6 +82,12 @@ class TbPopup extends React.Component {
         }
     }
 
+    _notGo() {
+        clearTimeout(this.state.timer);
+        clearInterval(this.state.interval);
+        this.setState({show: false});
+    }
+
     render() {
         if(!this.state.show)
             return null;
@@ -91,6 +115,16 @@ class TbPopup extends React.Component {
                                 onPress={this._onPressButton.bind(this)}>知道了，继续购物</Button>
                         <TouchableOpacity style={styles.countDown}>
                             <Text style={styles.countDownText}>{this.state.countDown}秒后自动进入</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.cross}>
+                        <TouchableOpacity onPress={() => this._notGo()}>
+                            <Icon
+                                style={styles.crossIcon}
+                                name='md-close'
+                                size={30}
+                                color={'#fff'}
+                            />
                         </TouchableOpacity>
                     </View>
 
@@ -192,6 +226,25 @@ const styles = StyleSheet.create({
     redPacket: {
         fontSize: 14,
         color: 'red',
+    },
+    cross: {
+        width: 40,
+        height: 40,
+        borderWidth: 2,
+        borderRadius: 20,
+        bottom: -50,
+        borderColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute'
+    },
+    crossIcon: {
+        paddingTop: 2,
+        borderRadius: 20,
+        width: 40,
+        textAlign: 'center',
+        backgroundColor: 'rgba(0,0,0,0)',
+        fontWeight: "900"
     }
 });
 
