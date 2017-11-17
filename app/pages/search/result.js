@@ -36,6 +36,7 @@ class SearchResult extends React.Component {
         this._tipShow = this._tipShow.bind(this);
         this._getItemData = this._getItemData.bind(this);
         this._onPressTipButton = this._onPressTipButton.bind(this);
+        this._onPressCross = this._onPressCross.bind(this);
         this.state = {
             searching: false,
             showTip: false,
@@ -108,8 +109,13 @@ class SearchResult extends React.Component {
         this.setState({itemDate: data});
         this.setState({callback: callback})
     }
+
     _onPressTipButton() {
         this.state.callback(this.state.itemId, this.state.itemDate);
+        this.setState({showTip: false});
+    }
+
+    _onPressCross() {
         this.setState({showTip: false});
     }
 
@@ -120,6 +126,7 @@ class SearchResult extends React.Component {
                 {
                     this.state.showTip?<TbPopup
                         onPressButton={this._onPressTipButton}
+                        onPressCross={this._onPressCross}
                         redPacket={this.state.redPacket}
                         show={true}
                         /> : null

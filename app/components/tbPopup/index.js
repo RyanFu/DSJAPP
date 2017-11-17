@@ -48,20 +48,7 @@ class TbPopup extends React.Component {
     }
 
     componentWillReceiveProps(){
-        const the = this;
-        this.state.countDown = 8;
-        this.state.timer = setTimeout(() => {
-            if (this.props.onPressButton)
-                this.props.onPressButton();
-        }, this.state.countDown * 1000);
-        this.state.interval = setInterval(()=> {
-            if (the.state.countDown > 1)
-                the.setState({countDown: the.state.countDown - 1});
-            else
-                clearInterval(this.state.interval);
 
-        }, 1000);
-        this.setState({show: true});
     }
 
     componentWillUnmount() {
@@ -86,6 +73,8 @@ class TbPopup extends React.Component {
         clearTimeout(this.state.timer);
         clearInterval(this.state.interval);
         this.setState({show: false});
+        if (this.props.onPressCross)
+            this.props.onPressCross();
     }
 
     render() {
