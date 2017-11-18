@@ -104,7 +104,8 @@ class PhotoEditPage extends Component {
             updatedSticks: {},
             next: false,
             ready: false,
-            showWebview: false
+            showWebview: false,
+            showRemoveTagButton: false,
         };
 
         this.stickersDataSource = new ListView.DataSource({
@@ -394,7 +395,7 @@ class PhotoEditPage extends Component {
                     this.setState({ready: true});
                     break;
                 case "clickImage":
-                    this.setState({tagOverlayVisible: true, currentTag: {x: message.x, y: message.y}});
+                    this.setState({showRemoveTagButton: false, tagOverlayVisible: true, currentTag: {x: message.x, y: message.y}});
                     break;
                 case "imageUpdated":
                     this.setState({bHandlingFilter: false});
@@ -416,7 +417,7 @@ class PhotoEditPage extends Component {
                     }
                     break;
                 case "showAddedTag":
-                    this.setState({tagOverlayVisible: true, currentTag: this.state.tags[message.id]});
+                    this.setState({showRemoveTagButton: true, tagOverlayVisible: true, currentTag: this.state.tags[message.id]});
                     break;
                 case 'toSvg':
                     console.log(message.imageData)
@@ -513,6 +514,16 @@ class PhotoEditPage extends Component {
             the.setState({currentTag: Object.assign({}, the.state.currentTag,  {url: val.url})});
 
         });
+    }
+
+    _delCurrentTag() {
+        const { webviewbridge } = this.refs;
+        const the = this;
+        webviewbridge.postMessage(JSON.stringify({type: 'removeTag', data: this.state.currentTag}));
+        _.remove(this.state.tags, function(n,k) {
+            return k.index  == the.state.currentTag.index;
+        });
+        this.setState({showRemoveTagButton: false, currentTag: {x: the.state.currentTag.x, y: the.state.currentTag.y}})
     }
 
     render() {
@@ -774,7 +785,7 @@ class PhotoEditPage extends Component {
 
                 {this.state.tagOverlayVisible ?
                     (<KeyboardAvoidingView behavior={'position'} contentContainerStyle={{flex:1,backgroundColor:'#fff'}}
-                                           style={[styles.overlay,this.state.currentTag.url?{top:height - 260 + 21 + 20 - 30}:null]}>
+                                           style={[styles.overlay,this.state.currentTag.url?(this.state.showRemoveTagButton?{top:height - 260 + 21 + 20 - 30 - 50}:{top:height - 260 + 21 + 20 - 30}):null]}>
                         <View style={styles.tagHeader}>
                             <TouchableOpacity
                                 onPress={() => this._onModalCancel.call(this)}>
@@ -822,6 +833,16 @@ class PhotoEditPage extends Component {
                                              style={[styles.textInput, {color: '#000'}]}
                                              onFocus={() => {this.showCategoryModal(true); this.refs.categoryInput.blur()}}/>
                         </View>
+                        {
+                            this.state.showRemoveTagButton?
+                                <View style={[styles.formRow,styles.formRowLink]}>
+                                    <TouchableOpacity onPress={() => this._delCurrentTag.call(this)}>
+                                        <View style={styles.link}>
+                                            <Text style={[styles.baseText,styles.linkText]}>删除标签</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>: null
+                        }
                         <View style={[styles.formRow,styles.formRowLink]}>
                             <TouchableOpacity onPress={() => this._showWebview.call(this)}>
                                 {

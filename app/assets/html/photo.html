@@ -341,6 +341,7 @@
                                 type: "showAddedTag",
                                 id: target.__uid
                             }));
+
                         } else {
                             activeTag = null;
                         }
@@ -458,7 +459,11 @@
                 tags[message.data.index] = {circle: circle, group: group};
                 //var textFab = new fabric.Text(message.data.name, {left: message.data.position.left, top: message.data.position.top, selectable:false});
                 //canvasFab.add(textFab);
+            } else if (message.type === "removeTag"){
+                canvasFab.remove(tags[message.data.index].circle);
+                canvasFab.remove(tags[message.data.index].group);
             }
+
         });
 
     }, 500);
