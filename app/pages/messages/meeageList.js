@@ -106,7 +106,7 @@ class MessageList extends React.Component {
 
     }
 
-    _renderRow(rowData:string, sectionID:number, rowID:number) {
+    _renderCommentRow(rowData:string, sectionID:number, rowID:number) {
         return (
             <TouchableHighlight  underlayColor="transparent" activeOpacity={0.5} onPress={()=>{this._makeAsRead(rowID,rowData)}}>
                 <View>
@@ -135,6 +135,76 @@ class MessageList extends React.Component {
                 </View>
             </TouchableHighlight>
         )
+    }
+
+    _renderFollowRow(rowData:string, sectionID:number, rowID:number) {
+        return (
+            <TouchableHighlight  underlayColor="transparent" activeOpacity={0.5} onPress={()=>{this._makeAsRead(rowID,rowData)}}>
+                <View>
+                    <View style={styles.messageListRow}>
+                        <View style={styles.messageListContent}>
+                            <View style={styles.messageListTimeC}>
+                                <Text style={[styles.dimText,styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
+                            </View>
+
+                            <View style={styles.messageListDetail}>
+                                {
+                                    this.state.messageList[rowID]&& !this.state.messageList[rowID].isRead?<View style={[styles.unReadDot]}>
+                                    </View>:null
+                                }
+
+                                <Text style={[styles.baseText,styles.messageListText,this.state.messageList[rowID]&&!this.state.messageList[rowID].isRead?{height: 26}:null]} >
+                                    {rowData.message}
+                                </Text>
+                            </View>
+
+                        </View>
+
+                    </View>
+                </View>
+            </TouchableHighlight>
+        )
+    }
+
+    _renderRebateRow(rowData:string, sectionID:number, rowID:number){
+        return (
+            <TouchableHighlight  underlayColor="transparent" activeOpacity={0.5} onPress={()=>{this._makeAsRead(rowID,rowData)}}>
+                <View>
+                    <View style={styles.messageListRow}>
+                        <View style={styles.messageListContent}>
+                            <View style={styles.messageListTimeC}>
+                                <Text style={[styles.dimText,styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
+                            </View>
+
+                            <View style={styles.messageListDetail}>
+                                {
+                                    this.state.messageList[rowID]&& !this.state.messageList[rowID].isRead?<View style={[styles.unReadDot]}>
+                                    </View>:null
+                                }
+
+                                <Text style={[styles.baseText,styles.messageListText,this.state.messageList[rowID]&&!this.state.messageList[rowID].isRead?{height: 26}:null]} >
+                                    {rowData.message}
+                                </Text>
+                            </View>
+
+                        </View>
+
+                    </View>
+                </View>
+            </TouchableHighlight>
+        )
+    }
+
+    _renderRow(rowData:string, sectionID:number, rowID:number) {
+        if(this.props.route.type === 'comment'){
+            return this._renderCommentRow(rowData:string, sectionID:number, rowID:number);
+        }
+        if(this.props.route.type === 'follow'){
+            return this._renderFollowRow(rowData:string, sectionID:number, rowID:number);
+        }
+        if(this.props.route.type === 'rebate'){
+            return this._renderRebateRow(rowData:string, sectionID:number, rowID:number);
+        }
     }
 
     render() {
