@@ -23,7 +23,7 @@ import { Token, timeFormat } from '../../utils/common';
 import LoginPage from '../../pages/login';
 import images from '../../constants/images';
 // import * as Emoticons from 'react-native-emoticons';
-import Emoticons, * as emoticons from '../../components/emoticons';
+import * as Emoticons from '../../components/emoticons';
 import StorageKeys from '../../constants/StorageKeys';
 import {fetchCommentsList} from '../../actions/comments';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
