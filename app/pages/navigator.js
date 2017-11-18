@@ -45,6 +45,7 @@ class Nav extends React.Component {
 
         if(route.name === 'Home'){
             DeviceEventEmitter.emit('newView', true);
+            // DeviceEventEmitter.emit('newBuy', true);
         }
         return (
             <Component {...route.params} navigator={navigator} route={route}/>

@@ -26,12 +26,12 @@ const photo = `<html lang="en">
     var originImg = null;
     var currentImg = null;
     var intervalId = setInterval(function () {
-        if (!window.WebViewBridge) {
+        if (!window.postMessage) {
             return;
         }
         clearInterval(intervalId);
 
-        WebViewBridge.send('{"type":"bridgeReady"}');
+        window.postMessage('{"type":"bridgeReady"}');
         var imageClickable = false;
         var imgElementOrigin = document.getElementById('image-origin');
         var canvas = document.getElementById('c');
@@ -116,7 +116,7 @@ const photo = `<html lang="en">
         };
 
         var applyFilters = function () {
-            WebViewBridge.send('imageFilters');
+            window.postMessage('imageFilters');
             var appliedFilters = Object.keys(imageFilters).filter(function (filterName) {
                 return imageFilters[filterName].checked;
             }).map(function (filterName) {
@@ -125,7 +125,7 @@ const photo = `<html lang="en">
 
             imgFab.filters = appliedFilters;
             imgFab.applyFilters(canvasFab.renderAll.bind(canvasFab));
-            WebViewBridge.send(JSON.stringify({type: "imageUpdated"}));
+            window.postMessage(JSON.stringify({type: "imageUpdated"}));
         }
 
         var applyBrightness = function (value) {
@@ -178,7 +178,7 @@ const photo = `<html lang="en">
                 height: originImg.height
             };
             canvasFab.renderAll();
-            WebViewBridge.send(JSON.stringify({type: "imageUpdated"}));
+            window.postMessage(JSON.stringify({type: "imageUpdated"}));
         };
 
         var Rotate90 = function () {
@@ -193,7 +193,7 @@ const photo = `<html lang="en">
                 width: originImg.height,
                 height: originImg.width
             };
-            WebViewBridge.send(JSON.stringify({type: "imageUpdated"}));
+            window.postMessage(JSON.stringify({type: "imageUpdated"}));
         };
 
         var Rotate180 = function () {
@@ -209,7 +209,7 @@ const photo = `<html lang="en">
                 height: originImg.height
             };
             canvasFab.renderAll();
-            WebViewBridge.send(JSON.stringify({type: "imageUpdated"}));
+            window.postMessage(JSON.stringify({type: "imageUpdated"}));
         };
 
         var Rotate270 = function () {
@@ -225,14 +225,15 @@ const photo = `<html lang="en">
                 width: originImg.height,
                 height: originImg.width
             };
-            WebViewBridge.send(JSON.stringify({type: "imageUpdated"}));
+            window.postMessage(JSON.stringify({type: "imageUpdated"}));
         };
 
-        WebViewBridge.onMessage = function (message) {
+        window.document.addEventListener('message', function (e) {
+            var message = e.data;
             try {
                 message = JSON.parse(message);
             } catch (e) {
-                WebViewBridge.send(e.message);
+                window.postMessage(e.message);
                 return;
             }
 
@@ -282,18 +283,18 @@ const photo = `<html lang="en">
                     canvasFab.renderAll();
                 });
 
-                WebViewBridge.send(JSON.stringify({type: "addedSticker"}));
+                window.postMessage(JSON.stringify({type: "addedSticker"}));
 
             } else if (message.type === 'removeSticker') {
 
                 canvasFab.remove(choseStickers[message.name]);
-                WebViewBridge.send(JSON.stringify({type: "removedSticker"}));
+                window.postMessage(JSON.stringify({type: "removedSticker"}));
 
             } else if (message.type == 'continue') {
 
                 // remove controls before export to data url.
                 canvasFab.getActiveObject() && canvasFab.getActiveObject().setOptions({hasControls: false});
-                WebViewBridge.send(JSON.stringify({
+                window.postMessage(JSON.stringify({
                     type: "continue",
                     imageData: canvasFab.toDataURL({format: 'jpeg'}),
                     ImgSize: currentImg
@@ -301,7 +302,7 @@ const photo = `<html lang="en">
 
             } else if (message.type == 'toSvg') {
                 var svgResult = canvasFab.toSVG({suppressPreamble: true});
-                WebViewBridge.send(JSON.stringify({type: "toSvg", imageData: svgResult}));
+                window.postMessage(JSON.stringify({type: "toSvg", imageData: svgResult}));
             } else if (message.type === 'imageReady') {
                 deviceWindow = message.window;
                 imgElementOrigin.addEventListener('load', function () {
@@ -329,11 +330,18 @@ const photo = `<html lang="en">
                         };
 
                         if (target == null) {
-                            WebViewBridge.send(JSON.stringify({
+                            window.postMessage(JSON.stringify({
                                 type: "clickImage",
                                 x: position.offsetX,
                                 y: position.offsetY
                             }));
+                        } else if(target != null
+                            && target.type == 'circle'){
+                            window.postMessage(JSON.stringify({
+                                type: "showAddedTag",
+                                id: target.__uid
+                            }));
+
                         } else {
                             activeTag = null;
                         }
@@ -341,22 +349,30 @@ const photo = `<html lang="en">
 
                     canvasFab.on("mouse:down", function (data) {
                         var target = data.target, e = data.e.targetTouches[0];
-                        if (target != null && target.type == 'circle' && target.id) {
-                            var group = tags[target.id].group;
+
+                        if (target != null && target.type == 'circle' ) {
+                            var group = tags[target.__uid].group;
                             activeTag = {
                                 tag: target,
                                 group: group,
                                 downPos: {offsetX: e.pageX, offsetY: e.pageY},
                                 groupOriginPos: {left: group.getLeft(), top: group.getTop()}
                             };
+                        } else if (target != null && target.type == 'group'){
+//                            alert(JSON.stringify(data))
                         } else {
                             activeTag = null;
                         }
+
                     });
 
                     canvasFab.on("mouse:move", function (data) {
                         if (activeTag != null) {
-                            var target = data.target, e = data.e.targetTouches[0], group = activeTag.group, downPos = activeTag.downPos, groupOriginPos = activeTag.groupOriginPos;
+                            var target = data.target,
+                                e = data.e.targetTouches[0],
+                                group = activeTag.group,
+                                downPos = activeTag.downPos,
+                                groupOriginPos = activeTag.groupOriginPos;
                             if (group != null) {
                                 group.setLeft(groupOriginPos.left + (e.pageX - downPos.offsetX) * scale);
                                 group.setTop(groupOriginPos.top + (e.pageY - downPos.offsetY) * scale);
@@ -364,7 +380,7 @@ const photo = `<html lang="en">
                         }
                     });
 
-                    WebViewBridge.send(JSON.stringify({type: "imageUpdated"}));
+                    window.postMessage(JSON.stringify({type: "imageUpdated"}));
                 });
                 if (message.data) {
                     maxHeight = message.window.height - 280 + 20;
@@ -399,7 +415,7 @@ const photo = `<html lang="en">
                     imgElementOrigin.src = message.data;
                     currentImg = originImg;
 
-                    WebViewBridge.send(JSON.stringify({canvasFab: {width: canvasFab.width, height: canvasFab.height}}));
+                    window.postMessage(JSON.stringify({canvasFab: {width: canvasFab.width, height: canvasFab.height}}));
                 }
 
             } else if (message.type === "changeTab") {
@@ -407,7 +423,7 @@ const photo = `<html lang="en">
                 imageClickable = !!message.imageClickable;
 
             } else if (message.type === "addTag") {
-                WebViewBridge.send(JSON.stringify(message));
+                window.postMessage(JSON.stringify(message));
                 var position = {offsetX: message.data.x, offsetY: message.data.y};
                 var radius = 6 * scale;
                 var circle = new fabric.Circle({
@@ -417,35 +433,40 @@ const photo = `<html lang="en">
                     top: (position.offsetY - radius),
                     selectable: true,
                     evented: true,
-                    hasControls: false
+                    hasControls: false,
+                    __uid: message.data.index
                 });
-                circle.id = ++tagUID;
+//                circle.id = ++tagUID;
+                circle.id = message.data.index;
 
                 var group = new fabric.Group(null, {subTargetCheck: true, evented: true, selectable: true}, false);
 
                 //group.setOriginX(e.offsetX);
                 //group.setOriginY(e.offsetY);
 
+                if(message.data.name.length > 10){
+                    message.data.name = message.data.name.substring(0,12) + '...';
+                }
                 addTagLabel((message.data.brand || '') + (message.data.name || ''), position, group, 0);
-                addTagLabel(message.data.city, position, group, 1);
-                addTagLabel((message.data.price || '') + (message.data.currency || ''), position, group, 2);
-                addTagLabel(message.data.address, position, group, 3);
+//                addTagLabel(message.data.city, position, group, 1);
+                if(message.data.price)
+                    addTagLabel('￥'+(message.data.price || '') , position, group, 3);
+//                addTagLabel(message.data.address, position, group, 3);
 
                 canvasFab.add(circle);
                 canvasFab.add(group);
 
-                tags[circle.id] = {circle: circle, group: group};
+                tags[message.data.index] = {circle: circle, group: group};
                 //var textFab = new fabric.Text(message.data.name, {left: message.data.position.left, top: message.data.position.top, selectable:false});
                 //canvasFab.add(textFab);
+            } else if (message.type === "removeTag"){
+                canvasFab.remove(tags[message.data.index].circle);
+                canvasFab.remove(tags[message.data.index].group);
             }
-        }
 
-        WebViewBridge.send("hello from webview");
+        });
+
     }, 500);
-    //
-    //
-    //        window.location="https://www.baidu.com/s?wd=" + window.WebViewBridge;
-    //        alert(window.WebViewBridge);
 </script>
 </body>
 </html>`;
