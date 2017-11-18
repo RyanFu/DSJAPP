@@ -316,7 +316,7 @@ class PhotoEditPage extends Component {
         tagData.name = tagData.title;
         this.state.currentTag.category && (tagData.category = this.state.currentTag.category.id);
         this.state.currentTag.city && (tagData.city = this.state.currentTag.city.id);
-
+        tagData.index = tags.length;
         let data = clone(tagData);
 
         this.state.currentTag.category && (data.category = this.state.currentTag.category.title);
@@ -326,6 +326,7 @@ class PhotoEditPage extends Component {
             toast('请输入商品名称');
             return;
         }
+
         tags.push(tagData);
         webviewbridge.postMessage(JSON.stringify({type: 'addTag', data: data}));
 
@@ -413,6 +414,9 @@ class PhotoEditPage extends Component {
                             component: PostNotePage
                         })
                     }
+                    break;
+                case "showAddedTag":
+                    this.setState({tagOverlayVisible: true, currentTag: this.state.tags[message.id]});
                     break;
                 case 'toSvg':
                     console.log(message.imageData)
