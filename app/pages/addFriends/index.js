@@ -132,7 +132,7 @@ class Friends extends React.Component {
                                                             contact.userId = list.userId || 0;
                                                             if (list.userId > 0)
                                                                 contact.hasRegistered = true;
-                                                            if (list.isFollowing)
+                                                            if (list.isFollowedBySessionUser)
                                                                 contact.hasBeFollowed = true;
                                                         });
                                                     } catch (error) {
@@ -154,7 +154,9 @@ class Friends extends React.Component {
                         });
                     });
             }).then((res)=> {
-                the.setState({dataSource: the.ds.cloneWithRows(res)});
+            res = _.sortBy(res, function(o) { return o.hasRegistered == true; });
+            _.reverse(res);
+            the.setState({dataSource: the.ds.cloneWithRows(res)});
                 the.setState({contacts: res});
             });
     }
