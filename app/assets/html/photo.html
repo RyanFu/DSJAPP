@@ -427,10 +427,13 @@
                 //group.setOriginX(e.offsetX);
                 //group.setOriginY(e.offsetY);
 
+                if(message.data.name.length > 10){
+                    message.data.name = message.data.name.substring(0,12) + '...';
+                }
                 addTagLabel((message.data.brand || '') + (message.data.name || ''), position, group, 0);
-                addTagLabel(message.data.city, position, group, 1);
-                addTagLabel((message.data.price || '') + (message.data.currency || ''), position, group, 2);
-                addTagLabel(message.data.address, position, group, 3);
+//                addTagLabel(message.data.city, position, group, 1);
+                addTagLabel('￥'+(message.data.price || '') + (message.data.currency || ''), position, group, 3);
+//                addTagLabel(message.data.address, position, group, 3);
 
                 canvasFab.add(circle);
                 canvasFab.add(group);

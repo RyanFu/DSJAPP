@@ -60,6 +60,7 @@ import ChannelTabBar from '../../components/channelTabBar';
 import Webview from '../../components/webview';
 
 import _ from 'lodash';
+import {toast} from "../../utils/common";
 let WebViewBridge = WebView;
 let clone = require('lodash/clone');
 
@@ -321,8 +322,10 @@ class PhotoEditPage extends Component {
         this.state.currentTag.category && (data.category = this.state.currentTag.category.title);
         this.state.currentTag.city && (data.city = this.state.currentTag.city.title);
 
-        console.log(data);
-
+        if(!tagData.title || tagData.title == ''){
+            toast('请输入商品名称');
+            return;
+        }
         tags.push(tagData);
         webviewbridge.postMessage(JSON.stringify({type: 'addTag', data: data}));
 
