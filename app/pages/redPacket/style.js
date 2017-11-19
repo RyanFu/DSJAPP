@@ -172,6 +172,34 @@ const styles = StyleSheet.create({
     },
     recentView: {
         marginTop: 10
+    },
+    syncShadow: {
+        marginTop: 2,
+        marginBottom: 0,
+        width: width / 3,
+        backgroundColor: 'rgba(255,255,255,.95)',
+        position: 'absolute',
+        height: width/3 + 38
+    },
+    syncShadowBG: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    syncShadowCircle: {
+        width: width/5,
+        height: width/5,
+        borderRadius: width/10,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    syncShadowText: {
+        color: '#fc7d30',
+        fontSize: 10
     }
 });
 
