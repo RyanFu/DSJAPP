@@ -161,6 +161,9 @@ class RedPacket extends React.Component {
             };
             dispatch(fetchRecentBuy(params)).then(()=> {
                 const copy = _.cloneDeep(this.props.recent.recentBuy);
+                _.each(copy, (v, k)=>{
+                   copy[k].tkCommFee = v.tkCommFee/100
+                });
                 the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
             });
         });
@@ -286,7 +289,6 @@ class RedPacket extends React.Component {
         let dataSource = this.state.buySource;
         if (type === 'view'){
             dataSource = this.state.viewSource;
-
         }
         return (
             <ListView
