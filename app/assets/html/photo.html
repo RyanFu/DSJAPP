@@ -12,20 +12,26 @@
 <body style="margin: 0;padding:0;border:0px solid #f00;background:#000;">
 <!--<div style="overflow:hidden; height:300px;">-->
 <div id="cFrame"
-     style="display:-webkit-flex;display:flex;align-items:center;justify-content:center;height:400px;width:100%;">
-    <canvas id="c" style="margin:0;padding:0;"></canvas>
+     style="clear:both; position:relative;height:400px;width:100%;">
+    <canvas id="c" class="canvasA" style="position: absolute;"></canvas>
 </div>
 <div>
     <image id="image-origin" style="display:none;"/>
 </div>
 <!--</div>-->
 <script type="application/javascript">
+    var wWidth = document.body.clientWidth;
+    var wHeight = wHeight;
+    var WHper = wWidth/wHeight;
     var maxHeight = null;
     var deviceWindow = null;
     var displaySize = null;
     var originImg = null;
     var currentImg = null;
     var intervalId = setInterval(function () {
+        document.getElementById('cFrame').style.height = wHeight+'px';
+        document.getElementById('c').style.height = wHeight+'px';
+
         if (!window.postMessage) {
             return;
         }
@@ -383,7 +389,8 @@
                     window.postMessage(JSON.stringify({type: "imageUpdated"}));
                 });
                 if (message.data) {
-                    maxHeight = message.window.height - 280 + 20;
+//                    maxHeight = message.window.height - 280 + 20;
+                    maxHeight = wHeight;
                     displaySize = {
                         width: message.image.width,
                         height: message.image.height
@@ -396,12 +403,20 @@
                     if (message.image.height > maxHeight) {
                         displaySize.height = maxHeight;
                         displaySize.width = (maxHeight / message.image.height * message.image.width);
+
                     }
 
                     if (displaySize.width > message.window.width) {
                         displaySize.height = (message.window.width / displaySize.width * displaySize.height);
                         displaySize.width = message.window.width;
+
                     }
+                    document.getElementById('c').style.top = wHeight/2+'px';
+                    document.getElementById('c').style.left = wWidth/2+'px';
+                    document.getElementById('c').style.height = displaySize.height+'px';
+                    document.getElementById('c').style.width = displaySize.width+'px';
+                    document.getElementById('c').style.marginTop =  '-'+(displaySize.height/2)+'px';
+                    document.getElementById('c').style.marginLeft =  '-'+(displaySize.width/2)+'px';
 
                     canvasFab.setDimensions(displaySize, {cssOnly: true});
                     canvasFab.setDimensions({

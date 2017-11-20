@@ -499,6 +499,8 @@ class PhotoEditPage extends Component {
 
     componentDidMount() {
         const the = this;
+        const {height, width} = Dimensions.get('window');
+        const { webviewbridge } = this.refs;
         _.each(this.state.stickers.myStickers, (v, k)=> {
             this.state.stickers.myStickers[k].added = false;
         });
@@ -514,6 +516,8 @@ class PhotoEditPage extends Component {
             the.setState({currentTag: Object.assign({}, the.state.currentTag,  {url: val.url})});
 
         });
+
+        webviewbridge.injectJavaScript(`wHeight=`+(height-260)+`;`);
     }
 
     _delCurrentTag() {
@@ -561,7 +565,8 @@ class PhotoEditPage extends Component {
                                            allowUniversalAccessFromFileURLs={true}
                                            domStorageEnabled={true}
                                            scalesPageToFit={true}
-                                           source={{html: photoHtmlIos}}>
+                                           // source={{html: photoHtmlIos}}>
+                                           source={photoHtmlAndroid}>
                             </WebViewBridge>
                     }
 
