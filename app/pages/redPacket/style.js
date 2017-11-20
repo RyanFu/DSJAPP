@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         //marginBottom: 10,
         padding: 10,
-        paddingVertical: 15
+        paddingVertical: 15,
+        paddingBottom: 5
     },
     search: {
         height: 100,
@@ -113,7 +114,8 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         alignItems: 'center',
         marginLeft: 10,
-        marginBottom: 10
+        marginBottom: 5,
+        marginTop: 5
     },
     historyItemFont: {
         color: '#000',

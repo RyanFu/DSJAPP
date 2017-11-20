@@ -223,7 +223,7 @@ class RedPacket extends React.Component {
                         </View>
                         <Text style={[styles.historyTitle,styles.baseText]}>搜索历史：</Text>
                     </View>
-                    <View style={[{marginTop: 10,flexDirection: 'row',flexWrap: 'wrap',alignSelf: 'flex-start'}]}>
+                    <View style={[{marginTop: 5,flexDirection: 'row',flexWrap: 'wrap',alignSelf: 'flex-start'}]}>
                         {
                             rows
                         }
@@ -309,7 +309,7 @@ class RedPacket extends React.Component {
         return (
             <TouchableOpacity onPress={() => this._jumpToTaobaoPage(rowData.itemId.toString())}
                               underlayColor="transparent" activeOpacity={0.5}>
-                <View>
+                <View style={styles.sysRowC} >
                     <View style={styles.sysRow}>
                         <PrefetchImage
                             imageUri={rowData.itemPicUrl}
@@ -443,7 +443,7 @@ class RedPacket extends React.Component {
 
 
                             <View
-                                style={[styles.block,styles.recent,{height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 460: 230}]}>
+                                style={[styles.block,styles.recent,{height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490: 245}]}>
                                 {
                                     this.props.recent.recentBuy.length > 0 ?
                                         <View style={{marginBottom: 10}}>
