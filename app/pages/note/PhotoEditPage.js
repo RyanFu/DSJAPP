@@ -825,7 +825,7 @@ class PhotoEditPage extends Component {
                             <FramedTextInput placeholder="名称" placeholderTextColor='#9b9b9b' clearTextOnFocus={false}
                                              contentContainerStyle={styles.framedTextInput}
                                              style={[styles.textInput, {color: '#000'}]}
-                                             onChangeText={text => this.state.currentTag.name = text}
+                                             onChangeText={text => this.state.currentTag.title = text}
                                              defaultValue={this.state.currentTag.title}
                                              onSubmitEditing={(event) => {this.state.currentTag.title = event.nativeEvent.text;}}/>
                         </View>
