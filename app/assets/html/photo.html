@@ -444,8 +444,8 @@
                 var circle = new fabric.Circle({
                     radius: radius,
                     fill: "#fff",
-                    left: (position.offsetX - radius),
-                    top: (position.offsetY - radius),
+                    left: (position.offsetX  )*scale - radius,
+                    top: (position.offsetY  )*scale - radius,
                     selectable: true,
                     evented: true,
                     hasControls: false,
@@ -462,10 +462,10 @@
                 if(message.data.name.length > 10){
                     message.data.name = message.data.name.substring(0,12) + '...';
                 }
-                addTagLabel((message.data.brand || '') + (message.data.name || ''), position, group, 0);
+                addTagLabel((message.data.brand || '') + (message.data.name || ''), {offsetX: (position.offsetX )*scale ,offsetY: (position.offsetY )*scale}, group, 0);
 //                addTagLabel(message.data.city, position, group, 1);
                 if(message.data.price)
-                    addTagLabel('￥'+(message.data.price || '') , position, group, 3);
+                    addTagLabel('￥'+(message.data.price || '') , {offsetX: (position.offsetX )*scale ,offsetY: (position.offsetY )*scale}, group, 3);
 //                addTagLabel(message.data.address, position, group, 3);
 
                 canvasFab.add(circle);
