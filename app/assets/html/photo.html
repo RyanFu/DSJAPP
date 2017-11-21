@@ -12,8 +12,8 @@
 <body style="margin: 0;padding:0;border:0px solid #f00;background:#000;">
 <!--<div style="overflow:hidden; height:300px;">-->
 <div id="cFrame"
-     style="clear:both; position:relative;height:400px;width:100%;">
-    <canvas id="c" class="canvasA" style="position: absolute;"></canvas>
+     style="display: table-cell;text-align: center;vertical-align: middle;">
+    <canvas id="c" class="canvasA" style="display: inline-block;"/>
 </div>
 <div>
     <image id="image-origin" style="display:none;"/>
@@ -30,7 +30,8 @@
     var currentImg = null;
     var intervalId = setInterval(function () {
         document.getElementById('cFrame').style.height = wHeight+'px';
-        document.getElementById('c').style.height = wHeight+'px';
+        document.getElementById('cFrame').style.width = wWidth+'px';
+
 
         if (!window.postMessage) {
             return;
@@ -44,8 +45,13 @@
         var canvasFab = new fabric.Canvas('c', {
             isDrawingMode: false,
             renderOnAddRemove: true,
-            controlsAboveOverlay: false
+            controlsAboveOverlay: false,
+            width: wWidth,
+            height: wHeight
         });
+//        document.getElementsByClassName('canvas-container')[0].style.with = wWidth+'px';
+//        document.getElementsByClassName('canvas-container')[0].style.height = wHeight+'px';
+
         var canvasParent = canvas.parentElement;
         var imgFab = null;
         var scale = 1;
@@ -411,12 +417,6 @@
                         displaySize.width = message.window.width;
 
                     }
-                    document.getElementById('c').style.top = wHeight/2+'px';
-                    document.getElementById('c').style.left = wWidth/2+'px';
-                    document.getElementById('c').style.height = displaySize.height+'px';
-                    document.getElementById('c').style.width = displaySize.width+'px';
-                    document.getElementById('c').style.marginTop =  '-'+(displaySize.height/2)+'px';
-                    document.getElementById('c').style.marginLeft =  '-'+(displaySize.width/2)+'px';
 
                     canvasFab.setDimensions(displaySize, {cssOnly: true});
                     canvasFab.setDimensions({
@@ -484,4 +484,10 @@
     }, 500);
 </script>
 </body>
+<style>
+    .canvas-container{
+        display: inline-block;
+        position: relative !important;
+    }
+</style>
 </html>
