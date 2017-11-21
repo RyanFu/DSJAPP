@@ -312,6 +312,14 @@ class PhotoEditPage extends Component {
     _onAddTag() {
         const { webviewbridge } = this.refs;
         let {tags} = this.state;
+        const the = this;
+        //remove prev tag
+        if(this.state.currentTag.index || this.state.currentTag.index == 0){
+            webviewbridge.postMessage(JSON.stringify({type: 'removeTag', data: this.state.currentTag}));
+            _.remove(this.state.tags, function(n,k) {
+                return k.index  == the.state.currentTag.index;
+            });
+        }
 
         let tagData = {name, currency, brand, price, address, x, y,title,url,urlCategory,itemId,imageUrl} = this.state.currentTag;
         tagData.name = tagData.title;
