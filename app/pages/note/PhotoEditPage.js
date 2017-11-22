@@ -573,8 +573,8 @@ class PhotoEditPage extends Component {
                                            allowUniversalAccessFromFileURLs={true}
                                            domStorageEnabled={true}
                                            scalesPageToFit={true}
-                                           // source={{html: photoHtmlIos}}>
-                                           source={photoHtmlAndroid}>
+                                           source={{html: photoHtmlIos}}>
+                                           // source={photoHtmlAndroid}>
                             </WebViewBridge>
                     }
 

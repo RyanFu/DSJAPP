@@ -12,20 +12,27 @@ const photo = `<html lang="en">
 <body style="margin: 0;padding:0;border:0px solid #f00;background:#000;">
 <!--<div style="overflow:hidden; height:300px;">-->
 <div id="cFrame"
-     style="display:-webkit-flex;display:flex;align-items:center;justify-content:center;height:400px;width:100%;">
-    <canvas id="c" style="margin:0;padding:0;"></canvas>
+     style="display: table-cell;text-align: center;vertical-align: middle;">
+    <canvas id="c" class="canvasA" style="display: inline-block;"/>
 </div>
 <div>
     <image id="image-origin" style="display:none;"/>
 </div>
 <!--</div>-->
 <script type="application/javascript">
+    var wWidth = document.body.clientWidth;
+    var wHeight = wHeight;
+    var WHper = wWidth/wHeight;
     var maxHeight = null;
     var deviceWindow = null;
     var displaySize = null;
     var originImg = null;
     var currentImg = null;
     var intervalId = setInterval(function () {
+        document.getElementById('cFrame').style.height = wHeight+'px';
+        document.getElementById('cFrame').style.width = wWidth+'px';
+
+
         if (!window.postMessage) {
             return;
         }
@@ -38,8 +45,13 @@ const photo = `<html lang="en">
         var canvasFab = new fabric.Canvas('c', {
             isDrawingMode: false,
             renderOnAddRemove: true,
-            controlsAboveOverlay: false
+            controlsAboveOverlay: false,
+            width: wWidth,
+            height: wHeight
         });
+//        document.getElementsByClassName('canvas-container')[0].style.with = wWidth+'px';
+//        document.getElementsByClassName('canvas-container')[0].style.height = wHeight+'px';
+
         var canvasParent = canvas.parentElement;
         var imgFab = null;
         var scale = 1;
@@ -383,7 +395,8 @@ const photo = `<html lang="en">
                     window.postMessage(JSON.stringify({type: "imageUpdated"}));
                 });
                 if (message.data) {
-                    maxHeight = message.window.height - 280 + 20;
+//                    maxHeight = message.window.height - 280 + 20;
+                    maxHeight = wHeight;
                     displaySize = {
                         width: message.image.width,
                         height: message.image.height
@@ -396,11 +409,13 @@ const photo = `<html lang="en">
                     if (message.image.height > maxHeight) {
                         displaySize.height = maxHeight;
                         displaySize.width = (maxHeight / message.image.height * message.image.width);
+
                     }
 
                     if (displaySize.width > message.window.width) {
                         displaySize.height = (message.window.width / displaySize.width * displaySize.height);
                         displaySize.width = message.window.width;
+
                     }
 
                     canvasFab.setDimensions(displaySize, {cssOnly: true});
@@ -429,8 +444,8 @@ const photo = `<html lang="en">
                 var circle = new fabric.Circle({
                     radius: radius,
                     fill: "#fff",
-                    left: (position.offsetX - radius),
-                    top: (position.offsetY - radius),
+                    left: (position.offsetX  )*scale - radius,
+                    top: (position.offsetY  )*scale - radius,
                     selectable: true,
                     evented: true,
                     hasControls: false,
@@ -447,10 +462,10 @@ const photo = `<html lang="en">
                 if(message.data.name.length > 10){
                     message.data.name = message.data.name.substring(0,12) + '...';
                 }
-                addTagLabel((message.data.brand || '') + (message.data.name || ''), position, group, 0);
+                addTagLabel((message.data.brand || '') + (message.data.name || ''), {offsetX: (position.offsetX )*scale ,offsetY: (position.offsetY )*scale}, group, 0);
 //                addTagLabel(message.data.city, position, group, 1);
                 if(message.data.price)
-                    addTagLabel('￥'+(message.data.price || '') , position, group, 3);
+                    addTagLabel('￥'+(message.data.price || '') , {offsetX: (position.offsetX )*scale ,offsetY: (position.offsetY )*scale}, group, 3);
 //                addTagLabel(message.data.address, position, group, 3);
 
                 canvasFab.add(circle);
@@ -469,6 +484,12 @@ const photo = `<html lang="en">
     }, 500);
 </script>
 </body>
+<style>
+    .canvas-container{
+        display: inline-block;
+        position: relative !important;
+    }
+</style>
 </html>`;
 
 export default photo;
