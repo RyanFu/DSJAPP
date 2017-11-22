@@ -15,7 +15,8 @@ import {
     RecyclerViewBackedScrollView,
     DeviceEventEmitter,
     Modal,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Dimensions
 } from 'react-native';
 
 import Button from '../../../app/components/button/Button';
@@ -51,6 +52,7 @@ var THUMB_URLS = [
     require('../../assets/test/test.png'),
     require('../../assets/test/test1.png')
 ];
+var {height, width} = Dimensions.get('window');
 
 
 const womanImg = require('../../assets/personal/female.png');
@@ -253,7 +255,9 @@ export default class MyContent extends Component {
                 title: rowData.title,
                 createTime: timeFormat(rowData.publishedTime, 'yyyy年MM月dd日 hh:mm:ss'),
                 image: (rowData.image ? rowData.image : images.DEFAULT_IMAGE),
-                noteId: rowData.noteId
+                noteId: rowData.noteId,
+                imageHeight: rowData.imageHeight,
+                imageWidth: rowData.imageWidth
             },
             summary: {
                 zanNum: rowData.likeCount,
@@ -289,7 +293,7 @@ export default class MyContent extends Component {
                     </View>
 
                     <View style={styles.noteThumbBox}>
-                        <Image style={styles.noteThumb} source={{uri: data.detail.image, width: 191, height: 191}}
+                        <Image style={styles.noteThumb} source={{uri: data.detail.image, width: width/5*3, height: data.detail.imageHeight/data.detail.imageWidth*(width/5*3)}}
                                resizeMode={Image.resizeMode.contain}/>
                     </View>
 
@@ -330,7 +334,7 @@ export default class MyContent extends Component {
     _deleteNote(noteId) {
         const the = this;
         const {navigator, dispatch} = this.props;
-        const noteId = noteId ? noteId : this.state.selectedNote;
+        noteId = noteId ? noteId : this.state.selectedNote;
         if (noteId)
             Token.getToken(navigator).then((token) => {
                     if (token) {

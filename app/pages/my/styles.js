@@ -107,8 +107,6 @@ export default styles = StyleSheet.create({
         marginTop: 10,
     },
     noteThumb: {
-        height: 191,
-        width: 191,
         overflow:'hidden'
     },
     noteTitle: {
