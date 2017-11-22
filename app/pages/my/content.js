@@ -37,6 +37,7 @@ import Spinner from 'react-native-spinkit';
 import FollowingPage from './following';
 import FollowerPage from './follower';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import DetailPage from '../../pages/detail';
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -66,7 +67,7 @@ export default class MyContent extends Component {
         super(props);
 
         this._updatePortrait = this._updatePortrait.bind(this);
-
+        this._jumpToDetailPage = this._jumpToDetailPage.bind(this);
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2,
             sectionHeaderHasChanged: (s1, s2) => s1 != s2
@@ -292,10 +293,13 @@ export default class MyContent extends Component {
                         </View>
                     </View>
 
-                    <View style={styles.noteThumbBox}>
-                        <Image style={styles.noteThumb} source={{uri: data.detail.image, width: width/5*3, height: data.detail.imageHeight/data.detail.imageWidth*(width/5*3)}}
-                               resizeMode={Image.resizeMode.contain}/>
-                    </View>
+                    <TouchableOpacity  onPress={() => this._jumpToDetailPage({noteId:data.detail.noteId})}>
+                        <View style={styles.noteThumbBox}>
+                            <Image style={styles.noteThumb} source={{uri: data.detail.image, width: width/5*3, height: data.detail.imageHeight/data.detail.imageWidth*(width/5*3)}}
+                                   resizeMode={Image.resizeMode.contain}/>
+                        </View>
+                    </TouchableOpacity>
+
 
                     <Text style={styles.noteTitle}>{data.detail.title}</Text>
                     <View style={styles.noteAssets}>
@@ -380,6 +384,18 @@ export default class MyContent extends Component {
                 name: 'FollowerPage',
                 sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
                 userId: userId
+            });
+        });
+    }
+
+    _jumpToDetailPage(note){
+        const { navigator } = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: DetailPage,
+                name: 'DetailPage',
+                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+                note
             });
         });
     }

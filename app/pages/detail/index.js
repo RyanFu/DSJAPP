@@ -124,8 +124,10 @@ class Detail extends React.Component {
     }
 
     componentDidMount() {
-        const { dispatch, route } = this.props;
+        const { dispatch, route, detail } = this.props;
         let the = this;
+        if(!detail.note[route.note.noteId])
+            dispatch(fetchDetail(route.note.noteId));
         dispatch(fetchCommentsList(route.note.noteId));
         dispatch(fetchRecommendList(route.note.noteId)).then(()=> {
             let taobaoList = the.props.recommend.recommendList.taobao ? the.props.recommend.recommendList.taobao : [];
