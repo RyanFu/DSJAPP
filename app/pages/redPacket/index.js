@@ -307,7 +307,7 @@ class RedPacket extends React.Component {
         if(!rowData)
             return null
         return (
-            <TouchableOpacity onPress={() => this._jumpToTaobaoPage(rowData.itemId.toString())}
+            <TouchableOpacity onPress={() => this._jumpToTaobaoPage(rowData.itemId.toString(), rowData)}
                               underlayColor="transparent" activeOpacity={0.5}>
                 <View style={styles.sysRowC} >
                     <View style={styles.sysRow}>
@@ -346,7 +346,35 @@ class RedPacket extends React.Component {
         )
     }
 
-    _jumpToTaobaoPage(itemId) {
+    _insertOrder(data) {
+        const { dispatch } = this.props;
+        const the = this;
+        data = JSON.stringify(data);
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                request('user/orderitems','POST',data,token)
+                    .then((res) => {
+                        if (res.resultCode === 0) {
+                            toast('购买成功');
+                            const params = {
+                                token: token
+                            };
+                            dispatch(fetchRecentBuy(params)).then(()=> {
+                                const copy = _.cloneDeep(the.props.recent.recentBuy);
+                                the.setState({buySource: the.ds.cloneWithRows(_.reverse(copy))});
+                            });
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    })
+                    .catch(() => {
+                        console.log('network error');
+                    });
+            }
+        });
+    }
+
+    _jumpToTaobaoPage(itemId, data) {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
@@ -357,6 +385,8 @@ class RedPacket extends React.Component {
                         let orders;
                         if (res) { //交易成功
                             orders = res.oders;
+                            data.orderId = orders[0];
+                            this._insertOrder(data);
                         }
                     }
                 })
