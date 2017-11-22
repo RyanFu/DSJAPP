@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     filterBox: {
         width: 100,
-        marginHorizontal: 10,
+        marginHorizontal: 6,
         marginVertical: 0,
         //backgroundColor:'#eee',
         alignItems: 'stretch',
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
 
     },
     filterImage: {
-        width: 100,
-        height: 74,
+        width: 80,
+        height: 80,
         marginVertical: 0,
         paddingVertical: 0,
         borderWidth: 2,

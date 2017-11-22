@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
 
-var closeIcon = <Icon style={{color:'#9b9b9b'}} size={16} name="close" />;
-var checkIcon = <Icon style={{color:'#9b9b9b'}} size={16} name="check" />;
+var closeIcon = <Icon style={{color:'#9b9b9b'}} size={24} name="close" />;
+var checkIcon = <Icon style={{color:'#9b9b9b'}} size={24} name="check" />;
 
 export default class ConfirmBar extends Component {
     constructor(props) {
@@ -44,11 +44,11 @@ export default class ConfirmBar extends Component {
     render() {
         return (
             <View style={styles.bar}>
-                <TouchableHighlight onPress={this._onCancelPressed}>
+                <TouchableHighlight style={styles.icon} onPress={this._onCancelPressed}>
                     {closeIcon}
                 </TouchableHighlight>
                 <Text style={styles.barTitle}>{this.state.title}</Text>
-                <TouchableHighlight onPress={this._onConfirmPressed}>
+                <TouchableHighlight style={styles.icon}  onPress={this._onConfirmPressed}>
                     {checkIcon}
                 </TouchableHighlight>
             </View>
@@ -60,12 +60,14 @@ const styles = {
     bar : {
         flexDirection: 'row',
         backgroundColor: '#ccc',
-        height: 30,
+        height: 40,
         alignItems: 'center',
         paddingHorizontal: 10
     },
     barTitle: {
         flex: 1,
         textAlign: 'center'
+    },
+    icon: {
     }
 }

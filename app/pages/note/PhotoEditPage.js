@@ -48,10 +48,10 @@ import styles from './style';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 const Navigator = deprecatedComponents.Navigator;
 
-const originImg = require('../../assets/photo/origin.png');
-const sepia2Img = require('../../assets/photo/sepia2.jpg');
-const sepiaImg = require('../../assets/photo/sepia.jpg');
-const sharpenImg = require('../../assets/photo/sharpen.jpg');
+const originImg = require('../../assets/photo/1.jpg');
+const sepia2Img = require('../../assets/photo/3.jpg');
+const sepiaImg = require('../../assets/photo/2.jpg');
+const sharpenImg = require('../../assets/photo/4.jpg');
 const photoHtmlAndroid = require('../../assets/html/photo.html');
 import photoHtmlIos from '../../assets/html/photo';
 
@@ -680,7 +680,7 @@ class PhotoEditPage extends Component {
                             >
                             <ScrollView navigator={this.props.navigator} tabLabel="滤镜库" removeClippedSubviews={false}
                                         horizontal={true} style={{flex:1}}
-                                        contentContainerStyle={{alignItems:'stretch'}}>
+                                        contentContainerStyle={{alignItems:'stretch'}} >
                                 <TouchableOpacity onPress={() => {this._applyImageFilter.call(this, 'none');}}
                                                   style={[styles.filterBox, (this.state.currentFilter == 'none' ? choseFilterStyle : null)]}>
                                     <View style={styles.filterImageFrame}>
@@ -698,7 +698,7 @@ class PhotoEditPage extends Component {
                                                style={[styles.filterImage,(this.state.currentFilter == 'sepia' ? choseFilterStyle : null)]}
                                                resizeMode="contain"/>
                                         <Text
-                                            style={[styles.baseText,{marginTop: 2},(this.state.currentFilter == 'sepia' ? {color: '#fc7d30'} : null)]}>怀旧1</Text>
+                                            style={[styles.baseText,{marginTop: 2},(this.state.currentFilter == 'sepia' ? {color: '#fc7d30'} : null)]}>勿忘我</Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => {this._applyImageFilter.call(this, 'sepia2');}}
@@ -708,7 +708,7 @@ class PhotoEditPage extends Component {
                                                style={[styles.filterImage,(this.state.currentFilter == 'sepia2' ? choseFilterStyle : null)]}
                                                resizeMode="contain"/>
                                         <Text
-                                            style={[styles.baseText,{marginTop: 2},(this.state.currentFilter == 'sepia2' ? {color: '#fc7d30'} : null)]}>怀旧2</Text>
+                                            style={[styles.baseText,{marginTop: 2},(this.state.currentFilter == 'sepia2' ? {color: '#fc7d30'} : null)]}>怀旧</Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => {this._applyImageFilter.call(this, 'sharpen');}}
