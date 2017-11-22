@@ -332,7 +332,7 @@ class RedPacket extends React.Component {
 
                     </View>
                     {
-                        rowData.state?<View style={styles.syncShadow}>
+                        rowData.state == 'UNKNOWN'?<View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
                                     <Text style={styles.syncShadowText}>订单同步中...</Text>
