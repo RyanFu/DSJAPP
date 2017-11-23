@@ -41,7 +41,8 @@ export default keyMirror({
     RECEIVE_ITEM_SEARCH_LIST: null,
     FETCH_ITEM_SEARCH_LIST: null,
     SEARCH_CONDITION_RESET: null,
-    SEARCH_CONDITION_UPDATE: null
+    SEARCH_CONDITION_UPDATE: null,
+    ADD_NOTE_TITLE_AND_CONTENT: null
 
 });
 

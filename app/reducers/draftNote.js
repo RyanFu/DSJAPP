@@ -43,6 +43,9 @@ const draftNote = function (state = initialState, action = {}) {
             state.notePhotos = []; // empty photos
             state.currentPhotoIndex = -1;
             break;
+        case Actions.ADD_NOTE_TITLE_AND_CONTENT:
+            state.noteTitleAndContent = action.content;
+            break;
         default:
             return state;
     }

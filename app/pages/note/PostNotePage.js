@@ -115,6 +115,8 @@ class PostNotePage extends Component {
         });
 
         this._statCount(this.state.title);
+        this.setState({title: this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.title : ''});
+        this.setState({content: this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.content : ''});
     }
 
     _onCancel() {
@@ -128,7 +130,7 @@ class PostNotePage extends Component {
     }
 
     _addMorePhoto() {
-        const { navigator } = this.props;
+        const { navigator, dispatch } = this.props;
 
         if (navigator) {
             navigator.push({
@@ -136,6 +138,12 @@ class PostNotePage extends Component {
                 component: SelectPhotoPage
             })
         }
+
+        const content = {
+            title: this.state.title,
+            content: this.state.content
+        };
+        dispatch({type: StoreActions.ADD_NOTE_TITLE_AND_CONTENT, content});
     }
 
     _JumpToMyPage() {
