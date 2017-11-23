@@ -36,14 +36,11 @@ class SearchItem extends React.Component {
         this.state = {
             dataSource: this.ds.cloneWithRows(this.props.search.itemList),
             showTip: false,
-            ratio: 0.7
+            ratio: this.props.ratio? this.props.ratio: 0.7
         };
     }
     componentDidMount(){
-        const the = this;
-        AsyncStorage.getItem('ratio', (error, result) => {
-            the.setState({ratio: result});
-        });
+
     }
     _renderRow(rowData:string, sectionID:number, rowID:number) {
         return (

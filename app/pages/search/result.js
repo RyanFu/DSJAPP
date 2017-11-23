@@ -10,7 +10,8 @@ import {
     DeviceEventEmitter,
     Platform,
     TouchableWithoutFeedback,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -43,7 +44,8 @@ class SearchResult extends React.Component {
             redPacket: 10,
             itemId: null,
             itemData: null,
-            callback: null
+            callback: null,
+            ratio: 0.7
         };
     }
 
@@ -70,6 +72,10 @@ class SearchResult extends React.Component {
 
         DeviceEventEmitter.addListener('filterChanged',()=>{
             the._onChangeTab();
+        });
+
+        AsyncStorage.getItem('ratio', (error, result) => {
+            the.setState({ratio: result});
         });
     }
 
@@ -189,7 +195,7 @@ class SearchResult extends React.Component {
                                             <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem ratio={this.state.ratio} itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
