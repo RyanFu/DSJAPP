@@ -11,13 +11,14 @@ import {
     Platform,
     ListView,
     Image,
-    ActivityIndicator
+    ActivityIndicator,
+    AsyncStorage
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImageButton from '../../components/toolbar/ImageButton.js';
-import {Token,request,toast} from '../../utils/common';
+import {Token,request,toast,decimals} from '../../utils/common';
 import { connect } from 'react-redux';
 var backImg = require('../../assets/upload/rg_left.png');
 import Taobao from 'react-native-taobao-baichuan-api';
@@ -34,10 +35,16 @@ class SearchItem extends React.Component {
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: this.ds.cloneWithRows(this.props.search.itemList),
-            showTip: false
+            showTip: false,
+            ratio: 0.7
         };
     }
-
+    componentDidMount(){
+        const the = this;
+        AsyncStorage.getItem('ratio', (error, result) => {
+            the.setState({ratio: result});
+        });
+    }
     _renderRow(rowData:string, sectionID:number, rowID:number) {
         return (
             <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}
@@ -65,7 +72,7 @@ class SearchItem extends React.Component {
                                         source={require('../../assets/footer/red.png')}
                                         />
                                     <Text style={[styles.baseText,styles.dimText,{marginLeft:2,color: '#fc7d30',}]}>
-                                        ￥{rowData.tkCommFee}
+                                        ￥{decimals(rowData.tkCommFee*this.state.ratio, 2)}
                                     </Text>
                                 </View>
                                 <View style={{flexDirection: 'row',alignItems: 'center'}}>

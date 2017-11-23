@@ -260,3 +260,8 @@ export function removeAllStorage() {
 
    });
 }
+
+export function decimals(num, pos) {
+    const pow = Math.pow(10,pos?pos:2);
+    return Math.floor(num*pow)/pow;
+}

@@ -21,7 +21,7 @@ import {
 import styles from './style';
 import Toolbar from '../../components/toolbar';
 import { request,toast } from '../../utils/common';
-import { Token } from '../../utils/common';
+import { Token, decimals } from '../../utils/common';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
@@ -56,7 +56,8 @@ class RedPacket extends React.Component {
             itemAutoForList: this.ds.cloneWithRows([]),
             buySource: this.ds.cloneWithRows([]),
             viewSource: this.ds.cloneWithRows([]),
-            bounce: new Animated.Value(0)
+            bounce: new Animated.Value(0),
+            ratio: 0.7
         };
     }
 
@@ -147,6 +148,9 @@ class RedPacket extends React.Component {
                 };
                 dispatch(fetchRecentBuy(params)).then(()=> {
                     const copy = _.cloneDeep(this.props.recent.recentBuy);
+                    _.each(copy, (v, k)=>{
+                        copy[k].tkCommFee = v.tkCommFee/100
+                    });
                     the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
                 });
             });
@@ -180,6 +184,20 @@ class RedPacket extends React.Component {
             ).start();
             tick++;
         }, 2000);
+
+
+        request('/rebate/ratio', 'GET')
+            .then((res) => {
+                if(res && res.resultValues)
+                AsyncStorage.setItem('ratio', res.resultValues);
+                the.setState({ratio: res.resultValues});
+            }, function (error) {
+                console.log(error);
+            })
+            .catch(() => {
+                console.log('network error');
+            });
+
     }
 
     _deleteSearchHistory() {
@@ -322,7 +340,7 @@ class RedPacket extends React.Component {
                         <View style={styles.recFlowPrice}>
                             <Animated.Text
                                 style={[styles.baseText,styles.recFlowText,{marginTop: this.state.bounce}]}>￥{rowData.itemPrice}</Animated.Text>
-                            <Text style={[styles.baseText,styles.recFlowText]}>红包：￥{rowData.tkCommFee}</Text>
+                            <Text style={[styles.baseText,styles.recFlowText]}>红包：￥{decimals(rowData.tkCommFee*this.state.ratio, 2)}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText,{paddingBottom:0,minHeight: 38}]} lineBreakMode={'tail'} numberOfLines={2}>
