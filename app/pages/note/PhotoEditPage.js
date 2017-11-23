@@ -222,7 +222,7 @@ class PhotoEditPage extends Component {
         const { navigator, dispatch } = this.props;
         const { webviewbridge } = this.refs;
         this.setState({next: true});
-
+        this._onBlur();
         dispatch({type: StoreActions.ADD_TAGS, tags: this.state.tags.slice()});
 
         webviewbridge.postMessage(JSON.stringify({type: 'continue'}));
@@ -536,6 +536,11 @@ class PhotoEditPage extends Component {
             return k.index  == the.state.currentTag.index;
         });
         this.setState({showRemoveTagButton: false, currentTag: {x: the.state.currentTag.x, y: the.state.currentTag.y}})
+    }
+
+    _onBlur(){
+        const { webviewbridge } = this.refs;
+        webviewbridge.postMessage(JSON.stringify({type: 'blur'}));
     }
 
     render() {

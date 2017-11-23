@@ -477,6 +477,8 @@
             } else if (message.type === "removeTag"){
                 canvasFab.remove(tags[message.data.index].circle);
                 canvasFab.remove(tags[message.data.index].group);
+            } else if (message.type === "blur"){
+                canvasFab.discardActiveObject();
             }
 
         });
