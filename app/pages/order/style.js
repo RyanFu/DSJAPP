@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         height: 36,
         backgroundColor: '#fc7d30',
         margin: 30,
-        marginTop: 40,
+        marginTop: 20,
         borderRadius: 4,
         alignItems: 'center',
     },
@@ -61,6 +61,24 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         justifyContent: 'space-between',
         height: 60
+    },
+    totalCash: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 5,
+        marginHorizontal: 10,
+        height: 35,
+        alignItems: 'center'
+    },
+    input: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: '#fff',
+        marginHorizontal: 10,
+    },
+    inputText: {
+        fontSize: 13,
+        justifyContent: 'flex-end'
     }
 });
 

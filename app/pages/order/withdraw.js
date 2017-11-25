@@ -22,7 +22,8 @@ class Withdraw extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            availableRebate: 0
+            availableRebate: 0,
+            cash: '0'
         };
     }
 
@@ -38,6 +39,12 @@ class Withdraw extends React.Component {
     _submit() {
     }
 
+    _changeCash(num) {
+        if(num > this.state.availableRebate)
+            this.setState({cash: this.state.availableRebate.toString()});
+        else
+            this.setState({cash: num});
+    }
 
     render() {
         return (
@@ -47,17 +54,19 @@ class Withdraw extends React.Component {
                     navigator={this.props.navigator}
                     hideDrop={true}
                 />
-                <View>
-                     <Text>可提现金额: ￥{this.state.availableRebate}</Text>
+                <View style={styles.totalCash}>
+                    <Text style={styles.baseText}>可提现金额:</Text>
+                    <Text style={styles.baseText}> ￥{this.state.availableRebate}</Text>
                 </View>
-                <View style={styles.phone}>
+                <View style={styles.input}>
                     <TextInput
-                        style={[styles.phoneText, Platform.OS === 'android' ? null : {height: 26}]}
-                        placeholder={''}
+                        style={[styles.inputText, Platform.OS === 'android' ? null : {height: 26}]}
                         placeholderTextColor='#bebebe'
                         underlineColorAndroid='transparent'
                         returnKeyType='done'
-                        onChangeText={(text) => {this.state.phone=text }}
+                        value={this.state.cash}
+                        onChangeText={(num) => this._changeCash(num) }
+                        keyboardType='numeric'
                     />
                 </View>
                 <TouchableOpacity style={styles.button} onPress={()=>this._submit()}>
