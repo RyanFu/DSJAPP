@@ -14,7 +14,8 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Image,
-    RecyclerViewBackedScrollView
+    RecyclerViewBackedScrollView,
+    DeviceEventEmitter
 } from 'react-native';
 
 import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
@@ -65,18 +66,24 @@ class MyMessagesPage extends Component {
 
     componentDidMount() {
         // refresh data from server
-        InteractionManager.runAfterInteractions(() => {
-            this._getMessagesFromServer();
+
+
+        const {dispatch} = this.props;
+        DeviceEventEmitter.addListener('getMessage', ()=> {
+            Token.getToken(navigator).then((token) => {
+                if (token) {
+                    const params = {
+                        token: token
+                    };
+                    dispatch(fetchMessageNum(params))
+                        .then(()=>{
+                            InteractionManager.runAfterInteractions(() => {
+                                this._getMessagesFromServer();
+                            });
+                        })
+                }
+            });
         });
-        //const {dispatch} = this.props;
-        //Token.getToken(navigator).then((token) => {
-        //    if (token) {
-        //        const params = {
-        //            token: token
-        //        };
-        //        dispatch(fetchMessageNum(params))
-        //    }
-        //});
     }
 
     async _loadInitialState() {

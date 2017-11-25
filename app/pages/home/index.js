@@ -177,14 +177,15 @@ class Home extends React.Component {
         const the = this;
         //fetch message
         if (data.i == 3) {
-            Token.getToken(navigator).then((token) => {
-                if (token) {
-                    const params = {
-                        token: token
-                    };
-                    dispatch(fetchMessageNum(params))
-                }
-            });
+            DeviceEventEmitter.emit('getMessage', true);
+            // Token.getToken(navigator).then((token) => {
+            //     if (token) {
+            //         const params = {
+            //             token: token
+            //         };
+            //         dispatch(fetchMessageNum(params))
+            //     }
+            // });
         }
 
     }
