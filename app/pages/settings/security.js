@@ -7,7 +7,8 @@ import {
     Text,
     TouchableHighlight,
     Platform,
-    Alert
+    Alert,
+    AsyncStorage
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -15,6 +16,8 @@ import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
 import { Token, toast, request } from '../../utils/common';
 import _ from 'lodash';
 import * as WechatAPI from 'react-native-wx';
+import { connect } from 'react-redux';
+import StorageKeys from '../../constants/StorageKeys';
 
 var chevronRightIcon = <Icon style={[styles.messageLinkIcon]} size={16} name="angle-right"/>;
 
@@ -26,7 +29,8 @@ class SecurityPage extends React.Component {
             'WEIBO': {},
             'QQ': {},
             'TAOBAO': {},
-            'ZHIFUBAO': {}
+            'ZHIFUBAO': {},
+            userId: 13585979772
         }
     }
 
@@ -66,6 +70,15 @@ class SecurityPage extends React.Component {
         );
     }
 
+    componentDidMount() {
+        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY,(err,result)=>{
+            if(!err){
+                result = JSON.parse(result);
+                this.setState({userId: result.userId});
+
+            }
+        });
+    }
     _unbind(channel) {
         const the = this;
         if(channel !== 'WEIXIN')
@@ -185,7 +198,7 @@ class SecurityPage extends React.Component {
                 <TouchableHighlight>
                     <View style={styles.row}>
                         <Text style={styles.text}>手机号</Text>
-                        <Text style={styles.phoneText}>13585979772</Text>
+                        <Text style={styles.phoneText}>{this.state.userId}</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
