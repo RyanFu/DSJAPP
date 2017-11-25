@@ -26,27 +26,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 5
     },
-    orderText: {
-        textAlignVertical: 'top',
-        height: 120,
-        fontSize: 14,
-        borderWidth: 0,
-        paddingVertical: 10
-    },
-    shortcut:{
-        flexDirection: 'row',
-        height: 35,
-        borderColor: "#e1e1e1",
-        backgroundColor: '#fff',
-        borderTopWidth: 1,
-        borderBottomWidth: 1
-    },
-    at: {
-        color: "#9b9b9b",
-        fontSize: 25,
-        marginLeft: 20,
-        lineHeight: 30
-    },
     button: {
         height: 36,
         backgroundColor: '#fc7d30',
@@ -60,31 +39,29 @@ const styles = StyleSheet.create({
         lineHeight: 34,
         color: '#fff'
     },
-    emoticon:{
-        marginLeft: 20,
-        justifyContent: 'center'
-    },
-    starContainer: {
+    orderRow: {
+        flexDirection: 'row',
         backgroundColor: '#fff',
-        marginTop: 10,
-        height: 120,
+        justifyContent: 'center',
         alignItems: 'flex-start',
-        paddingLeft: 10,
-        justifyContent: 'flex-start',
-        flexDirection: 'column',
-        paddingVertical: 10,
-    },
-    title: {
-        justifyContent: 'flex-start',
+        width: width,
+        height: 70,
+        borderColor: 'rgba(155,155,155,0.1)',
         borderBottomWidth: 1,
-        borderColor: '#efefef',
-        width: width -20,
-        paddingBottom: 5,
-        marginBottom: 5
+        paddingVertical: 5
     },
-    titleText: {
-        fontSize: 16
+    itemThumb: {
+        width: 60,
+        height: 60
     },
+    orderText: {
+        flexDirection: 'column',
+        width: width - 60,
+        paddingLeft: 10,
+        paddingRight: 10,
+        justifyContent: 'space-between',
+        height: 60
+    }
 });
 
 export default styles;

@@ -10,31 +10,41 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     ListView,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import {request, toast} from '../../utils/common';
+import {decimals} from '../../utils/common';
 import {Token} from '../../utils/common';
 import {connect} from 'react-redux';
 //import Emoticons, * as emoticons from 'react-native-emoticons';
 import AutoHideKeyboard from '../../components/autoHideBoard';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
-
 const dismissKeyboard = require('dismissKeyboard');
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import PrefetchImage from '../../components/prefetchImage';
 
 const Navigator = deprecatedComponents.Navigator;
 
 class Order extends React.Component {
     constructor(props) {
         super(props);
+        this._renderRow = this._renderRow.bind(this);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: this.ds.cloneWithRows(this.props.recent.recentView)
+            dataSource: this.ds.cloneWithRows(this.props.recent.recentBuy),
+            ratio: 0.7
         };
+    }
+
+    componentDidMount() {
+        const the = this;
+        AsyncStorage.getItem('ratio', (error, result) => {
+            if(!error && result)
+            the.setState({ratio: result});
+        });
     }
 
     _renderRow(rowData) {
@@ -42,7 +52,18 @@ class Order extends React.Component {
             <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}>
                 <View>
                     <View style={styles.orderRow}>
-                        <Text>{rowData.itemTitle}</Text>
+                        <PrefetchImage
+                            imageUri={rowData.itemPicUrl}
+                            imageStyle={styles.itemThumb}
+                            resizeMode="stretch"
+                            width={50}
+                            height={60}
+                        />
+                        <View style={styles.orderText}>
+                            <Text style={styles.baseText} lineBreakMode={'tail'} numberOfLines={2}>{rowData.itemTitle}</Text>
+                            <Text style={styles.dimText}>预估收入：￥ {decimals(rowData.tkCommFee/100*this.state.ratio, 2)}</Text>
+                        </View>
+
                     </View>
                 </View>
             </TouchableOpacity>
@@ -52,13 +73,13 @@ class Order extends React.Component {
     _orderList(orderType){
         let data = null;
         if(orderType === 1){
-            data = _.filter(this.props.recent.recentView, function(o) { return o.state === 'SETTLED'; });
+            data = _.filter(this.props.recent.recentBuy, function(o) { return o.state === 'SETTLED'; });
         }
         if(orderType === 2){
-            data = _.filter(this.props.recent.recentView, function(o) { return (o.state !== 'INVALID' || o.state !== 'UNKNOWN'); });
+            data = _.filter(this.props.recent.recentBuy, function(o) { return (o.state !== 'INVALID' || o.state !== 'UNKNOWN'); });
         }
         if(orderType === 3){
-            data = _.filter(this.props.recent.recentView, function(o) { return o.state === 'UNKNOWN'; });
+            data = _.filter(this.props.recent.recentBuy, function(o) { return o.state === 'UNKNOWN'; });
         }
         return (
             <ListView
@@ -76,7 +97,7 @@ class Order extends React.Component {
         return (
             <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
                 <Toolbar
-                    title="订单"
+                    title="交易"
                     navigator={this.props.navigator}
                     hideDrop={true}
                 />
