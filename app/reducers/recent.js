@@ -21,10 +21,12 @@ const recent = function (state = initialState, action = {}) {
                 recentView: action.info
             });
         case types.FETCH_RECENT_BUY:
-            return Object.assign({}, state, {
-                recentBuy: action.info
-            });
-
+            if(action.info&&action.info.length>0)
+                return Object.assign({}, state, {
+                    recentBuy: action.info
+                });
+            else
+                return state;
         default:
             return state;
     }

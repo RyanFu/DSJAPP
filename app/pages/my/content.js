@@ -38,6 +38,7 @@ import FollowingPage from './following';
 import FollowerPage from './follower';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import DetailPage from '../../pages/detail';
+import OrdersPage from '../../pages/order';
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -404,8 +405,24 @@ export default class MyContent extends Component {
         });
     }
 
-    _withdraw() {
+    _jumpOrdersPage(note) {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: OrdersPage,
+                name: 'OrdersPage',
+                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+                note
+            });
+        });
+    }
 
+    _withdraw() {
+        if(this.state.user.availableRebate && this.state.user.availableRebate > 0){
+
+        } else {
+            toast('亲，暂时没有可提现金额哦');
+        }
     }
 
     render() {
@@ -502,10 +519,12 @@ export default class MyContent extends Component {
                     <View style={styles.separatorVertical}/>
                     {
                         !this.props.userInfo ?
-                            <View style={styles.asset}>
-                                <Text style={styles.count}>{this.user.summary.transNum}</Text>
-                                <Text style={[styles.text, styles.assetText]}>交易</Text>
-                            </View>
+                            <TouchableWithoutFeedback onPress={() => this._jumpOrdersPage()}>
+                                <View style={styles.asset}>
+                                    <Text style={styles.count}>{this.user.summary.transNum}</Text>
+                                    <Text style={[styles.text, styles.assetText]}>交易</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
                         : null
                     }
                     {
