@@ -32,19 +32,22 @@ export default styles = StyleSheet.create({
         borderRadius: 22.5,
     },
     user: {
-        flexDirection:'row',
+        flexDirection:'column',
         justifyContent: 'center',
         alignItems:'center',
-        marginTop:5
+        marginTop:5,
+        width: width/5*2
     },
     gender: {
         marginLeft: 4,
     },
     income: {
-        flexDirection:'row',
-        justifyContent: 'center',
-        alignItems:'flex-end',
-        marginTop:5
+        flexDirection:'column',
+        justifyContent: 'space-between',
+        alignItems:'flex-start',
+        marginTop:5,
+        width: width/5*3,
+        paddingLeft: 15
     },
     summaryContainer: {
         flexDirection:'row',
@@ -165,5 +168,30 @@ export default styles = StyleSheet.create({
         position: 'absolute',
         right: 10,
         top: 10
-    }
+    },
+    my: {
+        flexDirection:'row',
+        justifyContent: 'space-around',
+        alignItems:'center',
+        marginTop:5
+    },
+    incomeLine: {
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems:'center',
+        height: 24
+    },
+    button: {
+        height: 22,
+        backgroundColor: '#fc7d30',
+        borderRadius: 11,
+        alignItems: 'center',
+        width: 50,
+        marginLeft: 20
+    },
+    buttonFont: {
+        fontSize: 12,
+        lineHeight: 20,
+        color: '#fff'
+    },
 });

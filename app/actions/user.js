@@ -14,6 +14,10 @@ export function fetchUserInfo(params) {
                         name: userInfo.nickname,
                         gender: userInfo.gender == 'FEMALE' ? 'women' : 'man',
                         income: userInfo.totalRevenue,
+                        totalRevenue: userInfo.totalRevenue,
+                        estimatedRebate: userInfo.estimatedRebate,
+                        availableRebate: userInfo.availableRebate,
+                        processingWithdraw: userInfo.processingWithdraw,
                         thumbUri: userInfo.portraitUrl,
                         summary: {
                             noteNum: userInfo.publishedNoteCount,

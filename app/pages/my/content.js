@@ -404,6 +404,10 @@ export default class MyContent extends Component {
         });
     }
 
+    _withdraw() {
+
+    }
+
     render() {
 
         this.user = this.state.user;
@@ -431,41 +435,59 @@ export default class MyContent extends Component {
             <View style={styles.container}>
 
                 <View style={styles.userContainer}>
-                    <TouchableHighlight onPress={() => this._updatePortrait(this.user)} style={styles.portrait}>
-                        <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}}/>
-                    </TouchableHighlight>
-
-
                     {
                         !this.props.userInfo ?
-                            (<View>
+                            (<View style={styles.my}>
                                     <View style={styles.user}>
-                                        <Text style={{fontSize: 16}}>{this.user.name}</Text>
-                                        {
-                                            this.user.gender == 'women' ? (
-                                                <Image style={styles.gender} key={1} source={womanImg}/>
-                                            ) : (
-                                                <Image style={styles.gender} key={2} source={manImg}/>
-                                            )
-                                        }
+                                        <TouchableHighlight onPress={() => this._updatePortrait(this.user)} style={styles.portrait}>
+                                            <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}}/>
+                                        </TouchableHighlight>
+                                        <View style={{flexDirection:'row',alignItems:'flex-end'}}>
+                                            <Text style={{fontSize: 16}}>{this.user.name}</Text>
+                                            {
+                                                this.user.gender == 'women' ? (
+                                                    <Image style={styles.gender} key={1} source={womanImg}/>
+                                                ) : (
+                                                    <Image style={styles.gender} key={2} source={manImg}/>
+                                                )
+                                            }
+                                        </View>
 
                                     </View>
                                     <View style={styles.income}>
-                                        <Text style={{fontSize: 12}}>总收益:</Text>
-                                        {rmbIcon}
-                                        <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.income}</Text>
+                                        <View style={styles.incomeLine}>
+                                            <Text style={{fontSize: 12,color: '#9b9b9b'}}>总收益:￥</Text>
+                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.income}</Text>
+                                        </View>
+                                        <View style={styles.incomeLine}>
+                                            <Text style={{fontSize: 12,color: '#9b9b9b'}}>预估收益:￥</Text>
+                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.estimatedRebate? this.state.estimatedRebate : 0}</Text>
+                                        </View>
+                                        <View style={styles.incomeLine}>
+                                            <Text style={{fontSize: 12,color: '#9b9b9b',}}>可提收益:￥</Text>
+                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.availableRebate? this.state.availableRebate : 0}</Text>
+                                            <TouchableOpacity style={styles.button} onPress={this._withdraw.bind(this)}>
+                                                <Text style={styles.buttonFont}>提现</Text>
+                                            </TouchableOpacity>
+                                        </View>
+
                                     </View>
                             </View>
                                 ) :
                             <View style={styles.user}>
-                                <Text style={{fontSize: 16}}>{this.user.name}</Text>
-                                {
-                                    this.user.gender == 'women' ? (
-                                        <Image style={styles.gender} key={1} source={womanImg}/>
-                                    ) : (
-                                        <Image style={styles.gender} key={2} source={manImg}/>
-                                    )
-                                }
+                                <TouchableHighlight onPress={() => this._updatePortrait(this.user)} style={styles.portrait}>
+                                    <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}}/>
+                                </TouchableHighlight>
+                                <View style={{flexDirection:'row',alignItems:'flex-end'}}>
+                                    <Text style={{fontSize: 16}}>{this.user.name}</Text>
+                                    {
+                                        this.user.gender == 'women' ? (
+                                            <Image style={styles.gender} key={1} source={womanImg}/>
+                                        ) : (
+                                            <Image style={styles.gender} key={2} source={manImg}/>
+                                        )
+                                    }
+                                </View>
 
                             </View>
                     }
