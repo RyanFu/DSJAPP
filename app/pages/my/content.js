@@ -293,9 +293,13 @@ export default class MyContent extends Component {
                         </View>
                     </View>
 
-                    <TouchableOpacity  onPress={() => this._jumpToDetailPage({noteId:data.detail.noteId})}>
+                    <TouchableOpacity onPress={() => this._jumpToDetailPage({noteId: data.detail.noteId})}>
                         <View style={styles.noteThumbBox}>
-                            <Image style={styles.noteThumb} source={{uri: data.detail.image, width: width/5*3, height: data.detail.imageHeight/data.detail.imageWidth*(width/5*3)}}
+                            <Image style={styles.noteThumb} source={{
+                                uri: data.detail.image,
+                                width: width / 5 * 3,
+                                height: data.detail.imageHeight / data.detail.imageWidth * (width / 5 * 3)
+                            }}
                                    resizeMode={Image.resizeMode.contain}/>
                         </View>
                     </TouchableOpacity>
@@ -388,8 +392,8 @@ export default class MyContent extends Component {
         });
     }
 
-    _jumpToDetailPage(note){
-        const { navigator } = this.props;
+    _jumpToDetailPage(note) {
+        const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: DetailPage,
@@ -431,23 +435,39 @@ export default class MyContent extends Component {
                         <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}}/>
                     </TouchableHighlight>
 
-                    <View style={styles.user}>
-                        <Text style={{fontSize: 16}}>{this.user.name}</Text>
-                        {
-                            this.user.gender == 'women' ? (
-                                <Image style={styles.gender} key={1} source={womanImg}/>
-                            ) : (
-                                <Image style={styles.gender} key={2} source={manImg}/>
-                            )
-                        }
 
-                    </View>
                     {
-                        !this.props.userInfo ? <View style={styles.income}>
-                            <Text style={{fontSize: 12}}>总收益:</Text>
-                            {rmbIcon}
-                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.income}</Text>
-                        </View> : null
+                        !this.props.userInfo ?
+                            (<View>
+                                    <View style={styles.user}>
+                                        <Text style={{fontSize: 16}}>{this.user.name}</Text>
+                                        {
+                                            this.user.gender == 'women' ? (
+                                                <Image style={styles.gender} key={1} source={womanImg}/>
+                                            ) : (
+                                                <Image style={styles.gender} key={2} source={manImg}/>
+                                            )
+                                        }
+
+                                    </View>
+                                    <View style={styles.income}>
+                                        <Text style={{fontSize: 12}}>总收益:</Text>
+                                        {rmbIcon}
+                                        <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.income}</Text>
+                                    </View>
+                            </View>
+                                ) :
+                            <View style={styles.user}>
+                                <Text style={{fontSize: 16}}>{this.user.name}</Text>
+                                {
+                                    this.user.gender == 'women' ? (
+                                        <Image style={styles.gender} key={1} source={womanImg}/>
+                                    ) : (
+                                        <Image style={styles.gender} key={2} source={manImg}/>
+                                    )
+                                }
+
+                            </View>
                     }
 
                 </View>
@@ -458,11 +478,20 @@ export default class MyContent extends Component {
                         <Text style={[styles.text, styles.assetText]}>笔记</Text>
                     </View>
                     <View style={styles.separatorVertical}/>
-                    <View style={styles.asset}>
-                        <Text style={styles.count}>{this.user.summary.transNum}</Text>
-                        <Text style={[styles.text, styles.assetText]}>交易</Text>
-                    </View>
-                    <View style={styles.separatorVertical}/>
+                    {
+                        !this.props.userInfo ?
+                            <View style={styles.asset}>
+                                <Text style={styles.count}>{this.user.summary.transNum}</Text>
+                                <Text style={[styles.text, styles.assetText]}>交易</Text>
+                            </View>
+                        : null
+                    }
+                    {
+                        !this.props.userInfo ?
+                            <View style={styles.separatorVertical}/>
+                        : null
+                    }
+
                     <TouchableWithoutFeedback onPress={() => this._jumpToFollowingPage(this.user.userId)}>
                         <View style={styles.asset}>
                             <Text style={styles.count}>{this.user.summary.watcherNum}</Text>
