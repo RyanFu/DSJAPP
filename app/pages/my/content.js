@@ -39,6 +39,7 @@ import FollowerPage from './follower';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import DetailPage from '../../pages/detail';
 import OrdersPage from '../../pages/order';
+import WithdrawPage from '../../pages/order/withdraw';
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -405,22 +406,33 @@ export default class MyContent extends Component {
         });
     }
 
-    _jumpOrdersPage(note) {
+    _jumpOrdersPage() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: OrdersPage,
                 name: 'OrdersPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                note
+                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
+            });
+        });
+    }
+
+    _jumpWithdrawPage() {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: WithdrawPage,
+                name: 'WithdrawPage',
+                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
             });
         });
     }
 
     _withdraw() {
         if(this.state.user.availableRebate && this.state.user.availableRebate > 0){
-
+            this._jumpWithdrawPage();
         } else {
+            this._jumpWithdrawPage();
             toast('亲，暂时没有可提现金额哦');
         }
     }

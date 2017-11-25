@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     },
     buttonFont: {
         fontSize: 16,
-        lineHeight: 26,
+        lineHeight: 34,
         color: '#fff'
     },
     emoticon:{
