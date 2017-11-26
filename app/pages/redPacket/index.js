@@ -16,7 +16,8 @@ import {
     InteractionManager,
     AsyncStorage,
     Dimensions,
-    Animated
+    Animated,
+    ActivityIndicator
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -37,7 +38,9 @@ import AddFriends from '../addFriends';
 import SearchPage from '../search';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import OrdersPage from '../../pages/order';
 const Navigator = deprecatedComponents.Navigator;
+const moreIcon = <Icon style={[styles.moreIcon]} size={20} name="ios-arrow-dropright"/>;
 
 class RedPacket extends React.Component {
     constructor(props) {
@@ -57,7 +60,8 @@ class RedPacket extends React.Component {
             buySource: this.ds.cloneWithRows([]),
             viewSource: this.ds.cloneWithRows([]),
             bounce: new Animated.Value(0),
-            ratio: 0.7
+            ratio: 0.7,
+            isLoadMore: false
         };
     }
 
@@ -307,6 +311,18 @@ class RedPacket extends React.Component {
         let dataSource = this.state.buySource;
         if (type === 'view'){
             dataSource = this.state.viewSource;
+            return (
+                <ListView
+                    contentContainerStyle={styles.itemList}
+                    dataSource={dataSource}
+                    renderRow={this._renderItemRow.bind(this)}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    enableEmptySections={true}
+                    pageSize={10}
+                    initialListSize={10}
+                />
+            )
         }
         return (
             <ListView
@@ -316,9 +332,47 @@ class RedPacket extends React.Component {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 enableEmptySections={true}
+                renderFooter={this._renderFooter.bind(this)}
+                pageSize={6}
+                initialListSize={6}
+                onEndReached={this._onEndReached.bind(this)}
                 />
         )
 
+    }
+
+    _onEndReached() {
+        if(this.props.recent.recentBuy.length>6)
+            this.setState({isLoadMore: true});
+    }
+
+    _renderFooter(){
+        if (this.state.isLoadMore) {
+            return (
+                <TouchableOpacity onPress={this._jumpOrdersPage.bind(this)} style={styles.loadMore}>
+                    <View>
+                        <Text style={styles.loadMoreText}>
+                            加载更多
+                        </Text>
+                        {moreIcon}
+
+                    </View>
+                </TouchableOpacity>
+
+            );
+        }
+        return null;
+    }
+
+    _jumpOrdersPage() {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: OrdersPage,
+                name: 'OrdersPage',
+                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
+            });
+        });
     }
 
     _renderItemRow(rowData:string) {

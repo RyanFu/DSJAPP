@@ -202,6 +202,23 @@ const styles = StyleSheet.create({
     syncShadowText: {
         color: '#fc7d30',
         fontSize: 10
+    },
+    loadMore: {
+        width: 40,
+        marginTop: 2,
+        paddingHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0, .5)'
+    },
+    loadMoreText: {
+        textAlign: 'center',
+        fontSize: 14,
+        color: '#fff',
+        marginBottom: 5
+    },
+    moreIcon: {
+        color: '#fff'
     }
 });
 
