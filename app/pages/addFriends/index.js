@@ -376,13 +376,7 @@ class Friends extends React.Component {
                         </View>
                 }
 
-                <TouchableOpacity style={styles.float} onPress={()=>this._invite()}>
-                    <View >
-                        <Text style={[styles.baseText,styles.floatText]}>
-                            邀请所有人
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                
             </View>
         )
 
