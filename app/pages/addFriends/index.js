@@ -376,7 +376,7 @@ class Friends extends React.Component {
                         </View>
                 }
 
-                
+
             </View>
         )
 
