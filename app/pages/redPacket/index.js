@@ -151,7 +151,8 @@ class RedPacket extends React.Component {
                     token: token
                 };
                 dispatch(fetchRecentBuy(params)).then(()=> {
-                    const copy = _.cloneDeep(this.props.recent.recentBuy);
+                    let copy = _.cloneDeep(this.props.recent.recentBuy);
+                    copy = _.slice(copy, 0, 6);
                     _.each(copy, (v, k)=>{
                         copy[k].tkCommFee = v.tkCommFee/100
                     });
@@ -168,7 +169,8 @@ class RedPacket extends React.Component {
                 token: token
             };
             dispatch(fetchRecentBuy(params)).then(()=> {
-                const copy = _.cloneDeep(this.props.recent.recentBuy);
+                let copy = _.cloneDeep(this.props.recent.recentBuy);
+                copy = _.slice(copy, 0, 6);
                 _.each(copy, (v, k)=>{
                    copy[k].tkCommFee = v.tkCommFee/100
                 });
