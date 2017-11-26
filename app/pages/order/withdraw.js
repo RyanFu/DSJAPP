@@ -55,7 +55,7 @@ class Withdraw extends React.Component {
                     hideDrop={true}
                 />
                 <View style={styles.totalCash}>
-                    <Text style={styles.baseText}>可提现金额:</Text>
+                    <Text style={styles.baseText}>可提金额:</Text>
                     <Text style={styles.baseText}> ￥{this.state.availableRebate}</Text>
                 </View>
                 <View style={styles.input}>

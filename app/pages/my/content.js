@@ -433,7 +433,7 @@ export default class MyContent extends Component {
             this._jumpWithdrawPage();
         } else {
             this._jumpWithdrawPage();
-            toast('亲，暂时没有可提现金额哦');
+            toast('亲，暂时没有可提金额哦');
         }
     }
 
