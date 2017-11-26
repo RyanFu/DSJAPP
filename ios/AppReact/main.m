@@ -13,6 +13,13 @@
 
 int main(int argc, char * argv[]) {
   @autoreleasepool {
-    return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+    @try {
+      // The custom AppDelegate class must have the name "AppDelegate".
+      return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+    }
+    @catch (NSException *exception) {
+      NSLog(@"%@", exception);
+    }
+    
   }
 }
