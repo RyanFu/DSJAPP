@@ -294,6 +294,16 @@ export default class ImageSlider extends Component {
                                 {imageComponent}
                             </TouchableOpacity>
                         );
+                    } else if (this.props.onLongPress) {
+                        return (
+                            <TouchableHighlight
+                                key={index}
+                                delayPressIn={100}
+                                onLongPress={()=>this.props.onLongPress(image)}
+                            >
+                                {imageComponent}
+                            </TouchableHighlight>
+                        );
                     } else {
                         return imageComponent;
                     }

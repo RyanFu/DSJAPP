@@ -13,13 +13,15 @@ import {
     InteractionManager,
     Platform,
     DeviceEventEmitter,
-    AsyncStorage
+    AsyncStorage,
+    CameraRoll
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
 import PrefetchImage from '../../components/prefetchImage';
 import Flow from '../../components/flow';
 import Share from '../../components/share';
+import SaveImage from '../../components/saveImage';
 import CommentPage from '../../pages/comment';
 import CommentListPage from '../../pages/commentList';
 import UserPage from '../../pages/user';
@@ -53,13 +55,15 @@ class Detail extends React.Component {
         this._renderRow = this._renderRow.bind(this);
         this._onSharePress = this._onSharePress.bind(this);
         this._jumpToWebview = this._jumpToWebview.bind(this);
-
+        this._onSavePress = this._onSavePress.bind(this);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             commendTaobaoSource: this.ds.cloneWithRows([]),
             showShare: false,
             position: 0,
-            noteUpdated: false
+            noteUpdated: false,
+            showSave: false,
+            currentImage: null
         };
     }
 
@@ -94,6 +98,11 @@ class Detail extends React.Component {
     _onSharePress() {
         const {navigator } = this.props;
         this.setState({showShare: !this.state.showShare});
+    }
+
+    _onSavePress() {
+        const {navigator } = this.props;
+        this.setState({showSave: !this.state.showSave});
     }
 
     _jumpToCommentPage() {
@@ -244,6 +253,13 @@ class Detail extends React.Component {
         });
     }
 
+    _setCurrentImage(image) {
+        this.setState({
+            currentImage: image,
+            showSave: true
+        });
+    }
+
     render() {
         const {detail, route, comments, navigator} = this.props;
         const noteId = route.note.noteId;
@@ -355,9 +371,11 @@ class Detail extends React.Component {
                                 images={images}
                                 position={this.state.position}
                                 onPositionChanged={position => this.setState({position})}
-                                />
+                                onLongPress={this._setCurrentImage.bind(this)}
+                            />
 
                         </View>
+
                         <View style={styles.description}>
                             <Text
                                 style={[styles.dTitle,styles.baseText]}>{detail.note[noteId] ? Emoticons.parse(detail.note[noteId].title) : ''}</Text>
@@ -540,6 +558,13 @@ class Detail extends React.Component {
                         return (
                             <Share key='' note={detail.note[noteId]} noteId={noteId} press={this._onSharePress}
                                    thumbUrl={images[0].uri}/>
+                        );
+                    }
+                })}
+                {[this.state.showSave].map((show) => {
+                    if (show) {
+                        return (
+                            <SaveImage key='' image={this.state.currentImage} press={this._onSavePress}/>
                         );
                     }
                 })}
