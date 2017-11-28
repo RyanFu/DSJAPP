@@ -8,7 +8,8 @@ import {
     TouchableHighlight,
     Platform,
     Alert,
-    AsyncStorage
+    AsyncStorage,
+    InteractionManager
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -18,6 +19,9 @@ import _ from 'lodash';
 import * as WechatAPI from 'react-native-wx';
 import { connect } from 'react-redux';
 import StorageKeys from '../../constants/StorageKeys';
+import BindZFBPage from './bindZFB';
+import deprecatedComponents from 'react-native-deprecated-custom-components';
+const Navigator = deprecatedComponents.Navigator;
 
 var chevronRightIcon = <Icon style={[styles.messageLinkIcon]} size={16} name="angle-right"/>;
 
@@ -79,10 +83,11 @@ class SecurityPage extends React.Component {
             }
         });
     }
+
     _unbind(channel) {
         const the = this;
         if(channel !== 'WEIXIN')
-            return false;
+            // return false;
         if (this.state[channel].isBound) {
             Alert.alert(
                 '解除绑定',
@@ -126,20 +131,34 @@ class SecurityPage extends React.Component {
                 ]
             );
         } else {
-            Alert.alert(
-                '绑定',
-                '需要绑定账号吗？',
-                [
-                    {text: '取消', onPress: () => console.log('still bind')},
-                    {
-                        text: '确定', onPress: () => {
-                        the._JumpToWeiXin();
-                    }
-                    }
-                ]
-            );
+            if (channel === 'ZHIFUBAO')
+                this._jumpToZFBPage();
+            else
+                Alert.alert(
+                    '绑定',
+                    '需要绑定账号吗？',
+                    [
+                        {text: '取消', onPress: () => console.log('still bind')},
+                        {
+                            text: '确定', onPress: () => {
+                            the._JumpToWeiXin();
+                        }
+                        }
+                    ]
+                );
         }
 
+    }
+
+    _jumpToZFBPage() {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: BindZFBPage,
+                name: 'BindZFBPage',
+                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
+            });
+        });
     }
 
     _JumpToWeiXin() {
