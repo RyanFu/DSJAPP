@@ -7,6 +7,10 @@ import {Dimensions,StyleSheet} from 'react-native';
 var {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+    container:{
+        backgroundColor: '#f5f5f5',
+        flex: 1
+    },
     row: {
         flexDirection:'row',
         backgroundColor:'#fff',
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     },
     buttonFont: {
         fontSize: 16,
-        lineHeight: 26,
+        lineHeight: 34,
         color: '#fff'
     },
     buttonGrey: {
@@ -157,10 +161,9 @@ const styles = StyleSheet.create({
         lineHeight: 22,
     },
     baseText:{
-        fontSize: 13,
+        fontSize: 14,
         color: '#4a4a4a',
         lineHeight: 18,
-        paddingBottom: 2
     },
     dimText:{
         color: '#9b9b9b',
@@ -170,6 +173,37 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0,0,0,.2)',
     },
+    title: {
+        marginLeft: 10,
+        marginVertical: 10
+    },
+    input: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        backgroundColor: '#fff',
+        height: 38,
+        borderBottomWidth: 1,
+        borderColor: '#f1f1f1'
+    },
+    inputText: {
+        flex:1,
+        fontSize: 14,
+        paddingLeft: 10,
+        height: 32
+    },
+    inputLabel: {
+        marginLeft: 10,
+        lineHeight: 34,
+    },
+    submit: {
+        width: width,
+        alignItems: 'center'
+    },
+    code: {
+        backgroundColor: '#ececec',
+        height: 38,
+        paddingTop: 5
+    }
 });
 
 export default styles;
