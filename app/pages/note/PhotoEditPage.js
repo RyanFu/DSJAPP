@@ -490,14 +490,12 @@ class PhotoEditPage extends Component {
 
     _showWebview() {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: Webview,
-                name: 'Webview',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
-                url: this.state.currentTag.url,
-                title: this.state.currentTag.url ? '商品详情' : null
-            });
+        navigator.push({
+            component: Webview,
+            name: 'Webview',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
+            url: this.state.currentTag.url,
+            title: this.state.currentTag.url ? '商品详情' : null
         });
     }
 

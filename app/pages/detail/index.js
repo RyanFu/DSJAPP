@@ -109,13 +109,11 @@ class Detail extends React.Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                        component: CommentPage,
-                        name: 'CommentPage',
-                        sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
-                        noteId: this.props.route.note.noteId
-                    });
+                navigator.push({
+                    component: CommentPage,
+                    name: 'CommentPage',
+                    sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
+                    noteId: this.props.route.note.noteId
                 });
             }
         });
@@ -123,12 +121,10 @@ class Detail extends React.Component {
 
     _jumpToCommentListPage() {
         const { navigator } = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: CommentListPage,
-                name: 'CommentListPage',
-                noteId: this.props.route.note.noteId
-            });
+        navigator.push({
+            component: CommentListPage,
+            name: 'CommentListPage',
+            noteId: this.props.route.note.noteId
         });
     }
 
@@ -168,31 +164,29 @@ class Detail extends React.Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
                 if (token) {
-                    InteractionManager.runAfterInteractions(() => {
-                        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
-                            if (result) {
-                                result = JSON.parse(result);
-                                if (result.userId !== userId) {
+                    AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
+                        if (result) {
+                            result = JSON.parse(result);
+                            if (result.userId !== userId) {
 
-                                    navigator.push({
-                                        component: UserPage,
-                                        name: 'UserPage',
-                                        sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                                        userId: userId
-                                    });
-                                } else {
-                                    navigator.pop();
-                                    DeviceEventEmitter.emit('newNote', true);
-                                }
-                            } else {
                                 navigator.push({
                                     component: UserPage,
                                     name: 'UserPage',
                                     sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
                                     userId: userId
                                 });
+                            } else {
+                                navigator.pop();
+                                DeviceEventEmitter.emit('newNote', true);
                             }
-                        });
+                        } else {
+                            navigator.push({
+                                component: UserPage,
+                                name: 'UserPage',
+                                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+                                userId: userId
+                            });
+                        }
                     });
                 }
             }
@@ -242,14 +236,12 @@ class Detail extends React.Component {
             this._jumpToRecommendPage(val.itemId);
             return;
         }
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: Webview,
-                name: 'Webview',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
-                url: val.url,
-                title: val.url ? '商品详情' : null
-            });
+        navigator.push({
+            component: Webview,
+            name: 'Webview',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
+            url: val.url,
+            title: val.url ? '商品详情' : null
         });
     }
 

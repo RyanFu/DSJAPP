@@ -64,12 +64,10 @@ class MessageList extends React.Component {
         const the = this;
 
         if(route.type === 'comment'){
-            InteractionManager.runAfterInteractions(() => {
-                navigator.push({
-                    component: CommentListPage,
-                    name: 'CommentListPage',
-                    noteId: rowData.noteId
-                });
+            navigator.push({
+                component: CommentListPage,
+                name: 'CommentListPage',
+                noteId: rowData.noteId
             });
         }
 
@@ -77,12 +75,10 @@ class MessageList extends React.Component {
             AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY).then((meDetail)=> {
                 if (meDetail !== null) {
                     const user = JSON.parse(meDetail);
-                    InteractionManager.runAfterInteractions(() => {
-                        navigator.push({
-                            component: FollowerPage,
-                            name: 'FollowerPage',
-                            userId: user.userId
-                        });
+                    navigator.push({
+                        component: FollowerPage,
+                        name: 'FollowerPage',
+                        userId: user.userId
                     });
                 }
             });

@@ -120,13 +120,11 @@ class Following extends React.Component {
         if (userId <= 0)
             return null;
         const { navigator } = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: UserPage,
-                name: 'UserPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                userId: userId
-            });
+        navigator.push({
+            component: UserPage,
+            name: 'UserPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+            userId: userId
         });
     }
 

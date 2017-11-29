@@ -72,12 +72,10 @@ class MyHomePage extends Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                        component: AddFriends,
-                        name: 'AddFriends',
-                        sceneConfigs: Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
-                    });
+                navigator.push({
+                    component: AddFriends,
+                    name: 'AddFriends',
+                    sceneConfigs: Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
                 });
             }
         });

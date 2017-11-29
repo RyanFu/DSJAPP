@@ -77,11 +77,9 @@ class TabBar extends React.Component {
             }, 10);
             dispatch(Object.assign({}, {type: StoreActions.SEARCH_CONDITION_UPDATE}, action));
         } else {
-            InteractionManager.runAfterInteractions(() => {
-                navigator.push({
-                    component: FilterPage,
-                    name: 'FilterPage'
-                });
+            navigator.push({
+                component: FilterPage,
+                name: 'FilterPage'
             });
         }
 

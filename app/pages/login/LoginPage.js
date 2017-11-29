@@ -51,12 +51,10 @@ export default class LoginPage extends Component {
 
     _onPressForgetLink() {
         const { navigator } = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: RegisterPage,
-                name: 'RegisterPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromLeft
-            });
+        navigator.push({
+            component: RegisterPage,
+            name: 'RegisterPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromLeft
         });
     }
 
@@ -118,13 +116,11 @@ export default class LoginPage extends Component {
                     this._fetchMyInfo(result);
                 });
             } else {
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                        component: BindingPage,
-                        name: 'BindingPage',
-                        sceneConfigs: Navigator.SceneConfigs.FloatFromLeft,
-                        bindMsg: responseJson.resultValues
-                    });
+                navigator.push({
+                    component: BindingPage,
+                    name: 'BindingPage',
+                    sceneConfigs: Navigator.SceneConfigs.FloatFromLeft,
+                    bindMsg: responseJson.resultValues
                 });
             }
         }).catch((error) => {

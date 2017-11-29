@@ -121,16 +121,14 @@ class SelectPhotoPage extends Component {
 
             dispatch({type: StoreActions.ADD_NOTE_PHOTO, photo: this.state.selectedPhoto});
 
-            InteractionManager.runAfterInteractions(() => {
-                if (navigator) {
-                    navigator.push({
-                        name: 'PhotoEditPage',
-                        component: PhotoEditPage,
-                        params: {photo: this.state.selectedPhoto}
-                    })
-                }
-                this.state.continuePressed = false;
-            });
+            if (navigator) {
+                navigator.push({
+                    name: 'PhotoEditPage',
+                    component: PhotoEditPage,
+                    params: {photo: this.state.selectedPhoto}
+                })
+            }
+            this.state.continuePressed = false;
         }
     }
 

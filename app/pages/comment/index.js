@@ -70,12 +70,10 @@ class Comment extends React.Component {
                             console.log('network error');
                         });
                 } else {
-                    InteractionManager.runAfterInteractions(() => {
-                        navigator.push({
-                            component: LoginPage,
-                            name: 'LoginPage',
-                            sceneConfigs: Navigator.SceneConfigs.FloatFromBottom
-                        });
+                    navigator.push({
+                        component: LoginPage,
+                        name: 'LoginPage',
+                        sceneConfigs: Navigator.SceneConfigs.FloatFromBottom
                     });
                 }
             }

@@ -372,59 +372,49 @@ export default class MyContent extends Component {
 
     _jumpToFollowingPage(userId) {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: FollowingPage,
-                name: 'FollowingPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                userId: userId
-            });
+        navigator.push({
+            component: FollowingPage,
+            name: 'FollowingPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+            userId: userId
         });
     }
 
     _jumpToFollowerPage(userId) {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: FollowerPage,
-                name: 'FollowerPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                userId: userId
-            });
+        navigator.push({
+            component: FollowerPage,
+            name: 'FollowerPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+            userId: userId
         });
     }
 
     _jumpToDetailPage(note) {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: DetailPage,
-                name: 'DetailPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                note
-            });
+        navigator.push({
+            component: DetailPage,
+            name: 'DetailPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+            note
         });
     }
 
     _jumpOrdersPage() {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: OrdersPage,
-                name: 'OrdersPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
-            });
+        navigator.push({
+            component: OrdersPage,
+            name: 'OrdersPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight
         });
     }
 
     _jumpWithdrawPage() {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: WithdrawPage,
-                name: 'WithdrawPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
-            });
+        navigator.push({
+            component: WithdrawPage,
+            name: 'WithdrawPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight
         });
     }
 

@@ -144,13 +144,11 @@ class Flow extends React.Component {
 
     _jumpToDetailPage(note) {
         const { navigator } = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: DetailPage,
-                name: 'DetailPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                note
-            });
+        navigator.push({
+            component: DetailPage,
+            name: 'DetailPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+            note
         });
     }
 
@@ -159,31 +157,28 @@ class Flow extends React.Component {
 
         Token.getToken(navigator).then((token) => {
                 if (token) {
-                    InteractionManager.runAfterInteractions(() => {
-                        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
-                            if (result) {
-                                result = JSON.parse(result);
-                                if (result.userId !== userId) {
+                    AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
+                        if (result) {
+                            result = JSON.parse(result);
+                            if (result.userId !== userId) {
 
-                                    navigator.push({
-                                        component: UserPage,
-                                        name: 'UserPage',
-                                        sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                                        userId: userId
-                                    });
-                                } else {
-                                    DeviceEventEmitter.emit('newNote', true);
-                                }
-                            } else {
                                 navigator.push({
                                     component: UserPage,
                                     name: 'UserPage',
                                     sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
                                     userId: userId
                                 });
+                            } else {
+                                DeviceEventEmitter.emit('newNote', true);
                             }
-                        });
-
+                        } else {
+                            navigator.push({
+                                component: UserPage,
+                                name: 'UserPage',
+                                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+                                userId: userId
+                            });
+                        }
                     });
                 }
             }

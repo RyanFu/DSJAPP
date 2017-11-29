@@ -65,13 +65,10 @@ class Home extends React.Component {
             4: '我的'
         },
         cameraPress: (navigator)=> {
-
-            InteractionManager.runAfterInteractions(() => {
-                navigator.push({
-                    component: CreateNotePage,
-                    name: 'CreateNotePage',
-                    sceneConfigs: Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
-                });
+            navigator.push({
+                component: CreateNotePage,
+                name: 'CreateNotePage',
+                sceneConfigs: Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
             });
         }
 
@@ -194,12 +191,10 @@ class Home extends React.Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                        component: AddFriends,
-                        name: 'AddFriends',
-                        sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
-                    });
+                navigator.push({
+                    component: AddFriends,
+                    name: 'AddFriends',
+                    sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
                 });
             }
         });

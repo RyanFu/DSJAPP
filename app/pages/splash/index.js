@@ -43,12 +43,10 @@ class Splash extends React.Component {
         //});
 
         this.timer = setTimeout(() => {
-            InteractionManager.runAfterInteractions(() => {
-                navigator.resetTo({
-                    component: Home,
-                    name: 'Home',
-                    params: {store: this.props.store}
-                });
+            navigator.resetTo({
+                component: Home,
+                name: 'Home',
+                params: {store: this.props.store}
             });
         }, this.state.countDown*1000);
     }
@@ -59,12 +57,10 @@ class Splash extends React.Component {
 
     _onCountDownPress() {
         const { navigator } = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.resetTo({
-                component: Home,
-                name: 'Home',
-                params: {store: this.props.store}
-            });
+        navigator.resetTo({
+            component: Home,
+            name: 'Home',
+            params: {store: this.props.store}
         });
     }
 

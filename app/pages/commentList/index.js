@@ -89,21 +89,17 @@ class CommentList extends React.Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
                 if (token) {
-                    InteractionManager.runAfterInteractions(() => {
-                        navigator.push({
-                            component: CommentPage,
-                            name: 'CommentPage',
-                            sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
-                            noteId: this.props.route.noteId
-                        });
+                    navigator.push({
+                        component: CommentPage,
+                        name: 'CommentPage',
+                        sceneConfigs: Navigator.SceneConfigs.FloatFromBottom,
+                        noteId: this.props.route.noteId
                     });
                 } else {
-                    InteractionManager.runAfterInteractions(() => {
-                        navigator.push({
-                            component: LoginPage,
-                            name: 'LoginPage',
-                            sceneConfigs: Navigator.SceneConfigs.FloatFromBottom
-                        });
+                    navigator.push({
+                        component: LoginPage,
+                        name: 'LoginPage',
+                        sceneConfigs: Navigator.SceneConfigs.FloatFromBottom
                     });
                 }
             }

@@ -103,12 +103,10 @@ class RedPacket extends React.Component {
     _jumpToResultPage(text) {
 
         const { navigator } = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: ResultPage,
-                name: 'ResultPage',
-                text: text
-            });
+        navigator.push({
+            component: ResultPage,
+            name: 'ResultPage',
+            text: text
         });
     }
 
@@ -368,12 +366,10 @@ class RedPacket extends React.Component {
 
     _jumpOrdersPage() {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: OrdersPage,
-                name: 'OrdersPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
-            });
+        navigator.push({
+            component: OrdersPage,
+            name: 'OrdersPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight
         });
     }
 
@@ -472,12 +468,10 @@ class RedPacket extends React.Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                        component: AddFriends,
-                        name: 'AddFriends',
-                        sceneConfigs: Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
-                    });
+                navigator.push({
+                    component: AddFriends,
+                    name: 'AddFriends',
+                    sceneConfigs: Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
                 });
             }
         });
@@ -486,12 +480,10 @@ class RedPacket extends React.Component {
     _onRightIconClicked() {
         const { navigator } = this.props;
 
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: SearchPage,
-                name: 'SearchPage',
-                sceneConfigs: Navigator.SceneConfigs.FadeAndroid
-            });
+        navigator.push({
+            component: SearchPage,
+            name: 'SearchPage',
+            sceneConfigs: Navigator.SceneConfigs.FadeAndroid
         });
     }
 

@@ -55,14 +55,12 @@ class Binding extends React.Component {
 
     _jumpToCodePage(){
         const {navigator, route} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: SendCodePage,
-                name: 'SendCodePage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromLeft,
-                phone: this.state.phone,
-                bindMsg: route.bindMsg
-            });
+        navigator.push({
+            component: SendCodePage,
+            name: 'SendCodePage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromLeft,
+            phone: this.state.phone,
+            bindMsg: route.bindMsg
         });
 
     }

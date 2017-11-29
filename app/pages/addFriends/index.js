@@ -318,13 +318,11 @@ class Friends extends React.Component {
         const { navigator } = this.props;
         const token = this.state.token;
         if (token) {
-            InteractionManager.runAfterInteractions(() => {
-                navigator.push({
-                    component: UserPage,
-                    name: 'UserPage',
-                    sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
-                    userId: userId
-                });
+            navigator.push({
+                component: UserPage,
+                name: 'UserPage',
+                sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+                userId: userId
             });
         }
     }

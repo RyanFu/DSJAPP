@@ -34,12 +34,10 @@ Token.getToken = async function (navigator) {
 
         if (token == null) {
             if (navigator) {
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                        component: LoginPage,
-                        name: 'LoginPage',
-                        sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.FloatFromBottom
-                    });
+                navigator.push({
+                    component: LoginPage,
+                    name: 'LoginPage',
+                    sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.FloatFromBottom
                 });
             }
             return null;

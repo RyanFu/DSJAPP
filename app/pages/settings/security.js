@@ -152,12 +152,10 @@ class SecurityPage extends React.Component {
 
     _jumpToZFBPage() {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: BindZFBPage,
-                name: 'BindZFBPage',
-                sceneConfigs: Navigator.SceneConfigs.FloatFromRight
-            });
+        navigator.push({
+            component: BindZFBPage,
+            name: 'BindZFBPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight
         });
     }
 

@@ -94,13 +94,11 @@ class Search extends React.Component {
     _jumpToResultPage(text) {
 
         const { navigator } = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: ResultPage,
-                name: 'ResultPage',
-                text: text,
-                type: this.state.type
-            });
+        navigator.push({
+            component: ResultPage,
+            name: 'ResultPage',
+            text: text,
+            type: this.state.type
         });
     }
 

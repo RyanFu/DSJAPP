@@ -71,12 +71,10 @@ class TabBar extends React.Component {
         let the = this;
         Token.getToken().then((token) => {
             if (!token && (i === 2 || i === 3 || i === 4)) {
-                InteractionManager.runAfterInteractions(() => {
-                    the.props.navigator.push({
-                        component: LoginPage,
-                        name: 'LoginPage',
-                        sceneConfigs: Navigator.SceneConfigs.FloatFromBottom
-                    });
+                the.props.navigator.push({
+                    component: LoginPage,
+                    name: 'LoginPage',
+                    sceneConfigs: Navigator.SceneConfigs.FloatFromBottom
                 });
             } else {
                 if(i !== 2) {

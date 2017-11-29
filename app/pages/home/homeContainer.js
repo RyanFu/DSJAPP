@@ -37,12 +37,10 @@ class HomeContainer extends React.Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                        component: AddFriends,
-                        name: 'AddFriends',
-                        sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
-                    });
+                navigator.push({
+                    component: AddFriends,
+                    name: 'AddFriends',
+                    sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
                 });
             }
         });
@@ -51,12 +49,10 @@ class HomeContainer extends React.Component {
     _onRightIconClicked() {
         const { navigator } = this.props;
 
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: SearchPage,
-                name: 'SearchPage',
-                sceneConfigs: Navigator.SceneConfigs.FadeAndroid
-            });
+        navigator.push({
+            component: SearchPage,
+            name: 'SearchPage',
+            sceneConfigs: Navigator.SceneConfigs.FadeAndroid
         });
     }
 
