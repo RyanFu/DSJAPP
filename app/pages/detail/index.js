@@ -143,9 +143,11 @@ class Detail extends React.Component {
 
     _jumpToRecommendPage(itemId) {
         const { navigator } = this.props;
+        // const type = data.userType === 1? 'tmall' : 'taobao';
+
         Token.getToken(navigator).then((token) => {
             if (token) {
-                baiChuanApi.jump(itemId, (error, res) => {
+                baiChuanApi.jump(itemId, 'tmall', (error, res) => {
                     if (error) {
                         console.error(error);
                     } else {

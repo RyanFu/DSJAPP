@@ -446,9 +446,11 @@ class RedPacket extends React.Component {
 
     _jumpToTaobaoPage(itemId, data) {
         const { navigator } = this.props;
+        const type = data.userType === 1? 'tmall' : 'taobao';
+
         Token.getToken(navigator).then((token) => {
             if (token) {
-                baiChuanApi.jump(itemId, (error, res) => {
+                baiChuanApi.jump(itemId, type, (error, res) => {
                     if (error) {
                         console.error(error);
                     } else {
