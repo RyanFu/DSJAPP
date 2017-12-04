@@ -14,6 +14,7 @@
 #import "RCTRootView.h"
 #import <AlibcTradeSDK/AlibcTradeSDK.h>
 #import "../Libraries/LinkingIOS/RCTLinkingManager.h"
+#import "MWApi.h"
 
 @implementation AppDelegate
 
@@ -64,6 +65,11 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  //****************** mLink  **********************//
+  [MWApi registerApp: @'MVJSD0W0EKK9ECQCNQ670TEGIGTOLQHY'];
+  //****************** mLink  **********************//
+
   return YES;
 }
 
@@ -125,9 +131,11 @@
     return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
 
   }
+  [MWApi routeMLink:url];
   return YES;
 
 }
+
 
 //- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
 //  BOOL isHandled = [[AlibcTradeSDK sharedInstance] handleOpenURL:url]; // 如果百川处理过会返回YES
