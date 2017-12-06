@@ -67,7 +67,10 @@
   [self.window makeKeyAndVisible];
   
   //****************** mLink  **********************//
-  [MWApi registerApp: @'MVJSD0W0EKK9ECQCNQ670TEGIGTOLQHY'];
+  [MWApi registerApp: @"MVJSD0W0EKK9ECQCNQ670TEGIGTOLQHY"];
+  //注册魔窗mlink事件
+  [self registerMlink];
+  NSLog(@"%@",[MWApi sdkVersion]);
   //****************** mLink  **********************//
 
   return YES;
@@ -121,29 +124,65 @@
 
 //****************** baichuan  **********************//
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
-//  BOOL isHandled = [[AlibcTradeSDK sharedInstance] handleOpenURL:url]; // 如果百川处理过会返回YES
+  //淘宝处理
   BOOL isHandled = [[AlibcTradeSDK sharedInstance] application:application
                                                        openURL:url
                                              sourceApplication:sourceApplication
                                                     annotation:annotation];
   if (!isHandled) {
-    // 其他处理逻辑
-    return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
-
+    // 微信处理
+    if( ![RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation]){
+    
+    }
+    //魔窗处理
+    NSString *urlStr = url.absoluteString;
+    if ([urlStr containsString:@"liteplayer"]) {
+      [MWApi routeMLink:url];
+    }
   }
-  [MWApi routeMLink:url];
+  
   return YES;
 
 }
 
+//iOS9+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
+{
+  //淘宝处理
+  if (![[AlibcTradeSDK sharedInstance] application:application
+                                           openURL:url
+                                           options:options]) {
+    // 微信处理
+    if( ![RCTLinkingManager application:application openURL:url]){
+      
+    }
+    //魔窗处理
+    NSString *urlStr = url.absoluteString;
+    if ([urlStr containsString:@"liteplayer"]) {
+      [MWApi routeMLink:url];
+    }
+  }
+  
+  return YES;
+}
 
-//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
-//  BOOL isHandled = [[AlibcTradeSDK sharedInstance] handleOpenURL:url]; // 如果百川处理过会返回YES
-//  if (!isHandled) {
-//    // 其他处理逻辑
-//  }
-//  return YES;
-//}
+//Universal link
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+  //根据不同的URL路由到不同的app展示页
+  return [MWApi continueUserActivity:userActivity];
+}
+
+- (void)registerMlink
+{
+  [MWApi registerMLinkHandlerWithKey:@"duoshouji"
+                             handler:^(NSURL * _Nonnull url, NSDictionary * _Nullable params) {
+                               NSLog(@"%@", url);
+                               NSLog(@"%@", params);
+                               
+                             }];
+  
+}
 //****************** baichuan  **********************//
 
 @end
