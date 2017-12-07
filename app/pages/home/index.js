@@ -12,7 +12,8 @@ const {
     AsyncStorage,
     StatusBar,
     DeviceEventEmitter,
-    NativeEventEmitter
+    NativeEventEmitter,
+    NativeModules
     } = ReactNative;
 import { connect } from 'react-redux';
 import styles from './style';
@@ -34,10 +35,12 @@ import RedPacket from '../redPacket';
 import {fetchMessageNum} from '../../actions/message';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 const Navigator = deprecatedComponents.Navigator;
+import DetailPage from '../../pages/detail';
 
 const addImg = require('../../assets/header/add.png');
 const searchImg = require('../../assets/header/search.png');
 const settingImg = require('../../assets/personal/setting.png');
+const Event = NativeModules.Event;
 
 class Home extends React.Component {
     constructor(props) {
@@ -46,6 +49,7 @@ class Home extends React.Component {
         this._onFilterClicked = this._onFilterClicked.bind(this);
         this._onLeftIconClicked = this._onLeftIconClicked.bind(this);
         this._onRightIconClicked = this._onRightIconClicked.bind(this);
+        this._jumpToDetailPage = this._jumpToDetailPage.bind(this);
         this.state = {
             showToolbar: this.props.home.showToolbar,
             filterMounted: false,
@@ -77,6 +81,7 @@ class Home extends React.Component {
     componentDidMount() {
 
         const emitter = new NativeEventEmitter(baiChuanApi);
+        const eventEmitter = new NativeEventEmitter(Event);
 
         this.subscriptionTb = emitter.addListener(
             'EventReminder',
@@ -90,7 +95,27 @@ class Home extends React.Component {
             }
         );
 
+        this.subscriptionEvent = eventEmitter.addListener(
+            'mLink',
+            (res) => {
+                const noteId = res.result['noteId'];
+                this._jumpToDetailPage({noteId: noteId});
+            }
+        );
+
+
     }
+
+    _jumpToDetailPage(note) {
+        const { navigator } = this.props;
+        navigator.push({
+            component: DetailPage,
+            name: 'DetailPage',
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+            note
+        });
+    }
+
 
     _bindTaobao(openId) {
         const { navigator } = this.props;
@@ -115,6 +140,7 @@ class Home extends React.Component {
     componentWillUnmount() {
         this.subscriptionTb.remove();
         this.subscriptionNote.remove();
+        this.subscriptionEvent.remove();
     }
 
     componentWillMount() {
