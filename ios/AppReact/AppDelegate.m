@@ -15,6 +15,7 @@
 #import <AlibcTradeSDK/AlibcTradeSDK.h>
 #import "../Libraries/LinkingIOS/RCTLinkingManager.h"
 #import "MWApi.h"
+#import "MLink.h"
 
 @implementation AppDelegate
 
@@ -69,7 +70,7 @@
   //****************** mLink  **********************//
   [MWApi registerApp: @"MVJSD0W0EKK9ECQCNQ670TEGIGTOLQHY"];
   //注册魔窗mlink事件
-  [self registerMlink];
+  [MLink registerMlink];
   NSLog(@"%@",[MWApi sdkVersion]);
   //****************** mLink  **********************//
 
@@ -173,16 +174,7 @@
   return [MWApi continueUserActivity:userActivity];
 }
 
-- (void)registerMlink
-{
-  [MWApi registerMLinkHandlerWithKey:@"duoshouji"
-                             handler:^(NSURL * _Nonnull url, NSDictionary * _Nullable params) {
-                               NSLog(@"%@", url);
-                               NSLog(@"%@", params);
-                               
-                             }];
-  
-}
+
 //****************** baichuan  **********************//
 
 @end
