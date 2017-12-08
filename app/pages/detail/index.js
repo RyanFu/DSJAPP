@@ -307,7 +307,7 @@ class Detail extends React.Component {
                 urlCategory: '',
                 itemId: ''
             };
-            marks.push(mark);
+            // marks.push(mark);
         }
 
         //rating
@@ -437,45 +437,47 @@ class Detail extends React.Component {
 
                         </View>
                     </View>
-                    <View style={[styles.block, styles.recommendByUser]}>
-                        <View style={styles.blockTitle}>
-                            <Text style={styles.blockTitleText}>作者推荐商品</Text>
-                        </View>
+
                     {
                         marks.length > 0 ? (
 
                             marks.map((val, key)=> {
                                 return (
-                                    <TouchableOpacity
-                                        key={'recommend' + key}
-                                        onPress={() => {
-                                            this._jumpToWebview(val)
-                                        }}
-                                        style={styles.recFrame}>
-                                        <PrefetchImage
-                                            imageUri={val.imageUrl ? val.imageUrl : imagesConstants.DEFAULT_IMAGE}
-                                            imageStyle={styles.recThumb}
-                                            resizeMode="cover"
-                                            width={width / 4}
-                                            height={width / 4}
-                                        />
-                                        <View style={styles.recContent}>
-                                            <Text style={styles.baseText} lineBreakMode={'tail'} numberOfLines={2}>
-                                                {val.title}
-                                            </Text>
-                                            <View style={styles.recPriceFrame}>
-                                                <Text
-                                                    style={[styles.baseText, styles.recPrice]}>{val.price ? '￥' + val.price : ''}</Text>
-                                            </View>
-
+                                    <View style={[styles.block, styles.recommendByUser]}>
+                                        <View style={styles.blockTitle}>
+                                            <Text style={styles.blockTitleText}>作者推荐商品</Text>
                                         </View>
-                                    </TouchableOpacity>
+                                        <TouchableOpacity
+                                            key={'recommend' + key}
+                                            onPress={() => {
+                                                this._jumpToWebview(val)
+                                            }}
+                                            style={styles.recFrame}>
+                                            <PrefetchImage
+                                                imageUri={val.imageUrl ? val.imageUrl : imagesConstants.DEFAULT_IMAGE}
+                                                imageStyle={styles.recThumb}
+                                                resizeMode="cover"
+                                                width={width / 4}
+                                                height={width / 4}
+                                            />
+                                            <View style={styles.recContent}>
+                                                <Text style={styles.baseText} lineBreakMode={'tail'} numberOfLines={2}>
+                                                    {val.title}
+                                                </Text>
+                                                <View style={styles.recPriceFrame}>
+                                                    <Text
+                                                        style={[styles.baseText, styles.recPrice]}>{val.price ? '￥' + val.price : ''}</Text>
+                                                </View>
+
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
                                 )
                             })
 
                         ) : null
                     }
-                    </View>
+
 
                     {
                         this.props.recommend.recommendList.taobao && this.props.recommend.recommendList.taobao.length>0 ? <View style={[styles.block, styles.recommendBySystem]}>
