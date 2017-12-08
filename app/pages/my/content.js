@@ -480,11 +480,11 @@ export default class MyContent extends Component {
                                         </View>
                                         <View style={styles.incomeLine}>
                                             <Text style={{fontSize: 12,color: '#9b9b9b'}}>预估收益:￥</Text>
-                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.estimatedRebate? this.state.estimatedRebate : 0}</Text>
+                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.estimatedRebate? this.user.estimatedRebate : 0}</Text>
                                         </View>
                                         <View style={styles.incomeLine}>
                                             <Text style={{fontSize: 12,color: '#9b9b9b',}}>可提收益:￥</Text>
-                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.availableRebate? this.state.availableRebate : 0}</Text>
+                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.availableRebate? this.user.availableRebate : 0}</Text>
                                             <TouchableOpacity style={styles.button} onPress={this._withdraw.bind(this)}>
                                                 <Text style={styles.buttonFont}>提现</Text>
                                             </TouchableOpacity>
