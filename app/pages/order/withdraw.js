@@ -18,11 +18,13 @@ import deprecatedComponents from 'react-native-deprecated-custom-components';
 import StorageKeys from '../../constants/StorageKeys';
 import BindZFBPage from '../settings/bindZFB';
 const Navigator = deprecatedComponents.Navigator;
+import _ from 'lodash';
 
 class Withdraw extends React.Component {
     constructor(props) {
         super(props);
         this._submit = this._submit.bind(this);
+        this._withDraw = this._withDraw.bind(this);
         this.state = {
             availableRebate: 0,
             cash: '0'
@@ -41,20 +43,18 @@ class Withdraw extends React.Component {
 
     _submit() {
         const {navigator } = this.props;
-        const bindingCheck = (bool)=>{
-            if(!bool){
-                Alert.alert(
-                    '支付宝绑定',
-                    '你还未绑定支付宝账号，绑定后才能提现',
-                    [
-                        {text: '不需要', onPress: () => console.log('not bind')},
-                        {text: '绑定', onPress: () =>{
-                                 this._jumpToBindPage();
-                            }
-                        }
-                    ]
-                )
-            }
+        const bind = ()=>{
+            Alert.alert(
+                '支付宝绑定',
+                '你还未绑定支付宝账号，绑定后才能提现',
+                [
+                    {text: '不需要', onPress: () => console.log('not bind')},
+                    {text: '绑定', onPress: () =>{
+                        this._jumpToBindPage();
+                    }
+                    }
+                ]
+            );
         };
         Token.getToken(navigator).then((token) => {
                 if (token) {
@@ -62,21 +62,45 @@ class Withdraw extends React.Component {
                         .then((res) => {
                             if (res.resultCode === 0) {
                                 _.each(res.resultValues, (v, k)=> {
-                                    if (v.bindingChannel === 'ZHIFUBAO') {
-                                        bindingCheck(true);
+                                    if (v.bindingChannel === 'ALIPAY') {
+                                        this._withDraw();
                                         return;
                                     }
                                 });
+                            } else {
+                                bind();
                             }
-                            bindingCheck(false);
 
                         }, function (error) {
                             console.log(error);
-                            bindingCheck(false);
+                            bind(false);
                         })
                         .catch(() => {
                             console.log('network error');
-                            bindingCheck(false);
+                            bind(false);
+                        });
+                }
+            }
+        );
+    }
+
+    _withDraw() {
+        const { navigator } = this.props;
+        Token.getToken(navigator).then((token) => {
+                if (token) {
+                    request('/user/withdraw-deposit', 'POST', '', token)
+                        .then((res) => {
+                            if (res.resultCode === 0) {
+                                toast('提现成功');
+                                naviGoBack(navigator);
+                            } else {
+                                toast('提现失败，请核对支付宝账户信息后再尝试。');
+                            }
+                        }, function (error) {
+                            console.log(error);
+                        })
+                        .catch(() => {
+                            console.log('network error');
                         });
                 }
             }
