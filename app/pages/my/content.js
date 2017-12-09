@@ -422,7 +422,7 @@ export default class MyContent extends Component {
         if(this.state.user.availableRebate && this.state.user.availableRebate > 0){
             this._jumpWithdrawPage();
         } else {
-            this._jumpWithdrawPage();
+            // this._jumpWithdrawPage();
             toast('亲，暂时没有可提金额哦');
         }
     }

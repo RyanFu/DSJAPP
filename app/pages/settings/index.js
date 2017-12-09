@@ -93,8 +93,8 @@ class SettingPage extends React.Component {
             '缓存',
             '确定要清除缓存吗？',
             [
-                {text: 'Cancel', onPress: () => console.log('still sign in')},
-                {text: 'OK', onPress: () =>{}
+                {text: '取消', onPress: () => console.log('still sign in')},
+                {text: '确定', onPress: () =>{}
                     //CacheManager.clearCache()
                     //    .then(()=>{
                     //        toast('清除成功');
