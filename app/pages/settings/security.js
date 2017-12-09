@@ -33,7 +33,7 @@ class SecurityPage extends React.Component {
             'WEIBO': {},
             'QQ': {},
             'TAOBAO': {},
-            'ZHIFUBAO': {},
+            'ALIPAY': {},
             userId: 13585979772
         }
     }
@@ -47,20 +47,31 @@ class SecurityPage extends React.Component {
                             if (res.resultCode === 0) {
                                 _.each(res.resultValues, (v, k)=> {
                                     if (v.bindingChannel === 'WEIXIN') {
-                                        this.setState({'WEIXIN': v});
+                                        this.setState({'WEIXIN': Object.assign({}, v, {
+                                            isBound: true
+                                        })});
                                     }
                                     if (v.bindingChannel === 'WEIBO') {
-                                        this.setState({'WEIBO': v});
+                                        this.setState({'WEIBO': Object.assign({}, v, {
+                                            isBound: true
+                                        })});
                                     }
                                     if (v.bindingChannel === 'QQ') {
-                                        this.setState({'QQ': v});
+                                        this.setState({'QQ': Object.assign({}, v, {
+                                            isBound: true
+                                        })});
                                     }
                                     if (v.bindingChannel === 'TAOBAO') {
-                                        this.setState({'TAOBAO': v});
+                                        this.setState({'TAOBAO': Object.assign({}, v, {
+                                            isBound: true
+                                        })});
                                     }
-                                    if (v.bindingChannel === 'ZHIFUBAO') {
-                                        this.setState({'ZHIFUBAO': v});
+                                    if (v.bindingChannel === 'ALIPAY') {
+                                        this.setState({'ALIPAY': Object.assign({}, v, {
+                                            isBound: true
+                                        })});
                                     }
+
                                 });
                             }
                         }, function (error) {
@@ -97,9 +108,13 @@ class SecurityPage extends React.Component {
                     {
                         text: '确定', onPress: () => {
                         const {navigator } = this.props;
+                        let url = 'user/unbind/' + channel;
+                        if(channel === 'ALIPAY') {
+                            url = 'user/bindings/alipay/unbind';
+                        }
                         Token.getToken(navigator).then((token) => {
                                 if (token) {
-                                    request('user/unbind/' + channel, 'post', '', token)
+                                    request(url, 'post', '', token)
                                         .then((res) => {
                                             if (res.resultCode === 0) {
                                                 let obj = this.state[channel];
@@ -112,8 +127,8 @@ class SecurityPage extends React.Component {
                                                     this.setState({'QQ': obj});
                                                 if (channel === 'TAOBAO')
                                                     this.setState({'TAOBAO': obj});
-                                                if (channel === 'ZHIFUBAO')
-                                                    this.setState({'ZHIFUBAO': obj});
+                                                if (channel === 'ALIPAY')
+                                                    this.setState({'ALIPAY': obj});
                                                 toast('成功解除绑定');
                                             }
                                         }, function (error) {
@@ -131,9 +146,9 @@ class SecurityPage extends React.Component {
                 ]
             );
         } else {
-            if (channel === 'ZHIFUBAO')
+            if (channel === 'ALIPAY')
                 this._jumpToZFBPage();
-            else
+            else if (channel === 'TAOBAO')
                 Alert.alert(
                     '绑定',
                     '需要绑定账号吗？',
@@ -263,11 +278,11 @@ class SecurityPage extends React.Component {
                 </TouchableHighlight>
                 <View style={styles.separatorHorizontal}/>
 
-                <TouchableHighlight onPress={() => this._unbind('ZHIFUBAO')}>
+                <TouchableHighlight onPress={() => this._unbind('ALIPAY')}>
                     <View style={styles.row}>
                         <Text style={styles.text}>支付宝</Text>
                         <Text
-                            style={[styles.baseText,styles.dimText, (this.state.ZHIFUBAO.isBound && styles.boundText) ]}>{this.state.ZHIFUBAO.isBound ? '已绑定' : '马上绑定'}</Text>
+                            style={[styles.baseText,styles.dimText, (this.state.ALIPAY.bindingChannel && styles.boundText) ]}>{this.state.ALIPAY.bindingChannel ? '已绑定' : '马上绑定'}</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
