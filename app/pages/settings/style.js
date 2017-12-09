@@ -203,6 +203,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#ececec',
         height: 38,
         paddingTop: 5
+    },
+    tip: {
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        height:12,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    tipFont: {
+        fontSize: 11,
+        height: 12,
+    },
+    tipIcon: {
+        color: '#fc7d30',
+        marginRight: 2
     }
 });
 
