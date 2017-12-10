@@ -29,7 +29,8 @@ import configs from '../../constants/configs';
 import * as WechatAPI from 'react-native-wx';
 import {
     Token,
-    toast
+    toast,
+    request
 } from '../../utils/common';
 import StorageKeys from '../../constants/StorageKeys';
 import {fetchUserInfo} from '../../actions/user';
@@ -45,7 +46,8 @@ export default class LoginPage extends Component {
         this.state = {
             region: 'China',
             modalVisible: true,
-            sending: false
+            sending: false,
+            sendSuccess: false
         };
     }
 
@@ -137,6 +139,42 @@ export default class LoginPage extends Component {
     }
 
     _sendCode() {
+        if (this.state.sending)
+            return;
+
+        if (!this.state.phone) {
+            toast('请填写正确的手机号码');
+            return false;
+        }
+
+        this.setState({sending: true});
+
+        let body = JSON.stringify({
+            mobile: this.state.phone
+        });
+
+        request( 'message/verification-code', 'POST', body)
+            .then((res) => {
+                if (res.resultCode == 0) {
+                    toast('验证码已发送');
+                    this.setState({sendSuccess: true});
+                } else {
+                    toast('验证码发送失败');
+                }
+                this.setState({sending: false});
+
+            }, function (error) {
+                this.setState({sending: false});
+                console.log(error);
+            })
+            .catch(() => {
+                this.setState({sending: false});
+                console.log('network error');
+            });
+
+    }
+
+    _onPressLoginButton() {
         if (this.state.sending) return;
 
         if (!this.state.phone) {
@@ -144,37 +182,10 @@ export default class LoginPage extends Component {
             return false;
         }
 
-        this.state.sending = true;
-
-        fetch(configs.serviceUrl + 'message/verification-code', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                mobile: this.state.phone
-            })
-        }).then((response) => {
-            this.state.sending = false;
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('网络响应不正常');
-        }).then((responseJson) => {
-            if (responseJson.resultCode == 0) {
-                toast('验证码已发送');
-                return responseJson.resultCode;
-            }
-            throw new Error('验证码发送失败');
-        }).catch((error) => {
-            toast(error.message);
-        });
-    }
-
-    _onPressLoginButton() {
-        if (this.state.sending) return;
-
+        if (!this.state.code) {
+            toast('请输入验证码');
+            return false;
+        }
         const { navigator, HomeNavigator } = this.props;
         let {phone, code} = this.state;
 
@@ -278,7 +289,7 @@ export default class LoginPage extends Component {
                                value={this.state.text}
                                blurOnSubmit={true}
                                onFocus={(e) => this.setState({focus:'code'})}/>
-                    <PhoneCodeButton onPress={this._sendCode.bind(this)}>发送验证码</PhoneCodeButton>
+                    <PhoneCodeButton onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
                 </View>
 
                 <View style={{justifyContent:'space-between', flexDirection:'row'}}>

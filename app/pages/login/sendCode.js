@@ -28,7 +28,8 @@ class SendCode extends React.Component {
             secret: '',
             loginChannel: this.props.route.loginChannel,
             loginChannelUserId: this.props.route.loginChannelUserId,
-            sending: true
+            sending: true,
+            sendSuccess: false
         };
     }
 
@@ -66,7 +67,7 @@ class SendCode extends React.Component {
 
     _sendCode() {
         if (this.state.sending) return;
-        this.state.sending = true;
+        this.setState({sending: true});
 
         let body = {
             mobile: this.state.phone
@@ -74,19 +75,21 @@ class SendCode extends React.Component {
         body = JSON.stringify(body);
         request('message/verification-code', 'POST', body)
             .then((res) => {
-                this.state.sending = false;
+                this.setState({sending: false});
                 if (res.resultCode === 0) {
                     toast('验证码已发送');
                     Token.setToken(responseJson.token);
+                    this.setState({sendSuccess: true});
+                } else {
+                    toast('验证码发送失败');
                 }
-                toast('验证码发送失败');
             }, function (error) {
-                this.state.sending = false;
+                this.setState({sending: false});
                 toast('验证码发送失败');
                 console.log(error);
             })
             .catch(() => {
-                this.state.sending = false;
+                this.setState({sending: false});
                 toast('验证码发送失败');
                 console.log('network error');
             });
@@ -127,7 +130,7 @@ class SendCode extends React.Component {
                         />
                     <View style={{marginRight: 8}}>
                         <PhoneCodeButton ref={(component) => this.codeBtn = component}
-                            onPress={this._sendCode.bind(this)}>再次发送</PhoneCodeButton>
+                            onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>再次发送</PhoneCodeButton>
                     </View>
                 </View>
                 <View style={styles.bindPhone}>

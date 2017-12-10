@@ -10,12 +10,10 @@ import {
 } from 'react-native';
 import Button from './Button';
 
-// var requestAnimationFrame = require('fbjs/lib/requestAnimationFrame');
-
 export default class PhoneCodeButton extends Component {
     constructor(props) {
         super(props);
-
+        this._countDown = this._countDown.bind(this);
         this.state = {
             hasSent: false,
             text: '发送验证码'
@@ -32,13 +30,24 @@ export default class PhoneCodeButton extends Component {
         clearInterval(this.timerId);
     }
 
+    componentWillReceiveProps(){
+        if(this.props.sendSuccess){
+            this._countDown();
+        }
+    }
+
     onPressBtn() {
-        if (this.state.hasSent) return;
+        if (this.state.hasSent)
+            return;
 
         if (this.props.onPress) {
-            if (this.props.onPress() === false) return;
+            if (this.props.onPress() === false)
+                return;
         }
 
+    }
+
+    _countDown(){
         this.state.hasSent = true;
         this.props.disabled = true;
         let timeLeft = 60;

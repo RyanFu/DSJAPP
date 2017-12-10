@@ -22,7 +22,8 @@ import {
 import Home from '../home';
 import {
     Token,
-    toast
+    toast,
+    request
 } from '../../utils/common';
 import Button from '../../../app/components/button/Button';
 import PhoneCodeButton from '../../../app/components/button/PhoneCodeButton';
@@ -40,7 +41,8 @@ export default class ForgetPasswordPage extends Component {
 
         this.state = {
             modalVisible: true,
-            sending: false
+            sending: false,
+            sendSuccess: false
         };
     }
 
@@ -60,33 +62,31 @@ export default class ForgetPasswordPage extends Component {
             return false;
         }
 
-        this.state.sending = true;
+        this.setState({sending: true});
 
-        fetch(configs.serviceUrl + 'message/verification-code', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                purpose: 'login',
-                mobile: this.state.phone
-            })
-        }).then((response) => {
-            this.state.sending = false;
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('网络响应不正常');
-        }).then((responseJson) => {
-            if (responseJson.resultCode == 0) {
-                toast('验证码已发送');
-                return responseJson.resultCode;
-            }
-            throw new Error('验证码发送失败');
-        }).catch((error) => {
-            toast(error.message);
+        let  body = JSON.stringify({
+            purpose: 'login',
+            mobile: this.state.userId
         });
+
+        request( 'message/verification-code', 'POST', body)
+            .then((res) => {
+                if (res.resultCode == 0) {
+                    toast('验证码已发送');
+                    this.setState({sendSuccess: true});
+                } else {
+                    toast('验证码发送失败');
+                }
+                this.setState({sending: false});
+
+            }, function (error) {
+                this.setState({sending: false});
+                console.log(error);
+            })
+            .catch(() => {
+                this.setState({sending: false});
+                console.log('network error');
+            });
     }
 
     _onPressLoginButton() {
@@ -190,7 +190,7 @@ export default class ForgetPasswordPage extends Component {
                                onChangeText={(text) => {this.state.code=text; this.validate();}}
                                value={this.state.text}
                                onFocus={(e) => this.setState({focus:'code'})}/>
-                    <PhoneCodeButton onPress={this._sendCode.bind(this)} >发送验证码</PhoneCodeButton>
+                    <PhoneCodeButton onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
                 </View>
 
                 <View style={{marginTop:40, flexDirection:'row'}}>

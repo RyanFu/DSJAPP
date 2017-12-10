@@ -27,7 +27,8 @@ class BindZFB extends React.Component {
             name: null,
             code: null,
             sending: false,
-            userId: '17321057664'
+            userId: '17321057664',
+            sendSuccess: false
         };
     }
 
@@ -102,33 +103,31 @@ class BindZFB extends React.Component {
     _sendCode() {
         if (this.state.sending) return false;
 
-        this.state.sending = true;
+        this.setState({sending: true});
 
-        fetch(configs.serviceUrl + 'message/verification-code', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                purpose: 'bind',
-                mobile: this.state.userId
-            })
-        }).then((response) => {
-            this.state.sending = false;
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('网络响应不正常');
-        }).then((responseJson) => {
-            if (responseJson.resultCode == 0) {
-                toast('验证码已发送');
-                return responseJson.resultCode;
-            }
-            throw new Error('验证码发送失败');
-        }).catch((error) => {
-            toast(error.message);
+        let  body = JSON.stringify({
+            purpose: 'bind',
+            mobile: this.state.userId
         });
+
+        request( 'message/verification-code', 'POST', body)
+            .then((res) => {
+                if (res.resultCode == 0) {
+                    toast('验证码已发送');
+                    this.setState({sendSuccess: true});
+                } else {
+                    toast('验证码发送失败');
+                }
+                this.setState({sending: false});
+
+            }, function (error) {
+                this.setState({sending: false});
+                console.log(error);
+            })
+            .catch(() => {
+                this.setState({sending: false});
+                console.log('network error');
+            });
     }
 
     render() {
@@ -194,7 +193,7 @@ class BindZFB extends React.Component {
                         maxLength={6}
                     />
                     <View style={styles.code}>
-                        <PhoneCodeButton  onPress={this._sendCode.bind(this)} >发送验证码</PhoneCodeButton>
+                        <PhoneCodeButton  onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
                     </View>
                 </View>
                 <View style={styles.submit}>
