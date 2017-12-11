@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         width: width,
         flexDirection: 'column',
-        //marginBottom: 10,
+        // marginBottom: 5,
         padding: 10,
-        paddingVertical: 15,
-        paddingBottom: 5
+        paddingVertical: 0,
+        // paddingBottom: 5
     },
     search: {
         height: 100,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 3,
         paddingBottom: 4,
-        borderRadius: 4,
+        borderRadius: 14,
         alignItems: 'center',
         marginLeft: 10,
         marginBottom: 5,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: width,
         marginLeft: -10,
-        marginTop: -15,
+        marginTop: 0,
         paddingLeft: 10
     },
     recentBuy: {
@@ -219,6 +219,12 @@ const styles = StyleSheet.create({
     },
     moreIcon: {
         color: '#fff'
+    },
+    historyContent: {
+        marginVertical: 5,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignSelf: 'flex-start'
     }
 });
 

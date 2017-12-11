@@ -1,6 +1,6 @@
 'use strict';
 
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -21,16 +21,17 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import { request,toast } from '../../utils/common';
-import { Token, decimals } from '../../utils/common';
-import { connect } from 'react-redux';
+import {request, toast} from '../../utils/common';
+import {Token, decimals} from '../../utils/common';
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 import StorageKeys from '../../constants/StorageKeys';
 import configs from '../../constants/configs';
 import ResultPage from '../search/result';
 import PrefetchImage from '../../components/prefetchImage';
-import { fetchRecentView,fetchRecentBuy } from '../../actions/recent';
+import {fetchRecentView, fetchRecentBuy} from '../../actions/recent';
+
 const {height, width} = Dimensions.get('window');
 const addImg = require('../../assets/header/add.png');
 const searchImg = require('../../assets/header/search.png');
@@ -39,6 +40,7 @@ import SearchPage from '../search';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import OrdersPage from '../../pages/order';
+
 const Navigator = deprecatedComponents.Navigator;
 const moreIcon = <Icon style={[styles.moreIcon]} size={20} name="ios-arrow-dropright"/>;
 
@@ -51,6 +53,7 @@ class RedPacket extends React.Component {
         this._recentList = this._recentList.bind(this);
         this._onLeftIconClicked = this._onLeftIconClicked.bind(this);
         this._onRightIconClicked = this._onRightIconClicked.bind(this);
+        this._topSearch = this._topSearch.bind(this);
         this.state = {
             keyWord: '',
             searchItemHistory: [],
@@ -61,7 +64,9 @@ class RedPacket extends React.Component {
             viewSource: this.ds.cloneWithRows([]),
             bounce: new Animated.Value(0),
             ratio: 0.7,
-            isLoadMore: false
+            isLoadMore: false,
+            topSearch: [],
+            showTop: true
         };
     }
 
@@ -102,7 +107,7 @@ class RedPacket extends React.Component {
 
     _jumpToResultPage(text) {
 
-        const { navigator } = this.props;
+        const {navigator} = this.props;
         navigator.push({
             component: ResultPage,
             name: 'ResultPage',
@@ -118,7 +123,7 @@ class RedPacket extends React.Component {
 
     componentDidMount() {
         const the = this;
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
 
         AsyncStorage.getItem(StorageKeys.SEARCH_ITEM, (error, result) => {
             result = _.reverse(JSON.parse(result));
@@ -129,30 +134,30 @@ class RedPacket extends React.Component {
             the.setState({searchNoteHistory: result});
         });
 
-        dispatch(fetchRecentView()).then(()=> {
+        dispatch(fetchRecentView()).then(() => {
             const copy = _.cloneDeep(this.props.recent.recentView);
             the.setState({viewSource: this.ds.cloneWithRows(_.reverse(copy))});
         });
-        DeviceEventEmitter.addListener('newView', ()=> {
-            dispatch(fetchRecentView()).then(()=> {
+        DeviceEventEmitter.addListener('newView', () => {
+            dispatch(fetchRecentView()).then(() => {
                 const copy = _.cloneDeep(this.props.recent.recentView);
                 the.setState({viewSource: this.ds.cloneWithRows(_.reverse(copy))});
             });
         });
 
-        DeviceEventEmitter.addListener('newBuy', ()=> {
+        DeviceEventEmitter.addListener('newBuy', () => {
             Token.getToken().then((token) => {
-                if(!token){
+                if (!token) {
                     return;
                 }
                 const params = {
                     token: token
                 };
-                dispatch(fetchRecentBuy(params)).then(()=> {
+                dispatch(fetchRecentBuy(params)).then(() => {
                     let copy = _.cloneDeep(this.props.recent.recentBuy);
                     copy = _.slice(copy, 0, 6);
-                    _.each(copy, (v, k)=>{
-                        copy[k].tkCommFee = v.tkCommFee/100
+                    _.each(copy, (v, k) => {
+                        copy[k].tkCommFee = v.tkCommFee / 100
                     });
                     the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
                 });
@@ -160,17 +165,17 @@ class RedPacket extends React.Component {
         });
 
         Token.getToken().then((token) => {
-            if(!token){
+            if (!token) {
                 return;
             }
             const params = {
                 token: token
             };
-            dispatch(fetchRecentBuy(params)).then(()=> {
+            dispatch(fetchRecentBuy(params)).then(() => {
                 let copy = _.cloneDeep(this.props.recent.recentBuy);
                 copy = _.slice(copy, 0, 6);
-                _.each(copy, (v, k)=>{
-                   copy[k].tkCommFee = v.tkCommFee/100
+                _.each(copy, (v, k) => {
+                    copy[k].tkCommFee = v.tkCommFee / 100
                 });
                 the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
             });
@@ -178,7 +183,7 @@ class RedPacket extends React.Component {
 
 
         var tick = 0;
-        setInterval((v)=> {
+        setInterval((v) => {
             Animated.spring(
                 this.state.bounce,
                 {
@@ -192,8 +197,8 @@ class RedPacket extends React.Component {
 
         request('/rebate/ratio', 'GET')
             .then((res) => {
-                if(res && res.resultValues)
-                AsyncStorage.setItem('ratio', res.resultValues);
+                if (res && res.resultValues)
+                    AsyncStorage.setItem('ratio', res.resultValues);
                 the.setState({ratio: res.resultValues});
             }, function (error) {
                 console.log(error);
@@ -202,6 +207,7 @@ class RedPacket extends React.Component {
                 console.log('network error');
             });
 
+        this._topSearch();
     }
 
     _deleteSearchHistory() {
@@ -219,39 +225,73 @@ class RedPacket extends React.Component {
     }
 
     _historyFrame() {
-        var rows = [];
+        let rows = [];
+        let topRows = [];
         _.each(this.state.searchItemHistory, (v, k) => {
             if (typeof v === 'string')
                 rows.push(
                     <TouchableOpacity style={styles.historyItem} key={k} onPress={() => this._search(v)}>
-                        <View >
-                            <Text style={[styles.historyItemFont,styles.baseText]}>{v}</Text>
+                        <View>
+                            <Text style={[styles.historyItemFont, styles.baseText]}>{v}</Text>
+                        </View>
+                    </TouchableOpacity>
+                );
+        });
+        _.each(this.state.topSearch, (v, k) => {
+            if (typeof v === 'string')
+                topRows.push(
+                    <TouchableOpacity style={styles.historyItem} key={k} onPress={() => this._search(v)}>
+                        <View>
+                            <Text style={[styles.historyItemFont, styles.baseText]}>{v}</Text>
                         </View>
                     </TouchableOpacity>
                 );
         });
         if (!this.state.itemAuto)
             return (
-                <View style={styles.historyC}>
-                    <View style={styles.blockTitle}>
-                        <View style={styles.delete}>
-                            <TouchableOpacity onPress={() => this._deleteSearchHistory()}>
-                                <Icon
-                                    name='ios-trash'
-                                    size={26}
-                                    color={'#aaa'}
+                <View>
+                    {rows.length > 0 ? <View style={styles.historyC}>
+                        <View style={styles.blockTitle}>
+                            <View style={styles.delete}>
+                                <TouchableOpacity onPress={() => this._deleteSearchHistory()}>
+                                    <Icon
+                                        name='ios-trash'
+                                        size={26}
+                                        color={'#aaa'}
                                     />
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
+                            <Text style={[styles.historyTitle, styles.baseText]}>搜索历史：</Text>
                         </View>
-                        <Text style={[styles.historyTitle,styles.baseText]}>搜索历史：</Text>
-                    </View>
-                    <View style={[{marginTop: 5,flexDirection: 'row',flexWrap: 'wrap',alignSelf: 'flex-start'}]}>
-                        {
-                            rows
-                        }
-                    </View>
-                </View>
+                        <View style={styles.historyContent}>
+                            {
+                                rows
+                            }
+                        </View>
+                    </View> : null
+                    }
 
+                    {topRows.length > 0 ? <View style={styles.historyC}>
+                        <View style={styles.blockTitle}>
+                            <View style={styles.delete}>
+                                <TouchableOpacity onPress={() => this._showTop()}>
+                                    <Icon
+                                        name={this.state.showTop ? 'ios-eye' : 'ios-eye-off'}
+                                        size={26}
+                                        color={'#aaa'}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            <Text style={[styles.historyTitle, styles.baseText]}>热门搜索：</Text>
+                        </View>
+                        <View style={styles.historyContent}>
+                            {
+                                this.state.showTop ? topRows : <View style={{flex: 1,alignItems:'center'}}><Text style={styles.dimText}>热门搜索关闭</Text></View>
+                            }
+                        </View>
+                    </View> : null
+                    }
+                </View>
             );
         else
             return (
@@ -263,12 +303,12 @@ class RedPacket extends React.Component {
                         horizontal={false}
                         showsVerticalScrollIndicator={false}
                         enableEmptySections={true}
-                        />
+                    />
                 </View>
             )
     }
 
-    _renderItemAutoRow(rowData:string, sectionID:number, rowID:number) {
+    _renderItemAutoRow(rowData: string, sectionID: number, rowID: number) {
         return (
             <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}
                               onPress={() => this._search(rowData[0])}>
@@ -309,7 +349,7 @@ class RedPacket extends React.Component {
 
     _recentList(type) {
         let dataSource = this.state.buySource;
-        if (type === 'view'){
+        if (type === 'view') {
             dataSource = this.state.viewSource;
             return (
                 <ListView
@@ -336,17 +376,17 @@ class RedPacket extends React.Component {
                 pageSize={6}
                 initialListSize={6}
                 onEndReached={this._onEndReached.bind(this)}
-                />
+            />
         )
 
     }
 
     _onEndReached() {
-        if(this.props.recent.recentBuy.length>6)
+        if (this.props.recent.recentBuy.length > 6)
             this.setState({isLoadMore: true});
     }
 
-    _renderFooter(){
+    _renderFooter() {
         if (this.state.isLoadMore) {
             return (
                 <TouchableOpacity onPress={this._jumpOrdersPage.bind(this)} style={styles.loadMore}>
@@ -373,42 +413,44 @@ class RedPacket extends React.Component {
         });
     }
 
-    _renderItemRow(rowData:string) {
-        if(!rowData)
+    _renderItemRow(rowData: string) {
+        if (!rowData)
             return null
         return (
             <TouchableOpacity onPress={() => this._jumpToTaobaoPage(rowData.itemId.toString(), rowData)}
                               underlayColor="transparent" activeOpacity={0.5}>
-                <View style={styles.sysRowC} >
+                <View style={styles.sysRowC}>
                     <View style={styles.sysRow}>
                         <PrefetchImage
                             imageUri={rowData.itemPicUrl}
                             imageStyle={styles.sysThumb}
                             resizeMode="cover"
-                            width={width/3-5}
-                            height={width/3-5}
+                            width={width / 3 - 5}
+                            height={width / 3 - 5}
                             key={rowData.itemPicUrl}
-                            />
+                        />
                         <View style={styles.recFlowPrice}>
                             <Animated.Text
-                                style={[styles.baseText,styles.recFlowText,{marginTop: this.state.bounce}]}>￥{rowData.itemPrice}</Animated.Text>
-                            <Text style={[styles.baseText,styles.recFlowText]}>红包：￥{decimals(rowData.tkCommFee*this.state.ratio, 2)}</Text>
+                                style={[styles.baseText, styles.recFlowText, {marginTop: this.state.bounce}]}>￥{rowData.itemPrice}</Animated.Text>
+                            <Text
+                                style={[styles.baseText, styles.recFlowText]}>红包：￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-                            <Text style={[styles.baseText,{paddingBottom:0,minHeight: 38}]} lineBreakMode={'tail'} numberOfLines={2}>
+                            <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}
+                                  numberOfLines={2}>
                                 {rowData.itemTitle}
                             </Text>
                         </View>
 
                     </View>
                     {
-                        rowData.state == 'UNKNOWN'?<View style={styles.syncShadow}>
+                        rowData.state == 'UNKNOWN' ? <View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
                                     <Text style={styles.syncShadowText}>订单同步中...</Text>
                                 </View>
                             </View>
-                        </View>: null
+                        </View> : null
                     }
 
                 </View>
@@ -417,19 +459,19 @@ class RedPacket extends React.Component {
     }
 
     _insertOrder(data) {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         const the = this;
         data = JSON.stringify(data);
         Token.getToken(navigator).then((token) => {
             if (token) {
-                request('user/orderitems','POST',data,token)
+                request('user/orderitems', 'POST', data, token)
                     .then((res) => {
                         if (res.resultCode === 0) {
                             toast('购买成功');
                             const params = {
                                 token: token
                             };
-                            dispatch(fetchRecentBuy(params)).then(()=> {
+                            dispatch(fetchRecentBuy(params)).then(() => {
                                 const copy = _.cloneDeep(the.props.recent.recentBuy);
                                 the.setState({buySource: the.ds.cloneWithRows(_.reverse(copy))});
                             });
@@ -445,8 +487,8 @@ class RedPacket extends React.Component {
     }
 
     _jumpToTaobaoPage(itemId, data) {
-        const { navigator } = this.props;
-        const type = data.userType === 1? 'tmall' : 'taobao';
+        const {navigator} = this.props;
+        const type = data.userType === 1 ? 'tmall' : 'taobao';
 
         Token.getToken(navigator).then((token) => {
             if (token) {
@@ -467,7 +509,7 @@ class RedPacket extends React.Component {
     }
 
     _onLeftIconClicked() {
-        const { navigator } = this.props;
+        const {navigator} = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
                 navigator.push({
@@ -480,7 +522,7 @@ class RedPacket extends React.Component {
     }
 
     _onRightIconClicked() {
-        const { navigator } = this.props;
+        const {navigator} = this.props;
 
         navigator.push({
             component: SearchPage,
@@ -489,14 +531,35 @@ class RedPacket extends React.Component {
         });
     }
 
+    _topSearch() {
+        return request('system/topsearch', 'GET')
+            .then((res) => {
+                if (res.resultCode === 0
+                    && res.resultValues
+                    && res.resultValues.configValue.length > 0) {
+                    let string = res.resultValues.configValue.substr(1, res.resultValues.configValue.length - 2);
+                    this.setState({topSearch: string.split(',')});
+                }
+            }, function (error) {
+                console.log(error);
+            })
+            .catch(() => {
+                console.log('network error');
+            });
+    }
+
+    _showTop() {
+        this.setState({showTop: !this.state.showTop});
+    }
+
     render() {
         var rows = [];
         _.each(this.state.searchItemHistory, (v, k) => {
             if (typeof v === 'string')
                 rows.push(
                     <TouchableOpacity style={styles.historyItem} key={k} onPress={() => this._search(v)}>
-                        <View >
-                            <Text style={[styles.historyItemFont,styles.baseText]}>{v}</Text>
+                        <View>
+                            <Text style={[styles.historyItemFont, styles.baseText]}>{v}</Text>
                         </View>
                     </TouchableOpacity>
                 );
@@ -511,9 +574,9 @@ class RedPacket extends React.Component {
                     rightImg={searchImg}
                     onLeftIconClicked={this._onLeftIconClicked}
                     onRightIconClicked={this._onRightIconClicked}
-                    />
-                <View style={[styles.block,styles.search]}>
-                    <Text style={[styles.baseText, {fontSize: 14,color: '#fc7d30'}]}>淘宝购物全场都有红包拿，还不快搜！</Text>
+                />
+                <View style={[styles.block, styles.search]}>
+                    <Text style={[styles.baseText, {fontSize: 14, color: '#fc7d30'}]}>淘宝购物全场都有红包拿，还不快搜！</Text>
                     <View style={styles.searchHeader}>
                         <TextInput
                             style={styles.searchText}
@@ -522,10 +585,12 @@ class RedPacket extends React.Component {
                             multiline={false}
                             underlineColorAndroid='transparent'
                             returnKeyType='go'
-                            onChangeText={(text) => {this._autoComplete(text)}}
+                            onChangeText={(text) => {
+                                this._autoComplete(text)
+                            }}
                             value={this.state.keyWord}
                             onSubmitEditing={(event) => this._search(event.nativeEvent.text)}
-                            />
+                        />
                         <TouchableOpacity style={styles.sButton} onPress={() => this._search()}>
                             <Text style={styles.sButtonFont}>搜索</Text>
                         </TouchableOpacity>
@@ -534,19 +599,19 @@ class RedPacket extends React.Component {
                 </View>
                 {
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={[styles.block,styles.history]}>
+                        <View style={[styles.block, styles.history]}>
                             {this._historyFrame()}
                         </View>{
                         this.props.recent.recentBuy.length > 0 || this.props.recent.recentView.length > 0 ?
 
 
                             <View
-                                style={[styles.block,styles.recent,{height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490: 245}]}>
+                                style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>
                                 {
                                     this.props.recent.recentBuy.length > 0 ?
                                         <View style={{marginBottom: 10}}>
                                             <View style={styles.blockTitle}>
-                                                <Text style={[styles.historyTitle,styles.baseText]}>最近购买：</Text>
+                                                <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
                                             </View>
                                             <View style={styles.recentBuy}>
                                                 {this._recentList('buy')}
@@ -564,10 +629,10 @@ class RedPacket extends React.Component {
                                                             name='ios-trash'
                                                             size={26}
                                                             color={'#aaa'}
-                                                            />
+                                                        />
                                                     </TouchableOpacity>
                                                 </View>
-                                                <Text style={[styles.historyTitle,styles.baseText]}>最近浏览：</Text>
+                                                <Text style={[styles.historyTitle, styles.baseText]}>最近浏览：</Text>
                                             </View>
                                             <View style={styles.recentView}>
                                                 {this._recentList('view')}
@@ -589,7 +654,7 @@ class RedPacket extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { comments,recent } = state;
+    const {comments, recent} = state;
     return {
         comments,
         recent
