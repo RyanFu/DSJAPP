@@ -32,18 +32,18 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
-	    <dict>
-        		<key>CFBundleIdentifier</key>
-        		<string>org.reactjs.native.duoshouji.AppReact</string>
-        		<key>CFBundleTypeRole</key>
-        		<string>Editor</string>
-        		<key>CFBundleURLName</key>
-        		<string>duoshouji</string>
-        		<key>CFBundleURLSchemes</key>
-        		<array>
-        			<string>duoshouji</string>
-        		</array>
-        </dict>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>org.reactjs.native.duoshouji.AppReact</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>duoshouji</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>duoshouji</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -98,7 +98,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>此应用需要您的同意才能拍照</string>
 	<key>NSContactsUsageDescription</key>
-	<string></string>
+	<string>亲，此功能需要开启通讯录权限</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
