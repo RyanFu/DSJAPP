@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 18,
         color: colors.white,
-        fontFamily: 'STHeitiSC-Medium'
+        fontFamily: 'STHeitiSC-Medium',
+        backgroundColor: 'rgba(0,0,0,0)',
     },
     cancelBtn: {
         backgroundColor: colors.bgGray

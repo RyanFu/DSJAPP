@@ -76,7 +76,7 @@ export default class PhoneCodeButton extends Component {
 
 var styles = StyleSheet.create({
     button: {
-        fontSize: 14,
+        fontSize: 12,
         backgroundColor:'#ececec',
         padding:3,
         borderRadius:2,

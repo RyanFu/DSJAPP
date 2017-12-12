@@ -33,10 +33,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 4,
         alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonFont: {
         fontSize: 16,
-        lineHeight: 34,
+        backgroundColor: 'rgba(0,0,0,0)',
         color: '#fff'
     },
     orderRow: {

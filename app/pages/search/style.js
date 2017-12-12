@@ -83,11 +83,12 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 4,
         alignItems: 'center',
+        justifyContent: 'center',
         width: 35
     },
     sButtonFont: {
         fontSize: 12,
-        lineHeight: 22,
+        backgroundColor: 'rgba(0,0,0,0)',
         color: '#fff'
     },
     delete: {

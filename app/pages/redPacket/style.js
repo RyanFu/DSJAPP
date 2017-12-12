@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         flex: 1,
         paddingVertical: 3,
-        marginTop: 5
+        marginTop: 0
     },
     sButton: {
         height: 34,
@@ -73,12 +73,13 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 4,
         alignItems: 'center',
+        justifyContent: 'center',
         width: 45
     },
     sButtonFont: {
         fontSize: 12,
-        lineHeight: 32,
-        color: '#fff'
+        color: '#fff',
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     historyC: {
       flex: 1

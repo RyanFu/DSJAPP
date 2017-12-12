@@ -55,12 +55,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#fc7d30',
         borderRadius: 4,
         alignItems: 'center',
+        justifyContent: 'center',
         width: width/2,
         marginTop: 20
     },
     buttonFont: {
         fontSize: 16,
-        lineHeight: 34,
+        // lineHeight: 34,
+        backgroundColor: 'rgba(0,0,0,0)',
         color: '#fff'
     },
     buttonGrey: {
@@ -135,9 +137,12 @@ const styles = StyleSheet.create({
         width: 60,
         height: 30,
         marginTop: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     genderButtonFont: {
-        lineHeight: 22,
+        // lineHeight: 22,
+        backgroundColor: 'rgba(0,0,0,0)',
     },
     nameText: {
         height: 40,
@@ -155,10 +160,12 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 0,
         backgroundColor: '#bdbdbd',
-
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     cancelButtonFont: {
-        lineHeight: 22,
+        // lineHeight: 22,
+        backgroundColor: 'rgba(0,0,0,0)',
     },
     baseText:{
         fontSize: 14,

@@ -186,12 +186,13 @@ export default styles = StyleSheet.create({
         backgroundColor: '#fc7d30',
         borderRadius: 11,
         alignItems: 'center',
+        justifyContent: "center",
         width: 50,
         marginLeft: 20
     },
     buttonFont: {
         fontSize: 12,
-        lineHeight: 20,
+        backgroundColor: 'rgba(0,0,0,0)',
         color: '#fff'
     },
 });

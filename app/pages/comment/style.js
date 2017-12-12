@@ -54,11 +54,13 @@ const styles = StyleSheet.create({
         marginTop: 40,
         borderRadius: 4,
         alignItems: 'center',
+        justifyContent: "center",
     },
     buttonFont: {
         fontSize: 16,
         lineHeight: 26,
-        color: '#fff'
+        color: '#fff',
+        backgroundColor: 'rgba(0,0,0,0)',
     },
     emoticon:{
         marginLeft: 20,
