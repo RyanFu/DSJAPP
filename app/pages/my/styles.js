@@ -36,7 +36,7 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems:'center',
         marginTop:5,
-        width: width/5*2
+        width: width/7*3
     },
     gender: {
         marginLeft: 4,
@@ -46,8 +46,8 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems:'center',
         marginTop:5,
-        width: width/5*3,
-        paddingLeft: 15
+        width: width/7*4,
+        paddingLeft: 0
     },
     summaryContainer: {
         flexDirection:'row',
