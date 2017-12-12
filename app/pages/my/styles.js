@@ -44,7 +44,7 @@ export default styles = StyleSheet.create({
     income: {
         flexDirection:'column',
         justifyContent: 'space-between',
-        alignItems:'flex-start',
+        alignItems:'center',
         marginTop:5,
         width: width/5*3,
         paddingLeft: 15
@@ -188,7 +188,7 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "center",
         width: 50,
-        marginLeft: 20
+        marginLeft: 0
     },
     buttonFont: {
         fontSize: 12,
