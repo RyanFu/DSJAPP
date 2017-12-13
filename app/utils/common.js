@@ -246,8 +246,8 @@ export function timeFormat(time,parrent) {
 
 export function removeAllStorage() {
    _.each(StorageKeys, function(v,k){
-       if(v === 'SEARCH_ITEM' ||
-           v === 'SEARCH_NOTE'){
+       if(k === 'SEARCH_ITEM' ||
+           k === 'SEARCH_NOTE'){
            return
        }
        try {
