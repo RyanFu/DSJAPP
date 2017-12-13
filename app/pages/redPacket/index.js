@@ -416,7 +416,7 @@ class RedPacket extends React.Component {
 
     _renderItemRow(rowData: string) {
         const jump = ()=>{
-            if(rowData.realIncome)
+            if(rowData.realRefund)
                 this._jumpOrdersPage();
             else
                 this._jumpToTaobaoPage(rowData.itemId.toString(), rowData)

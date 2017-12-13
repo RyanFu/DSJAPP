@@ -288,7 +288,7 @@ class Flow extends React.Component {
                             <View style={styles.comment}>
                                 <IconAS
                                     name={'commenting'}
-                                    size={14}
+                                    size={18}
                                     color={'#bebdbd'}
                                     style={{justifyContent: 'flex-start'}}
                                     />
@@ -298,7 +298,7 @@ class Flow extends React.Component {
                                 <TouchableOpacity onPress={()=> this._like(val.noteId,tag)}>
                                     <Icon
                                         name={'ios-heart'}
-                                        size={22}
+                                        size={20}
 
                                         color={ val.isLikedBySessionUser?'#fc7d30':'#bebdbd'}
                                         style={{justifyContent: 'flex-start'}}
@@ -559,7 +559,9 @@ var styles = StyleSheet.create({
     comment: {
         flexDirection: 'row',
         minWidth: 24,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        marginBottom: 3
     },
     commentInterText: {
         marginRight: 10,
