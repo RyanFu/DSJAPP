@@ -415,10 +415,16 @@ class RedPacket extends React.Component {
     }
 
     _renderItemRow(rowData: string) {
+        const jump = ()=>{
+            if(rowData.realIncome)
+                this._jumpOrdersPage();
+            else
+                this._jumpToTaobaoPage(rowData.itemId.toString(), rowData)
+        }
         if (!rowData)
-            return null
+            return null;
         return (
-            <TouchableOpacity onPress={() => this._jumpOrdersPage()}
+            <TouchableOpacity onPress={() => jump()}
                               underlayColor="transparent" activeOpacity={0.5}>
                 <View style={styles.sysRowC}>
                     <View style={styles.sysRow}>
