@@ -269,13 +269,11 @@ export default class MyContent extends Component {
             }
         };
         return (
-            <TouchableWithoutFeedback onLongPress={() => {
-                this._setModalVisible(true, data.detail.noteId)
-            }}>
+            <TouchableWithoutFeedback >
                 <View style={styles.myNote}>
                     {
                         !this.props.userInfo ? <TouchableWithoutFeedback onPress={() => {
-                            this._deleteNote(data.detail.noteId)
+                            this._setModalVisible(true, data.detail.noteId)
                         }}>
                             <View style={styles.delete}>
                                 <Icon color={'#ccc'} size={14} name="close"/>
@@ -295,7 +293,12 @@ export default class MyContent extends Component {
                         </View>
                     </View>
 
-                    <TouchableOpacity onPress={() => this._jumpToDetailPage({noteId: data.detail.noteId})}>
+                    <TouchableOpacity
+                        onPress={() => this._jumpToDetailPage({noteId: data.detail.noteId})}
+                        onLongPress={() => {
+                            this._setModalVisible(true, data.detail.noteId)
+                        }}
+                    >
                         <View style={styles.noteThumbBox}>
                             <Image style={styles.noteThumb} source={{
                                 uri: data.detail.image,
