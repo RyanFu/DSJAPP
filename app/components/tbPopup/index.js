@@ -97,7 +97,7 @@ class TbPopup extends React.Component {
                             <Text style={styles.dimText}>“确认收货”</Text><Text style={styles.content3}>后即可红包提现</Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.content2}>下单后请返回剁手记,以便跟单!</Text>
+                            <Text style={styles.important}>*</Text><Text style={[styles.content2,styles.dimText]}>下单后请返回剁手记,以便跟单!</Text>
                         </View>
 
                     </View>
@@ -238,6 +238,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         backgroundColor: 'rgba(0,0,0,0)',
         fontWeight: "900"
+    },
+    important:{
+        color: '#F37D30'
     }
 });
 

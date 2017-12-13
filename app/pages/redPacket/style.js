@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     },
     recFlowPrice: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(80,80,80,0.9)',
         height: 20,
         bottom: 37,
         marginLeft: 3,
@@ -229,16 +229,22 @@ const styles = StyleSheet.create({
     },
     redPacketPrice: {
         position: 'absolute',
-        top: 0,
-        right: 0,
+        bottom: 37,
+        right: 4,
         justifyContent: 'flex-end',
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.5)',
-        paddingRight: 2
+        backgroundColor: 'rgba(255,255,255,0)',
+        paddingRight: 2,
+        flexDirection: 'row',
     },
     redPacketText: {
-        fontSize: 10,
+        fontSize: 12,
         paddingLeft: 2
+    },
+    redIcon:{
+        width: 14,
+        height: 14,
+        marginTop: 3
     }
 });
 

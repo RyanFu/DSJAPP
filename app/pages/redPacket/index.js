@@ -17,7 +17,8 @@ import {
     AsyncStorage,
     Dimensions,
     Animated,
-    ActivityIndicator
+    ActivityIndicator,
+    Image
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -436,14 +437,16 @@ class RedPacket extends React.Component {
                             height={width / 3 - 5}
                             key={rowData.itemPicUrl}
                         />
-                        <View style={styles.redPacketPrice}>
-                            <Text
-                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>红包:￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}</Text>
-                        </View>
+
                         <View style={styles.recFlowPrice}>
                             <Text
                                 style={[styles.baseText, styles.recFlowText]}>￥{rowData.itemPrice}</Text>
 
+                        </View>
+                        <View style={styles.redPacketPrice}>
+                            <Image style={styles.redIcon} source={require('../../assets/footer/red_.png')}/>
+                            <Text
+                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}
