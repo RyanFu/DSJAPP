@@ -183,16 +183,16 @@ class RedPacket extends React.Component {
 
 
         var tick = 0;
-        setInterval((v) => {
-            Animated.spring(
-                this.state.bounce,
-                {
-                    toValue: -22 * (tick % 2),
-                    friction: 5,
-                }
-            ).start();
-            tick++;
-        }, 2000);
+        // setInterval((v) => {
+        //     Animated.spring(
+        //         this.state.bounce,
+        //         {
+        //             toValue: -22 * (tick % 2),
+        //             friction: 5,
+        //         }
+        //     ).start();
+        //     tick++;
+        // }, 2000);
 
 
         request('/rebate/ratio', 'GET')
@@ -436,11 +436,14 @@ class RedPacket extends React.Component {
                             height={width / 3 - 5}
                             key={rowData.itemPicUrl}
                         />
-                        <View style={styles.recFlowPrice}>
-                            <Animated.Text
-                                style={[styles.baseText, styles.recFlowText, {marginTop: this.state.bounce}]}>￥{rowData.itemPrice}</Animated.Text>
+                        <View style={styles.redPacketPrice}>
                             <Text
-                                style={[styles.baseText, styles.recFlowText]}>红包：￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}</Text>
+                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>红包:￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}</Text>
+                        </View>
+                        <View style={styles.recFlowPrice}>
+                            <Text
+                                style={[styles.baseText, styles.recFlowText]}>￥{rowData.itemPrice}</Text>
+
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}
