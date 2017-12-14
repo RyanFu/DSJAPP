@@ -97,7 +97,7 @@ class TbPopup extends React.Component {
                             <Text style={styles.dimText}>“确认收货”</Text><Text style={styles.content3}>后即可红包提现</Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.important}>*</Text><Text style={[styles.content2,styles.dimText]}>下单后请返回剁手记,以便跟单!</Text>
+                            <Text style={styles.important}>*</Text><Text style={[styles.content2,styles.dimText,styles.important]}>下单后请返回剁手记,以便跟单!</Text>
                         </View>
 
                     </View>
