@@ -87,6 +87,10 @@ class Flow extends React.Component {
                     });
 
                 });
+        DeviceEventEmitter.addListener('newComment',(noteId)=>{
+            let note = _.find(the.props.flow.flowList[params.tag], {noteId: noteId});
+            note.commentCount ++;
+        });
     }
 
     componentWillReceiveProps() {
@@ -561,7 +565,7 @@ var styles = StyleSheet.create({
         minWidth: 24,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        marginBottom: 3
+        marginBottom:  3
     },
     commentInterText: {
         marginRight: 10,

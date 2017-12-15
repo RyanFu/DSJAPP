@@ -27,6 +27,7 @@ let faceIcon = <Icon name="smile-o" size={25} color="#9b9b9b"/>;
 const dismissKeyboard = require('dismissKeyboard');
 import StarRating from 'react-native-star-rating';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import {fetchDetail} from '../../actions/detail';
 const Navigator = deprecatedComponents.Navigator;
 
 class Comment extends React.Component {
@@ -84,7 +85,8 @@ class Comment extends React.Component {
     _jumpToListPage() {
         const {navigator, dispatch, route, comments } = this.props;
         dispatch(fetchCommentsList(route.noteId)).then(() => {
-            DeviceEventEmitter.emit('newComment', comments);
+            DeviceEventEmitter.emit('newComment', route.noteId);
+            dispatch(fetchDetail(route.noteId));
             if (navigator && navigator.getCurrentRoutes().length > 1) {
                 navigator.pop();
             }
