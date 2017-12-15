@@ -24,8 +24,8 @@ class TbPopup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            countDown: 8,
-            interval: 8,
+            countDown: 10,
+            interval: 10,
             show: this.props.show
         }
     }
