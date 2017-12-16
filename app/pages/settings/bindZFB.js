@@ -141,7 +141,7 @@ class BindZFB extends React.Component {
                     hideDrop={true}
                 />
                 <View style={styles.title}>
-                    <Text style={styles.baseText}>用于提现的支付宝账户</Text>
+                    <Text style={styles.baseText}>请设置您用于提现的支付宝账户</Text>
                 </View>
                 <View style={styles.input}>
                     <Text style={[styles.baseText,styles.inputLabel]}>收款方式</Text>
@@ -206,7 +206,7 @@ class BindZFB extends React.Component {
 
                 <View style={styles.tip}>
                     <Icon style={[styles.tipIcon]} size={12} name="exclamation-circle"/>
-                    <Text style={[styles.tipFont, styles.dimText]}>提示：请填写正确的支付宝账户和真实的首款人姓名，否则将无法正常收款。</Text>
+                    <Text style={[styles.tipFont, styles.dimText]}>提示：请填写正确的支付宝账户和真实的收款人姓名，否则将无法正常提现收款。</Text>
                 </View>
 
             </View>
