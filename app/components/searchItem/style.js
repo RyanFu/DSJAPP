@@ -79,6 +79,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         alignItems: 'center',
         borderRadius: 3
+    },
+    shopTitle: {
+        width: width - 100 - 120
     }
 });
 

@@ -79,7 +79,7 @@ class SearchItem extends React.Component {
                                         resizeMode={'cover'}
                                         source={require('../../assets/search/shop.png')}
                                         />
-                                    <Text style={[styles.baseText,styles.dimText,{marginLeft:4}]}>
+                                    <Text style={[styles.baseText,styles.dimText,styles.shopTitle,{marginLeft:4}]} lineBreakMode={'tail'} numberOfLines={1}>
                                         {rowData.shopTitle}
                                     </Text>
                                 </View>
