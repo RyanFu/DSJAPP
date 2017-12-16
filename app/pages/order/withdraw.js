@@ -62,12 +62,16 @@ class Withdraw extends React.Component {
                     request('user/bindings', 'get', '', token)
                         .then((res) => {
                             if (res.resultCode === 0) {
+                                alipayBind = false;
                                 _.each(res.resultValues, (v, k)=> {
                                     if (v.bindingChannel === 'ALIPAY') {
                                         this._withDraw();
-                                        return;
+                                        alipayBind = true;
                                     }
                                 });
+                                if(!alipayBind){
+                                    bind();
+                                }
                             } else {
                                 bind();
                             }
