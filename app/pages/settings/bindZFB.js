@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     TextInput,
     Platform,
-    AsyncStorage
+    AsyncStorage,
+    DeviceEventEmitter
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -69,6 +70,7 @@ class BindZFB extends React.Component {
                             if (res.resultCode === 0) {
                                 toast('绑定成功');
                                 naviGoBack(navigator);
+                                DeviceEventEmitter.emit('bindingUpdated', true);
                             } else if(res.resultCode === 1) {
                                 if(res.resultErrorMessage == 'Verification code is invalid.')
                                     toast('验证码不正确');

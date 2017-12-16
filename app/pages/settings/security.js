@@ -1,6 +1,3 @@
-/**
- * Created by lyan2 on 16/9/23.
- */
 import React  from 'react';
 import {
     View,
@@ -9,7 +6,8 @@ import {
     Platform,
     Alert,
     AsyncStorage,
-    InteractionManager
+    InteractionManager,
+    DeviceEventEmitter
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -39,6 +37,25 @@ class SecurityPage extends React.Component {
     }
 
     componentWillMount() {
+        this._getBindingInfo();
+    }
+
+    componentDidMount() {
+        const the = this;
+        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY,(err,result)=>{
+            if(!err){
+                result = JSON.parse(result);
+                this.setState({userId: result.userId});
+
+            }
+        });
+        DeviceEventEmitter.addListener('bindingUpdated', () => {
+            the._getBindingInfo();
+        });
+
+    }
+
+    _getBindingInfo() {
         const {navigator } = this.props;
         Token.getToken(navigator).then((token) => {
                 if (token) {
@@ -85,16 +102,6 @@ class SecurityPage extends React.Component {
         );
     }
 
-    componentDidMount() {
-        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY,(err,result)=>{
-            if(!err){
-                result = JSON.parse(result);
-                this.setState({userId: result.userId});
-
-            }
-        });
-    }
-
     _unbind(channel) {
         const the = this;
         if(channel !== 'WEIXIN')
@@ -130,6 +137,7 @@ class SecurityPage extends React.Component {
                                                 if (channel === 'ALIPAY')
                                                     this.setState({'ALIPAY': obj});
                                                 toast('成功解除绑定');
+                                                the._getBindingInfo();
                                             }
                                         }, function (error) {
                                             console.log(error);
