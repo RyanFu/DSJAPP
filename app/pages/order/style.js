@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     button: {
         height: 36,
         backgroundColor: '#fc7d30',
-        margin: 30,
-        marginTop: 20,
+        margin: 20,
+        marginBottom: 10,
         borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     },
     totalCash: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         paddingVertical: 5,
         marginHorizontal: 10,
         height: 35,
@@ -80,7 +80,24 @@ const styles = StyleSheet.create({
     inputText: {
         fontSize: 13,
         justifyContent: 'flex-end'
-    }
+    },
+    tip: {
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        height:12,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    tipFont: {
+        fontSize: 11,
+        height: 12,
+    },
+    tipIcon: {
+        color: '#fc7d30',
+        marginRight: 2
+    },
 });
 
 export default styles;

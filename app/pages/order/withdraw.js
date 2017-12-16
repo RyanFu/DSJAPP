@@ -12,13 +12,14 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import { Token, toast, request } from '../../utils/common';
+import { Token, toast, request, naviGoBack } from '../../utils/common';
 import { connect } from 'react-redux';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import StorageKeys from '../../constants/StorageKeys';
 import BindZFBPage from '../settings/bindZFB';
 const Navigator = deprecatedComponents.Navigator;
 import _ from 'lodash';
+import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
 
 class Withdraw extends React.Component {
     constructor(props) {
@@ -150,6 +151,10 @@ class Withdraw extends React.Component {
                 <TouchableOpacity style={styles.button} onPress={()=>this._submit()}>
                     <Text style={styles.buttonFont}>提现</Text>
                 </TouchableOpacity>
+                <View style={styles.tip}>
+                    <Icon style={[styles.tipIcon]} size={12} name="exclamation-circle"/>
+                    <Text style={[styles.tipFont, styles.dimText]}>提示：目前系统只支持一次性提取</Text>
+                </View>
             </View>
         )
 
