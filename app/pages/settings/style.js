@@ -227,6 +227,21 @@ const styles = StyleSheet.create({
     tipIcon: {
         color: '#fc7d30',
         marginRight: 2
+    },
+    logout: {
+        position: 'absolute',
+        width: width,
+        height: 40,
+        bottom: 0,
+        backgroundColor: '#fc7d30',
+        borderTopWidth: 1,
+        borderColor: 'rgba(155,155,155,0.1)',
+        justifyContent: 'center'
+    },
+    logoutText:{
+        fontSize: 16,
+        color: '#fff',
+        alignSelf: 'center'
     }
 });
 

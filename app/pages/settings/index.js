@@ -167,19 +167,23 @@ class SettingPage extends React.Component {
                 </TouchableHighlight>
                 <View style={styles.separatorHorizontal} />
 
+                {
+                    Platform.OS === 'android'?
+                        <View>
+                            <TouchableHighlight onPress={this._checkVersion.bind(this)}>
+                                <View style={styles.row}>
+                                    <Text style={styles.text}>检查新版本</Text>
+                                    {chevronRightIcon}
+                                </View>
+                            </TouchableHighlight>
+                            <View style={styles.separatorHorizontal} />
+                        </View> :null
+                }
 
-                <TouchableHighlight onPress={this._checkVersion.bind(this)}>
-                    <View style={styles.row}>
-                        <Text style={styles.text}>检查新版本</Text>
-                        {chevronRightIcon}
-                    </View>
-                </TouchableHighlight>
-                <View style={styles.separatorHorizontal} />
 
-                <TouchableHighlight onPress={this._onPressSignOut.bind(this)}>
-                    <View style={styles.row}>
-                        <Text style={styles.text}>登出</Text>
-                        {chevronRightIcon}
+                <TouchableHighlight style={styles.logout}  onPress={this._onPressSignOut.bind(this)}>
+                    <View>
+                        <Text style={[styles.logoutText]}>登出</Text>
                     </View>
                 </TouchableHighlight>
 
