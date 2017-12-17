@@ -479,12 +479,12 @@ export default class MyContent extends Component {
                                     <View style={styles.income}>
                                         <View style={styles.incomeLine}>
                                             <Text style={{fontSize: 14,color: '#9b9b9b'}}>总收益:￥</Text>
-                                            <Text style={{fontSize: 14, color: '#008000'}}>{this.user.income}</Text>
+                                            <Text style={{fontSize: 14, color: '#026734'}}>{this.user.income}</Text>
                                         </View>
 
                                         <View style={styles.incomeLine}>
                                             <Text style={{fontSize: 12,color: '#9b9b9b'}}>预估:￥</Text>
-                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.estimatedRebate? this.user.estimatedRebate : 0}</Text>
+                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#00d05d'}}>{this.user.estimatedRebate? this.user.estimatedRebate : 0}</Text>
 
                                             <Text style={{fontSize: 12,color: '#9b9b9b',marginLeft:10}}>可提:￥</Text>
                                             <Text style={{marginLeft: 3, fontSize: 12, color: '#ff0000'}}>{this.user.availableRebate? this.user.availableRebate : 0}</Text>
