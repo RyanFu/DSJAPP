@@ -20,7 +20,7 @@ export default styles = StyleSheet.create({
     userContainer: {
         flexDirection:'column',
         alignItems: 'center',
-        paddingTop: 10,
+        paddingTop: 0,
         backgroundColor: '#f1f1f1'
     },
     portrait: {
@@ -36,7 +36,8 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems:'center',
         marginTop:5,
-        width: width/7*3
+        width: width/7*3,
+        marginLeft: 5
     },
     gender: {
         marginLeft: 4,
@@ -195,4 +196,9 @@ export default styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0)',
         color: '#fff'
     },
+    myNameText: {
+        fontSize: 14,
+        color: '#9b9b9b',
+        paddingLeft: 0
+    }
 });

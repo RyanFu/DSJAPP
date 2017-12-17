@@ -462,10 +462,10 @@ export default class MyContent extends Component {
                             (<View style={styles.my}>
                                     <View style={styles.user}>
                                         <TouchableHighlight onPress={() => this._updatePortrait(this.user)} style={styles.portrait}>
-                                            <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}}/>
+                                            <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 50, height: 50}}/>
                                         </TouchableHighlight>
                                         <View style={{flexDirection:'row',alignItems:'flex-end'}}>
-                                            <Text style={{fontSize: 16}}>{this.user.name}</Text>
+                                            <Text style={styles.myNameText} lineBreakMode={'tail'} numberOfLines={1}>{this.user.name}</Text>
                                             {
                                                 this.user.gender == 'women' ? (
                                                     <Image style={styles.gender} key={1} source={womanImg}/>
@@ -478,13 +478,8 @@ export default class MyContent extends Component {
                                     </View>
                                     <View style={styles.income}>
                                         <View style={styles.incomeLine}>
-                                            <TouchableOpacity style={styles.button} onPress={this._withdraw.bind(this)}>
-                                                <Text style={styles.buttonFont}>提现</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={styles.incomeLine}>
-                                            <Text style={{fontSize: 12,color: '#9b9b9b'}}>总收益:￥</Text>
-                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.income}</Text>
+                                            <Text style={{fontSize: 14,color: '#9b9b9b'}}>总收益:￥</Text>
+                                            <Text style={{fontSize: 14, color: '#008000'}}>{this.user.income}</Text>
                                         </View>
 
                                         <View style={styles.incomeLine}>
@@ -492,10 +487,11 @@ export default class MyContent extends Component {
                                             <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.estimatedRebate? this.user.estimatedRebate : 0}</Text>
 
                                             <Text style={{fontSize: 12,color: '#9b9b9b',marginLeft:10}}>可提:￥</Text>
-                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#FC4D30'}}>{this.user.availableRebate? this.user.availableRebate : 0}</Text>
-
+                                            <Text style={{marginLeft: 3, fontSize: 12, color: '#ff0000'}}>{this.user.availableRebate? this.user.availableRebate : 0}</Text>
+                                            <TouchableOpacity style={[styles.button,{marginLeft: 10}]} onPress={this._withdraw.bind(this)}>
+                                                <Text style={styles.buttonFont}>提现</Text>
+                                            </TouchableOpacity>
                                         </View>
-
 
                                     </View>
                             </View>
@@ -505,7 +501,7 @@ export default class MyContent extends Component {
                                     <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}}/>
                                 </TouchableHighlight>
                                 <View style={{flexDirection:'row',alignItems:'flex-end'}}>
-                                    <Text style={{fontSize: 16}}>{this.user.name}</Text>
+                                    <Text style={styles.myNameText} lineBreakMode={'tail'} numberOfLines={1}>{this.user.name}</Text>
                                     {
                                         this.user.gender == 'women' ? (
                                             <Image style={styles.gender} key={1} source={womanImg}/>
