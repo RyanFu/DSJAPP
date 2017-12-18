@@ -16,7 +16,8 @@ import {
     Platform,
     ActivityIndicatorIOS,
     InteractionManager,
-    AsyncStorage
+    AsyncStorage,
+    DeviceEventEmitter
 } from 'react-native';
 
 import Home from '../home';
@@ -125,6 +126,7 @@ export default class ForgetPasswordPage extends Component {
                 toast('注册成功');
                 Token.setToken(responseJson[0]);
                 this._fetchMyInfo(responseJson[0]);
+                DeviceEventEmitter.emit('newBuy', true);
                 return true;
             } else {
                 Alert.alert('注册失败', "非常抱歉，您可以尝试再次注册！");

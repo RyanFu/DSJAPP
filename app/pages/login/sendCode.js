@@ -54,6 +54,7 @@ class SendCode extends React.Component {
                         toast('绑定成功');
                         Token.setToken(result);
                         this._fetchMyInfo(result);
+                        DeviceEventEmitter.emit('newBuy', true);
                     });
                 }
                 toast('绑定失败');

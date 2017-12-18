@@ -16,7 +16,8 @@ import {
     Platform,
     ActivityIndicatorIOS,
     KeyboardAvoidingView,
-    AsyncStorage
+    AsyncStorage,
+    DeviceEventEmitter
 } from 'react-native';
 
 import Home from '../home';
@@ -219,6 +220,7 @@ export default class LoginPage extends Component {
                 toast('登录成功');
                 Token.setToken(responseJson[0]);
                 this._fetchMyInfo(responseJson[0]);
+                DeviceEventEmitter.emit('newBuy', true);
                 return true;
             } else {
                 Alert.alert('登录失败', "验证码登录失败");
