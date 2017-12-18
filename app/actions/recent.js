@@ -1,6 +1,6 @@
 import types from '../constants/actions';
-import { request } from '../utils/common';
-import { AsyncStorage } from 'react-native';
+import {request} from '../utils/common';
+import {AsyncStorage} from 'react-native';
 
 export function addRecentView(info) {
     return dispatch => {
@@ -14,31 +14,37 @@ export function fetchRecentView() {
     return dispatch => {
 
         return getRecentView()
-            .then((res)=> {
+            .then((res) => {
                 dispatch(fetchRecentViewR(res ? JSON.parse(res) : []));
             });
     };
 }
 
 export function fetchRecentBuy(params) {
-    return dispatch => {
-        return request('user/orderitems', 'get','',params.token)
-            .then((ret) => {
-                if(ret.resultCode === 0 && ret.resultValues){
-                    dispatch(fetchRecentBuyR(ret.resultValues));
-                } else {
-                    dispatch(fetchRecentBuyR([]));
-                }
+    if (params)
+        return dispatch => {
+            return request('user/orderitems', 'get', '', params.token)
+                .then((ret) => {
+                    if (ret.resultCode === 0 && ret.resultValues) {
+                        dispatch(fetchRecentBuyR(ret.resultValues));
+                    } else {
+                        dispatch(fetchRecentBuyR([]));
+                    }
 
-            }, function (error) {
-                dispatch(fetchRecentBuyR([]));
-                console.log(error);
-            })
-            .catch(() => {
-                dispatch(fetchRecentBuyR([]));
-                console.log('network error');
-            });
-    };
+                }, function (error) {
+                    dispatch(fetchRecentBuyR([]));
+                    console.log(error);
+                })
+                .catch(() => {
+                    dispatch(fetchRecentBuyR([]));
+                    console.log('network error');
+                });
+        };
+    else
+        return dispatch => {
+            dispatch(fetchRecentBuyR([]));
+
+        };
 }
 
 function addRecentViewR(info) {

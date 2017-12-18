@@ -26,7 +26,9 @@ const recent = function (state = initialState, action = {}) {
                     recentBuy: action.info
                 });
             else
-                return state;
+                return Object.assign({}, state, {
+                    recentBuy: []
+                });
         default:
             return state;
     }

@@ -149,6 +149,8 @@ class RedPacket extends React.Component {
         DeviceEventEmitter.addListener('newBuy', () => {
             Token.getToken().then((token) => {
                 if (!token) {
+                    dispatch(fetchRecentBuy());
+                    the.setState({buySource: this.ds.cloneWithRows([])});
                     return;
                 }
                 const params = {
