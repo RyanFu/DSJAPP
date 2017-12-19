@@ -48,6 +48,8 @@ export default class PhoneCodeButton extends Component {
     }
 
     _countDown(){
+        if (this.state.hasSent)
+            return;
         this.state.hasSent = true;
         this.props.disabled = true;
         let timeLeft = 60;

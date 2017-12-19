@@ -212,10 +212,7 @@ export default class LoginPage extends Component {
             console.log(responseJson);
             if (responseJson && responseJson.length > 0) {
                 InteractionManager.runAfterInteractions(() => {
-                    setTimeout(function () {
-                        navigator.jumpTo(navigator.getCurrentRoutes()[0]);
-                    }, 500);
-
+                    navigator.jumpTo(navigator.getCurrentRoutes()[0]);
                 });
                 toast('登录成功');
                 Token.setToken(responseJson[0]);
