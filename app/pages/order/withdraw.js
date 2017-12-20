@@ -93,7 +93,7 @@ class Withdraw extends React.Component {
         const { navigator } = this.props;
         Token.getToken(navigator).then((token) => {
                 if (token) {
-                    request('/user/withdraw-deposit', 'POST', '', token)
+                    request('/user/rebate/withdraw', 'POST', '', token)
                         .then((res) => {
                             if (res.resultCode === 0) {
                                 toast('提现成功');

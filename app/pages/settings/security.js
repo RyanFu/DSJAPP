@@ -79,7 +79,7 @@ class SecurityPage extends React.Component {
                                         })});
                                     }
                                     if (v.bindingChannel === 'TAOBAO') {
-                                        this.setState({'TAOBAO': Object.assign({}, v, {
+                                           this.setState({'TAOBAO': Object.assign({}, v, {
                                             isBound: true
                                         })});
                                     }
@@ -104,7 +104,7 @@ class SecurityPage extends React.Component {
 
     _unbind(channel) {
         const the = this;
-        if(channel !== 'WEIXIN')
+        // if(channel !== 'WEIXIN')
             // return false;
         if (this.state[channel].isBound) {
             Alert.alert(
@@ -127,7 +127,9 @@ class SecurityPage extends React.Component {
                                                 let obj = this.state[channel];
                                                 obj.isBound = false;
                                                 if (channel === 'WEIXIN')
-                                                    this.setState({'WEIXIN': obj});
+                                                    this.setState({'WEIXIN': Object.assign({}, obj, {
+                                                        isBound: false
+                                                    })});
                                                 if (channel === 'WEIBO')
                                                     this.setState({'WEIBO': obj});
                                                 if (channel === 'QQ')
@@ -135,7 +137,9 @@ class SecurityPage extends React.Component {
                                                 if (channel === 'TAOBAO')
                                                     this.setState({'TAOBAO': obj});
                                                 if (channel === 'ALIPAY')
-                                                    this.setState({'ALIPAY': obj});
+                                                    this.setState({'ALIPAY': Object.assign({}, obj, {
+                                                        isBound: false
+                                                    })});
                                                 toast('成功解除绑定');
                                                 the._getBindingInfo();
                                             }
@@ -156,7 +160,7 @@ class SecurityPage extends React.Component {
         } else {
             if (channel === 'ALIPAY')
                 this._jumpToZFBPage();
-            else if (channel === 'TAOBAO')
+            else if (channel === 'WEIXIN')
                 Alert.alert(
                     '绑定',
                     '需要绑定账号吗？',
@@ -248,7 +252,7 @@ class SecurityPage extends React.Component {
                     <View style={styles.row}>
                         <Text style={styles.text}>微信</Text>
                         <Text
-                            style={[styles.baseText,styles.dimText, (this.state.WEIXIN.bindingChannel && styles.boundText) ]}>{this.state.WEIXIN.bindingChannel ? '已绑定' : '马上绑定'}</Text>
+                            style={[styles.baseText,styles.dimText, (this.state.WEIXIN.isBound && styles.boundText) ]}>{this.state.WEIXIN.isBound ? '已绑定' : '马上绑定'}</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
@@ -280,7 +284,7 @@ class SecurityPage extends React.Component {
                     <View style={styles.row}>
                         <Text style={styles.text}>淘宝</Text>
                         <Text
-                            style={[styles.baseText,styles.dimText, (this.state.TAOBAO.bindingChannel && styles.boundText) ]}>{this.state.TAOBAO.bindingChannel ? '已绑定' : '马上绑定'}</Text>
+                            style={[styles.baseText,styles.dimText, (this.state.TAOBAO.isBound && styles.boundText) ]}>{this.state.TAOBAO.isBound ? '已绑定' : '马上绑定'}</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
@@ -290,7 +294,7 @@ class SecurityPage extends React.Component {
                     <View style={styles.row}>
                         <Text style={styles.text}>支付宝</Text>
                         <Text
-                            style={[styles.baseText,styles.dimText, (this.state.ALIPAY.bindingChannel && styles.boundText) ]}>{this.state.ALIPAY.bindingChannel ? '已绑定' : '马上绑定'}</Text>
+                            style={[styles.baseText,styles.dimText, (this.state.ALIPAY.isBound && styles.boundText) ]}>{this.state.ALIPAY.isBound ? '已绑定' : '马上绑定'}</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
