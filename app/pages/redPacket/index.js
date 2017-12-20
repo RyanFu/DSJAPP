@@ -18,7 +18,9 @@ import {
     Dimensions,
     Animated,
     ActivityIndicator,
-    Image
+    Image,
+    NativeEventEmitter,
+    Clipboard
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -211,6 +213,17 @@ class RedPacket extends React.Component {
             });
 
         this._topSearch();
+
+        const emitter = new NativeEventEmitter(baiChuanApi);
+        emitter.addListener(
+            'backFromTB',
+            (res) => {
+                Clipboard.getString().then((data) => {
+                    if(data)
+                        toast(data)
+                });
+            }
+        );
     }
 
     _deleteSearchHistory() {
@@ -567,6 +580,21 @@ class RedPacket extends React.Component {
         this.setState({showTop: !this.state.showTop});
     }
 
+    _syncOrder() {
+        const {navigator} = this.props;
+        const type = 'tmall';
+
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                baiChuanApi.jump('', type, (error, res) => {
+                    if (error) {
+                        console.error(error);
+                    }
+                })
+            }
+        });
+    }
+
     render() {
         var rows = [];
         _.each(this.state.searchItemHistory, (v, k) => {
@@ -619,13 +647,22 @@ class RedPacket extends React.Component {
                         </View>{
                         this.props.recent.recentBuy.length > 0 || this.props.recent.recentView.length > 0 ?
 
-
                             <View
                                 style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>
                                 {
                                     this.props.recent.recentBuy.length > 0 ?
                                         <View style={{marginBottom: 10}}>
                                             <View style={styles.blockTitle}>
+                                                <View style={styles.delete}>
+                                                    <TouchableOpacity style={styles.sync} onPress={() => this._syncOrder()}>
+                                                        <Icon
+                                                            name='md-sync'
+                                                            size={16}
+                                                            color={'#fff'}
+                                                        />
+                                                        <Text style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步</Text>
+                                                    </TouchableOpacity>
+                                                </View>
                                                 <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
                                             </View>
                                             <View style={styles.recentBuy}>

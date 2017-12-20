@@ -105,6 +105,21 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#f1f1f1',
     },
+    sync: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fc7d30',
+        borderRadius: 4,
+        paddingHorizontal: 4,
+        paddingVertical: 3
+    },
+    syncTitle: {
+        color: '#fff',
+        marginLeft: 2,
+        paddingBottom: 2,
+        fontSize: 12
+    },
     historyItem: {
         backgroundColor: '#f1f1f1',
         height: 26,
