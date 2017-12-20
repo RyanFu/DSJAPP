@@ -34,6 +34,7 @@ import configs from '../../constants/configs';
 import ResultPage from '../search/result';
 import PrefetchImage from '../../components/prefetchImage';
 import {fetchRecentView, fetchRecentBuy} from '../../actions/recent';
+import SyncPopup from '../../components/syncPopup';
 
 const {height, width} = Dimensions.get('window');
 const addImg = require('../../assets/header/add.png');
@@ -57,6 +58,7 @@ class RedPacket extends React.Component {
         this._onLeftIconClicked = this._onLeftIconClicked.bind(this);
         this._onRightIconClicked = this._onRightIconClicked.bind(this);
         this._topSearch = this._topSearch.bind(this);
+        this._onPressCross = this._onPressCross.bind(this);
         this.state = {
             keyWord: '',
             searchItemHistory: [],
@@ -69,7 +71,10 @@ class RedPacket extends React.Component {
             ratio: 0.7,
             isLoadMore: false,
             topSearch: [],
-            showTop: true
+            showTop: true,
+            showTip: false,
+            order: 0,
+            openOrderPage: false
         };
     }
 
@@ -219,8 +224,9 @@ class RedPacket extends React.Component {
             'backFromTB',
             (res) => {
                 Clipboard.getString().then((data) => {
-                    if(data)
-                        toast(data)
+                    if(data&&this.state.openOrderPage){
+                        the.setState({order: data, showTip: true});
+                    }
                 });
             }
         );
@@ -534,6 +540,7 @@ class RedPacket extends React.Component {
                 })
             }
         });
+        this.setState({openOrderPage: false});
     }
 
     _onLeftIconClicked() {
@@ -593,6 +600,11 @@ class RedPacket extends React.Component {
                 })
             }
         });
+        this.setState({openOrderPage: true});
+    }
+
+    _onPressCross() {
+        this.setState({showTip: false});
     }
 
     render() {
@@ -618,6 +630,13 @@ class RedPacket extends React.Component {
                     onLeftIconClicked={this._onLeftIconClicked}
                     onRightIconClicked={this._onRightIconClicked}
                 />
+                {
+                    this.state.showTip?<SyncPopup
+                        onPressCross={this._onPressCross}
+                        order={this.state.order}
+                        show={true}
+                    /> : null
+                }
                 <View style={[styles.block, styles.search]}>
                     <Text style={[styles.baseText, {fontSize: 14, color: '#fc7d30'}]}>淘宝购物全场都有红包拿，还不快搜！</Text>
                     <View style={styles.searchHeader}>
