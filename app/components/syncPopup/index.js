@@ -38,7 +38,6 @@ class SyncPopup extends React.Component {
     }
 
     componentWillUnmount() {
-        this.setState({show: false});
     }
 
     componentWillMount() {
@@ -46,6 +45,8 @@ class SyncPopup extends React.Component {
 
     _close() {
         this.setState({show: false});
+        if (this.props.onPressCross)
+            this.props.onPressCross();
     }
 
 

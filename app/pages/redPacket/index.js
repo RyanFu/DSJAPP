@@ -224,7 +224,7 @@ class RedPacket extends React.Component {
             'backFromTB',
             (res) => {
                 Clipboard.getString().then((data) => {
-                    if(data&&this.state.openOrderPage){
+                    if(data&&the.state.openOrderPage){
                         the.setState({order: data, showTip: true});
                     }
                 });
@@ -587,7 +587,7 @@ class RedPacket extends React.Component {
         this.setState({showTop: !this.state.showTop});
     }
 
-    _syncOrder() {
+    _jumpToOrderPage() {
         const {navigator} = this.props;
         const type = 'tmall';
 
@@ -605,6 +605,10 @@ class RedPacket extends React.Component {
 
     _onPressCross() {
         this.setState({showTip: false});
+    }
+
+    _syncOrder() {
+
     }
 
     render() {
@@ -673,7 +677,7 @@ class RedPacket extends React.Component {
                                         <View style={{marginBottom: 10}}>
                                             <View style={styles.blockTitle}>
                                                 <View style={styles.delete}>
-                                                    <TouchableOpacity style={styles.sync} onPress={() => this._syncOrder()}>
+                                                    <TouchableOpacity style={styles.sync} onPress={() => this._jumpToOrderPage()}>
                                                         <Icon
                                                             name='md-sync'
                                                             size={16}
