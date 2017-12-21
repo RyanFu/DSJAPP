@@ -74,7 +74,8 @@ class RedPacket extends React.Component {
             showTop: true,
             showTip: false,
             order: 0,
-            openOrderPage: false
+            openOrderPage: false,
+            token: null
         };
     }
 
@@ -189,6 +190,8 @@ class RedPacket extends React.Component {
                 });
                 the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
             });
+
+            this.setState({token: token})
         });
 
 
@@ -224,7 +227,9 @@ class RedPacket extends React.Component {
             'backFromTB',
             (res) => {
                 Clipboard.getString().then((data) => {
-                    if(data&&the.state.openOrderPage){
+                    if(data
+                        &&/^[0-9]*$/.test(data)
+                        &&the.state.openOrderPage){
                         the.setState({order: data, showTip: true});
                         the._syncOrder();
                         Clipboard.setString('');
@@ -669,8 +674,23 @@ class RedPacket extends React.Component {
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={[styles.block, styles.history]}>
                             {this._historyFrame()}
-                        </View>{
-                        this.props.recent.recentBuy.length > 0 || this.props.recent.recentView.length > 0 ?
+                        </View>
+                        {
+                            this.props.recent.recentBuy.length === 0 && this.state.token?
+                                <View style={[styles.syncBlock]}>
+                                    <TouchableOpacity style={[styles.sync,styles.syncS]} onPress={() => this._jumpToOrderPage()}>
+                                        <Icon
+                                            name='md-sync'
+                                            size={16}
+                                            color={'#fff'}
+                                        />
+                                        <Text style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步订单</Text>
+                                    </TouchableOpacity>
+                                </View>: null
+                        }
+
+                        {
+                       this.props.recent.recentBuy.length > 0 || this.props.recent.recentView.length > 0 ?
 
                             <View
                                 style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>

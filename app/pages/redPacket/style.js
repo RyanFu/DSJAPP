@@ -260,6 +260,17 @@ const styles = StyleSheet.create({
         width: 14,
         height: 14,
         marginTop: 3
+    },
+    syncBlock: {
+        width: width,
+        height: 44,
+        alignItems: 'center',
+        backgroundColor: '#f1f1f1'
+    },
+    syncS:{
+        paddingVertical: 6,
+        paddingHorizontal: 16,
+        marginTop: 6
     }
 });
 
