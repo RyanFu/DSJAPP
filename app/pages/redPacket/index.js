@@ -226,6 +226,8 @@ class RedPacket extends React.Component {
                 Clipboard.getString().then((data) => {
                     if(data&&the.state.openOrderPage){
                         the.setState({order: data, showTip: true});
+                        the._syncOrder();
+                        Clipboard.setString('');
                     }
                 });
             }
