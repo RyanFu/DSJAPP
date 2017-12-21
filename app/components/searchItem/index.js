@@ -167,7 +167,14 @@ class SearchItem extends React.Component {
     }
 
     _getForTag(data) {
-        const tag = (data)=>{
+        const addTag = (data)=>{
+            let tag = {};
+            tag.title = data.itemTitle;
+            tag.imageUrl = data.itemPicUrl;
+            tag.url = '';
+            tag.itemId = data.itemId;
+            tag.urlCategory = 'taobao';
+            DeviceEventEmitter.emit('newTag', tag);
             this.props.navigator.popN(2);
         };
         Alert.alert(
@@ -177,7 +184,7 @@ class SearchItem extends React.Component {
                 {text: '不是', onPress: () => console.log('')},
                     {
                         text: '是', onPress: () => {
-                        tag(data);
+                        addTag(data);
                     }
                 }
             ]
