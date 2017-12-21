@@ -528,7 +528,7 @@ class PhotoEditPage extends Component {
             the.state.currentTag.title = val.title;
             the.state.currentTag.imageUrl = val.imageUrl;
             the.state.currentTag.itemId = val.itemId;
-            the.state.currentTag.price = val.price;
+            the.state.currentTag.price = val.price.toString();
             the.state.currentTag.urlCategory = val.urlCategory;
             the.state.currentTag.url = val.url;
             the.setState({currentTag: Object.assign({}, the.state.currentTag,  {url: val.url})});

@@ -174,6 +174,7 @@ class SearchItem extends React.Component {
             tag.url = '';
             tag.itemId = data.itemId;
             tag.urlCategory = 'taobao';
+            tag.price = data.itemPrice;
             DeviceEventEmitter.emit('newTag', tag);
             this.props.navigator.popN(2);
         };

@@ -72,10 +72,10 @@ class Order extends React.Component {
 
     _orderList(orderType){
         let data = null;
-        if(orderType === 1){
+        if(orderType === 2){
             data = _.filter(this.props.recent.recentBuy, function(o) { return o.state === 'SETTLED'; });
         }
-        if(orderType === 2){
+        if(orderType === 1){
             data = _.filter(this.props.recent.recentBuy, function(o) { return (o.state !== 'INVALID' || o.state !== 'UNKNOWN'); });
         }
         if(orderType === 3){
@@ -114,21 +114,21 @@ class Order extends React.Component {
                 >
                     <View
                         key='1'
-                        tabLabel='可提现订单'
+                        tabLabel='有效订单'
                         style={{flex: 1}}
                     >
                         {this._orderList(1)}
                     </View>
                     <View
                         key='2'
-                        tabLabel='有效订单'
+                        tabLabel='可提现订单'
                         style={{flex: 1}}
                     >
                         {this._orderList(2)}
                     </View>
                     <View
                         key='3'
-                        tabLabel='同步中订单'
+                        tabLabel='已提现订单'
                         style={{flex: 1}}
                     >
                         {this._orderList(3)}
