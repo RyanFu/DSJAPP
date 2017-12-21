@@ -58,6 +58,7 @@ import photoHtmlIos from '../../assets/html/photo';
 import stickers from '../../assets/stickers/index.js';
 import ChannelTabBar from '../../components/channelTabBar';
 import Webview from '../../components/webview';
+import SearchPage from '../search';
 
 import _ from 'lodash';
 import {toast} from "../../utils/common";
@@ -499,6 +500,17 @@ class PhotoEditPage extends Component {
         });
     }
 
+    _addLink() {
+        const { navigator } = this.props;
+
+        navigator.push({
+            component: SearchPage,
+            name: 'SearchPage',
+            sceneConfigs: Navigator.SceneConfigs.FadeAndroid,
+            from: 'editNote'
+        });
+    }
+
     _colselinkedItem() {
         this.setState({currentTag: {}});
     }
@@ -861,7 +873,7 @@ class PhotoEditPage extends Component {
                                 </View>: null
                         }
                         <View style={[styles.formRow,styles.formRowLink]}>
-                            <TouchableOpacity onPress={() => this._showWebview.call(this)}>
+                            <TouchableOpacity onPress={() => this._addLink.call(this)}>
                                 {
                                     this.state.currentTag.url ? (
                                         <View style={styles.linkedItem}>

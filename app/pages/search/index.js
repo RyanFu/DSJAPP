@@ -98,7 +98,8 @@ class Search extends React.Component {
             component: ResultPage,
             name: 'ResultPage',
             text: text,
-            type: this.state.type
+            type: this.state.type,
+            from: this.props.route.from
         });
     }
 
@@ -249,9 +250,11 @@ class Search extends React.Component {
                     tabBarUnderlineStyle={{backgroundColor:'#fc7d30',height: 1.5}}
                     onChangeTab={this._onChangeTab.bind(this)}
                     renderTabBar={() => <DefaultTabBar
+                                    tabStyle={{paddingBottom: 0}}
                                     style={{height: 40,borderBottomColor: 'rgba(178,178,178,0.3)'}}
                                 />}
                     >
+
                     <View
                         key='item'
                         tabLabel='商品'
@@ -259,13 +262,17 @@ class Search extends React.Component {
                         >
                         {this._historyFrame()}
                     </View>
-                    <View
-                        key='note'
-                        tabLabel='笔记'
-                        style={{ flex: 1 }}
-                        >
-                        {this._historyFrame()}
-                    </View>
+                    {
+                        this.props.route.from !== 'editNote'?
+                            <View
+                                key='note'
+                                tabLabel='笔记'
+                                style={{ flex: 1 }}
+                            >
+                                {this._historyFrame()}
+                            </View>:null
+                    }
+
                 </ScrollableTabView>
                 <View style={styles.searchBody}>
 

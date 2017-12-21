@@ -168,6 +168,7 @@ class SearchResult extends React.Component {
                     tabBarUnderlineStyle={{backgroundColor:'#fc7d30',height: 0}}
                     initialPage={page}
                     renderTabBar={() => <DefaultTabBar
+                                    tabStyle={{paddingBottom: 0}}
                                     style={{height: 40,borderBottomColor: 'rgba(178,178,178,0.3)'}}
                                 />}
                     >
@@ -195,7 +196,7 @@ class SearchResult extends React.Component {
                                             <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem ratio={this.state.ratio} itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem from={this.props.route.from} ratio={this.state.ratio} itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -209,7 +210,7 @@ class SearchResult extends React.Component {
                                             <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem from={this.props.route.from} itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -223,7 +224,7 @@ class SearchResult extends React.Component {
                                             <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem from={this.props.route.from} itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -237,7 +238,7 @@ class SearchResult extends React.Component {
                                             <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem from={this.props.route.from} itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                             <View
@@ -256,32 +257,36 @@ class SearchResult extends React.Component {
                                             <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
-                                        <SearchItem itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
+                                        <SearchItem from={this.props.route.from} itemData={this._getItemData} tipShow={this._tipShow} text={this.props.route.text} navigator={this.props.navigator}/>
                                 }
                             </View>
                         </ScrollableTabView>
 
                     </View>
-                    <View
-                        key='note'
-                        tabLabel='笔记'
-                        style={{ flex: 1 }}
-                        >
-                        {
-                            this.state.searching ?
-                                <View style={[styles.center,{marginTop: 40}]}>
-                                    <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
-                                           source={require('../../assets/gif/loading.gif')}/>
-                                </View> :
-                                <Flow tabForRefresh={this.state.tabForRefresh}
-                                      tag='search'
-                                      navigator={this.props.navigator}
-                                      dispatch={this.props.dispatch}
-                                      hasnoBottomTab={true}
-                                      searchText={this.props.route.text}
-                                    />
-                        }
-                    </View>
+                    {
+                        this.props.route.from !== 'editNote'?
+                            <View
+                                key='note'
+                                tabLabel='笔记'
+                                style={{ flex: 1 }}
+                            >
+                                {
+                                    this.state.searching ?
+                                        <View style={[styles.center,{marginTop: 40}]}>
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                                   source={require('../../assets/gif/loading.gif')}/>
+                                        </View> :
+                                        <Flow tabForRefresh={this.state.tabForRefresh}
+                                              tag='search'
+                                              navigator={this.props.navigator}
+                                              dispatch={this.props.dispatch}
+                                              hasnoBottomTab={true}
+                                              searchText={this.props.route.text}
+                                        />
+                                }
+                            </View>:null
+                    }
+
                 </ScrollableTabView>
 
                 <View style={styles.searchBody}>

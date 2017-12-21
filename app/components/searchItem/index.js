@@ -32,6 +32,7 @@ class SearchItem extends React.Component {
         this._onScroll = this._onScroll.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
         this._jumpToTaobaoPage = this._jumpToTaobaoPage.bind(this);
+        this._getForTag = this._getForTag.bind(this);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: this.ds.cloneWithRows(this.props.search.itemList),
@@ -157,8 +158,30 @@ class SearchItem extends React.Component {
     }
 
     _tip(itemId, data) {
-        this.props.tipShow();
-        this.props.itemData(itemId, data, this._jumpToTaobaoPage);
+        if(this.props.from === 'editNote'){
+            this._getForTag(data);
+        } else {
+            this.props.tipShow();
+            this.props.itemData(itemId, data, this._jumpToTaobaoPage);
+        }
+    }
+
+    _getForTag(data) {
+        const tag = (data)=>{
+            this.props.navigator.popN(2);
+        };
+        Alert.alert(
+            '标签',
+            '这是您要找的商品吗？',
+            [
+                {text: '不是', onPress: () => console.log('')},
+                    {
+                        text: '是', onPress: () => {
+                        tag(data);
+                    }
+                }
+            ]
+        );
     }
 
     _onScroll(event) {
