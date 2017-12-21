@@ -41,7 +41,6 @@ class SearchItem extends React.Component {
         };
     }
     componentDidMount(){
-
     }
     _renderRow(rowData:string, sectionID:number, rowID:number) {
         return (
@@ -114,6 +113,7 @@ class SearchItem extends React.Component {
                     .then((res) => {
                         if (res.resultCode === 0) {
                             toast('购买成功');
+                            DeviceEventEmitter.emit('portraitUpdated', true);
                         }
                     }, function (error) {
                         console.log(error);

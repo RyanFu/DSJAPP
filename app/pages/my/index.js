@@ -53,6 +53,9 @@ class MyHomePage extends Component {
             //});
         });
 
+    }
+
+    componentDidMount(){
         DeviceEventEmitter.addListener('portraitUpdated',()=>{
             this._onRefresh();
         });

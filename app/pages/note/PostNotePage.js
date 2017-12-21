@@ -150,7 +150,6 @@ class PostNotePage extends Component {
         const { navigator } = this.props;
         DeviceEventEmitter.emit('newNote', true);
         navigator.popToTop();
-
     }
 
     _sendPhotos(noteId) {
@@ -196,6 +195,7 @@ class PostNotePage extends Component {
                         duration: Toast.durations.SHORT,
                         position: Toast.positions.CENTER
                     });
+                    DeviceEventEmitter.emit('portraitUpdated', true);
                     this._JumpToMyPage();
                 }
             } else {

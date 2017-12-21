@@ -97,6 +97,7 @@ class Withdraw extends React.Component {
                         .then((res) => {
                             if (res.resultCode === 0) {
                                 toast('提现成功');
+                                DeviceEventEmitter.emit('portraitUpdated', true);
                                 naviGoBack(navigator);
                             } else {
                                 toast('提现失败，请核对支付宝账户信息后再尝试。');
