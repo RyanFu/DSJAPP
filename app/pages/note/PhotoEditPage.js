@@ -621,39 +621,39 @@ class PhotoEditPage extends Component {
                                   />
                                 }
                         >
-                        <ListView tabLabel="基本款" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="基本款" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceJbk} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="美人志" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="美人志" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceMrz} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="男人装" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="男人装" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceNrz} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="健身" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="健身" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceJs} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="宝贝书" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="宝贝书" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceBbs} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="吃货志" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="吃货志" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceChz} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="耍大牌" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="耍大牌" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceSdp} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="全球购" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="全球购" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourceQqg} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
-                        <ListView tabLabel="便宜有好货" style={{flex:1}} horizontal={true}
+                        <ListView tabLabel="便宜有好货" style={{flex:1}} horizontal={true} removeClippedSubviews={false}
                                   contentContainerStyle={{justifyContent: 'center', alignItems:'center'}}
                                   dataSource={this.state.stickersDataSourcePyyhh} enableEmptySections={true}
                                   renderRow={this._renderSticker.bind(this)}/>
