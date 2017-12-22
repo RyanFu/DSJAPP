@@ -390,6 +390,7 @@ class RedPacket extends React.Component {
                     enableEmptySections={true}
                     pageSize={10}
                     initialListSize={10}
+                    removeClippedSubviews={false}
                 />
             )
         }
@@ -405,6 +406,7 @@ class RedPacket extends React.Component {
                 pageSize={6}
                 initialListSize={6}
                 onEndReached={this._onEndReached.bind(this)}
+                removeClippedSubviews={false}
             />
         )
 
