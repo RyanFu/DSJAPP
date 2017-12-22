@@ -20,7 +20,8 @@ import {
     ActivityIndicator,
     Image,
     NativeEventEmitter,
-    Clipboard
+    Clipboard,
+    RefreshControl
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -59,6 +60,7 @@ class RedPacket extends React.Component {
         this._onRightIconClicked = this._onRightIconClicked.bind(this);
         this._topSearch = this._topSearch.bind(this);
         this._onPressCross = this._onPressCross.bind(this);
+        this._getRecentBuy = this._getRecentBuy.bind(this);
         this.state = {
             keyWord: '',
             searchItemHistory: [],
@@ -75,7 +77,8 @@ class RedPacket extends React.Component {
             showTip: false,
             order: 0,
             openOrderPage: false,
-            token: null
+            token: null,
+            refreshing: false,
         };
     }
 
@@ -155,24 +158,7 @@ class RedPacket extends React.Component {
         });
 
         DeviceEventEmitter.addListener('newBuy', () => {
-            Token.getToken().then((token) => {
-                if (!token) {
-                    dispatch(fetchRecentBuy());
-                    the.setState({buySource: this.ds.cloneWithRows([])});
-                    return;
-                }
-                const params = {
-                    token: token
-                };
-                dispatch(fetchRecentBuy(params)).then(() => {
-                    let copy = _.cloneDeep(this.props.recent.recentBuy);
-                    copy = _.slice(copy, 0, 6);
-                    _.each(copy, (v, k) => {
-                        copy[k].tkCommFee = v.tkCommFee / 100
-                    });
-                    the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
-                });
-            });
+            the._getRecentBuy();
         });
 
         Token.getToken().then((token) => {
@@ -227,16 +213,43 @@ class RedPacket extends React.Component {
             'backFromTB',
             (res) => {
                 Clipboard.getString().then((data) => {
-                    if(data
-                        &&/^[0-9]*$/.test(data)
-                        &&the.state.openOrderPage){
+                    if (data
+                        && /^[0-9]*$/.test(data)
+                        && the.state.openOrderPage) {
                         the.setState({order: data, showTip: true});
-                        the._syncOrder();
+                        the._syncOrder(data);
                         Clipboard.setString('');
                     }
                 });
             }
         );
+    }
+
+    _getRecentBuy(){
+        const the = this;
+        const {dispatch} = this.props;
+        return new Promise((resolve,reject) => {
+            Token.getToken().then((token) => {
+                if (!token) {
+                    dispatch(fetchRecentBuy());
+                    the.setState({buySource: the.ds.cloneWithRows([])});
+                    return;
+                }
+                const params = {
+                    token: token
+                };
+                dispatch(fetchRecentBuy(params)).then(() => {
+                    let copy = _.cloneDeep(this.props.recent.recentBuy);
+                    copy = _.slice(copy, 0, 6);
+                    _.each(copy, (v, k) => {
+                        copy[k].tkCommFee = v.tkCommFee / 100
+                    });
+                    the.setState({buySource: the.ds.cloneWithRows(_.reverse(copy))});
+                    resolve(true);
+                });
+            });
+        })
+
     }
 
     _deleteSearchHistory() {
@@ -315,7 +328,8 @@ class RedPacket extends React.Component {
                         </View>
                         <View style={styles.historyContent}>
                             {
-                                this.state.showTop ? topRows : <View style={{flex: 1,alignItems:'center'}}><Text style={styles.dimText}>热门搜索关闭</Text></View>
+                                this.state.showTop ? topRows : <View style={{flex: 1, alignItems: 'center'}}><Text
+                                    style={styles.dimText}>热门搜索关闭</Text></View>
                             }
                         </View>
                     </View> : null
@@ -446,8 +460,8 @@ class RedPacket extends React.Component {
     }
 
     _renderItemRow(rowData: string) {
-        const jump = ()=>{
-            if(rowData.realRefund)
+        const jump = () => {
+            if (rowData.realRefund)
                 this._jumpOrdersPage();
             else
                 this._jumpToTaobaoPage(rowData.itemId.toString(), rowData)
@@ -470,24 +484,24 @@ class RedPacket extends React.Component {
 
                         <View style={styles.recFlowPrice}>
                             <Text
-                                style={[styles.baseText, styles.recFlowText]}>￥{rowData.itemPrice}</Text>
+                                style={[styles.baseText, styles.recFlowText]}>￥{rowData.syncItemPrice||rowData.itemPrice}</Text>
 
                         </View>
                         <View style={styles.redPacketPrice}>
                             <Image style={styles.redIcon} source={require('../../assets/footer/red_.png')}/>
                             <Text
-                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}</Text>
+                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals((rowData.syncRealRefund||rowData.tkCommFee) * this.state.ratio, 2)}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}
                                   numberOfLines={2}>
-                                {rowData.itemTitle}
+                                {rowData.syncItemName||rowData.itemTitle}
                             </Text>
                         </View>
 
                     </View>
                     {
-                        rowData.state == 'UNKNOWN' ? <View style={styles.syncShadow}>
+                        rowData.status == 'UNKNOWN' ? <View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
                                     <Text style={styles.syncShadowText}>订单同步中,大约5分钟</Text>
@@ -616,8 +630,38 @@ class RedPacket extends React.Component {
         this.setState({showTip: false});
     }
 
-    _syncOrder() {
+    _syncOrder(orderId) {
+        let userId = 17321057664;
+        let the = this;
+        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
+            if (result) {
+                result = JSON.parse(result);
+                userId = result.userId || userId;
+                request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET')
+                    .then((res) => {
+                        if(res.resultCode === 0){
+                            the._onRefresh();
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    })
+                    .catch(() => {
+                        console.log('network error');
+                    });
+            }
+        });
+    }
 
+    _onRefresh(){
+        let the = this;
+        this.setState({refreshing: true});
+        this._getRecentBuy()
+            .then(()=>{
+                this.setState({refreshing: false});
+            });
+        setTimeout(()=>{
+            this.setState({refreshing: false});
+        },3000)
     }
 
     render() {
@@ -644,7 +688,7 @@ class RedPacket extends React.Component {
                     onRightIconClicked={this._onRightIconClicked}
                 />
                 {
-                    this.state.showTip?<SyncPopup
+                    this.state.showTip ? <SyncPopup
                         onPressCross={this._onPressCross}
                         order={this.state.order}
                         show={true}
@@ -673,76 +717,89 @@ class RedPacket extends React.Component {
                     </View>
                 </View>
                 {
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={() => this._onRefresh()}
+                                colors={['#fc7d30']}
+                                tintColor={['#fc7d30']}
+                            />
+                        }
+                        showsVerticalScrollIndicator={false}>
                         <View style={[styles.block, styles.history]}>
                             {this._historyFrame()}
                         </View>
                         {
-                            this.props.recent.recentBuy.length === 0 && this.state.token?
+                            this.props.recent.recentBuy.length === 0 && this.state.token ?
                                 <View style={[styles.syncBlock]}>
-                                    <TouchableOpacity style={[styles.sync,styles.syncS]} onPress={() => this._jumpToOrderPage()}>
+                                    <TouchableOpacity style={[styles.sync, styles.syncS]}
+                                                      onPress={() => this._jumpToOrderPage()}>
                                         <Icon
                                             name='md-sync'
                                             size={16}
                                             color={'#fff'}
                                         />
-                                        <Text style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步订单</Text>
+                                        <Text
+                                            style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步订单</Text>
                                     </TouchableOpacity>
-                                </View>: null
+                                </View> : null
                         }
 
                         {
-                       this.props.recent.recentBuy.length > 0 || this.props.recent.recentView.length > 0 ?
+                            this.props.recent.recentBuy.length > 0 || this.props.recent.recentView.length > 0 ?
 
-                            <View
-                                style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>
-                                {
-                                    this.props.recent.recentBuy.length > 0 ?
-                                        <View style={{marginBottom: 10}}>
-                                            <View style={styles.blockTitle}>
-                                                <View style={styles.delete}>
-                                                    <TouchableOpacity style={styles.sync} onPress={() => this._jumpToOrderPage()}>
-                                                        <Icon
-                                                            name='md-sync'
-                                                            size={16}
-                                                            color={'#fff'}
-                                                        />
-                                                        <Text style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步</Text>
-                                                    </TouchableOpacity>
+                                <View
+                                    style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>
+                                    {
+                                        this.props.recent.recentBuy.length > 0 ?
+                                            <View style={{marginBottom: 10}}>
+                                                <View style={styles.blockTitle}>
+                                                    <View style={styles.delete}>
+                                                        <TouchableOpacity style={styles.sync}
+                                                                          onPress={() => this._jumpToOrderPage()}>
+                                                            <Icon
+                                                                name='md-sync'
+                                                                size={16}
+                                                                color={'#fff'}
+                                                            />
+                                                            <Text
+                                                                style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
                                                 </View>
-                                                <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
-                                            </View>
-                                            <View style={styles.recentBuy}>
-                                                {this._recentList('buy')}
-                                            </View>
-                                        </View> :
-                                        null
-                                }
-                                {
-                                    this.props.recent.recentView.length > 0 ?
-                                        <View>
-                                            <View style={styles.blockTitle}>
-                                                <View style={styles.delete}>
-                                                    <TouchableOpacity onPress={() => this._deleteViewHistory()}>
-                                                        <Icon
-                                                            name='ios-trash'
-                                                            size={26}
-                                                            color={'#aaa'}
-                                                        />
-                                                    </TouchableOpacity>
+                                                <View style={styles.recentBuy}>
+                                                    {this._recentList('buy')}
                                                 </View>
-                                                <Text style={[styles.historyTitle, styles.baseText]}>最近浏览：</Text>
-                                            </View>
-                                            <View style={styles.recentView}>
-                                                {this._recentList('view')}
-                                            </View>
-                                        </View> :
-                                        null
-                                }
+                                            </View> :
+                                            null
+                                    }
+                                    {
+                                        this.props.recent.recentView.length > 0 ?
+                                            <View>
+                                                <View style={styles.blockTitle}>
+                                                    <View style={styles.delete}>
+                                                        <TouchableOpacity onPress={() => this._deleteViewHistory()}>
+                                                            <Icon
+                                                                name='ios-trash'
+                                                                size={26}
+                                                                color={'#aaa'}
+                                                            />
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <Text style={[styles.historyTitle, styles.baseText]}>最近浏览：</Text>
+                                                </View>
+                                                <View style={styles.recentView}>
+                                                    {this._recentList('view')}
+                                                </View>
+                                            </View> :
+                                            null
+                                    }
 
-                            </View>
-                            :
-                            null}
+                                </View>
+                                :
+                                null}
                     </ScrollView>
                 }
 
