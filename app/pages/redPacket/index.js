@@ -521,7 +521,7 @@ class RedPacket extends React.Component {
         data = JSON.stringify(data);
         Token.getToken(navigator).then((token) => {
             if (token) {
-                request('user/orderitems', 'POST', data, token)
+                request('user/order', 'POST', data, token)
                     .then((res) => {
                         if (res.resultCode === 0) {
                             toast('购买成功');
@@ -633,6 +633,12 @@ class RedPacket extends React.Component {
     _syncOrder(orderId) {
         let userId = 17321057664;
         let the = this;
+
+        let data = {};
+        data.orderId = orderId;
+        this._insertOrder(data);
+        return;
+
         AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
             if (result) {
                 result = JSON.parse(result);

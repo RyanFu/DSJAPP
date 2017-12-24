@@ -109,7 +109,7 @@ class SearchItem extends React.Component {
         data = JSON.stringify(data);
         Token.getToken(navigator).then((token) => {
             if (token) {
-                request('user/orderitems','POST',data,token)
+                request('user/order','POST',data,token)
                     .then((res) => {
                         if (res.resultCode === 0) {
                             toast('购买成功');
