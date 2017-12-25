@@ -16,6 +16,8 @@
 #import "../Libraries/LinkingIOS/RCTLinkingManager.h"
 #import "MWApi.h"
 #import "MLink.h"
+#import "UpdateDataLoader.h"
+#import "DownloadTool.h"
 
 @implementation AppDelegate
 
@@ -53,8 +55,16 @@
 //****************** baichuan  **********************//
   
   [[RCTBundleURLProvider sharedSettings] setDefaults];
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  
+  NSString* iOSBundlePath = [[UpdateDataLoader sharedInstance] iOSFileBundlePath];
 
+  if ([[NSFileManager defaultManager] fileExistsAtPath:iOSBundlePath]) {
+    jsCodeLocation = [NSURL URLWithString:iOSBundlePath];
+  }else{
+    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  }
+  
+//  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"AppReact"
                                                initialProperties:nil
