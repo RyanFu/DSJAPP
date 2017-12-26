@@ -465,18 +465,18 @@ class RedPacket extends React.Component {
 
     _renderFooter() {
         if (this.state.isLoadMore) {
-            // return (
-            //     <TouchableOpacity onPress={this._jumpOrdersPage.bind(this)} style={styles.loadMore}>
-            //         <View>
-            //             <Text style={styles.loadMoreText}>
-            //                 加载更多
-            //             </Text>
-            //             {moreIcon}
-            //
-            //         </View>
-            //     </TouchableOpacity>
-            //
-            // );
+            return (
+                <TouchableOpacity onPress={this._jumpOrdersPage.bind(this)} style={styles.loadMore}>
+                    <View>
+                        <Text style={styles.loadMoreText}>
+                            加载更多
+                        </Text>
+                        {moreIcon}
+
+                    </View>
+                </TouchableOpacity>
+
+            );
             return null;
         }
         return null;
@@ -533,9 +533,9 @@ class RedPacket extends React.Component {
 
                     </View>
                     {
-                        rowData.status == 'UNKNOWN' ||
+                        (rowData.status == 'UNKNOWN' ||
                         !rowData.status||
-                        !rowData.price    ? <View style={styles.syncShadow}>
+                        !rowData.price) &&  rowData.orderId  ? <View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
                                     <Text style={styles.syncShadowText}>订单同步中,大约需5分钟</Text>

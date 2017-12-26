@@ -194,8 +194,8 @@ const styles = StyleSheet.create({
     syncShadow: {
         marginTop: 2,
         marginBottom: 0,
-        width: width / 3 - 6,
-        marginLeft: 3,
+        width: width / 3 - 4,
+        marginLeft: 2,
         backgroundColor: 'rgba(255,255,255,.95)',
         position: 'absolute',
         height: width/3 + 38
