@@ -16,7 +16,7 @@ import {
 import styles from './style';
 import Toolbar from '../../components/toolbar';
 import {decimals} from '../../utils/common';
-import {Token} from '../../utils/common';
+import {timeFormat} from '../../utils/common';
 import {connect} from 'react-redux';
 //import Emoticons, * as emoticons from 'react-native-emoticons';
 import AutoHideKeyboard from '../../components/autoHideBoard';
@@ -34,7 +34,7 @@ class Order extends React.Component {
         this._renderRow = this._renderRow.bind(this);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: this.ds.cloneWithRows(this.props.recent.recentBuy),
+            dataSource: this.ds.cloneWithRows([]),
             ratio: 0.7
         };
     }
@@ -45,25 +45,32 @@ class Order extends React.Component {
             if(!error && result)
             the.setState({ratio: result});
         });
+
+        this._buySource(this.props.recent.recentBuy);
     }
 
     _renderRow(rowData) {
         return (
-            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}>
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5} >
                 <View>
                     <View style={styles.orderRow}>
                         <PrefetchImage
-                            imageUri={rowData.itemPicUrl}
+                            imageUri={rowData.pic}
                             imageStyle={styles.itemThumb}
                             resizeMode="stretch"
-                            width={50}
-                            height={60}
+                            width={60}
+                            height={90}
+                            key={rowData.id+rowData.orderType+'.'}
                         />
                         <View style={styles.orderText}>
-                            <Text style={styles.baseText} lineBreakMode={'tail'} numberOfLines={2}>{rowData.itemTitle}</Text>
-                            <Text style={styles.dimText}>预估收入：￥ {decimals(rowData.tkCommFee/100*this.state.ratio, 2)}</Text>
-                        </View>
+                            <Text style={styles.baseText} lineBreakMode={'tail'} numberOfLines={2}>{rowData.title}</Text>
+                            <View style={styles.orderTextDetail}>
+                                <Text style={[styles.dimText,styles.sText,rowData.orderType==1?styles.red:(rowData.orderType==2?styles.green:(rowData.orderType==3?styles.darkGreen:''))]}>预估红包：￥ {decimals(rowData.estimate*this.state.ratio, 2)}</Text>
+                                <Text style={[styles.dimText,styles.sText,rowData.orderType==1?styles.red:(rowData.orderType==2?styles.green:(rowData.orderType==3?styles.darkGreen:''))]}>实际红包：￥ {decimals(rowData.real*this.state.ratio, 2)}</Text>
+                                <Text style={[styles.dimText,styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
 
+                            </View>
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -73,24 +80,63 @@ class Order extends React.Component {
     _orderList(orderType){
         let data = null;
         if(orderType === 2){
-            data = _.filter(this.props.recent.recentBuy, function(o) { return o.state === 'SETTLED'; });
+            data = _.filter(this.props.recent.recentBuy, function(o) { return o.orderItemState === 'SETTLED'; });
         }
         if(orderType === 1){
-            data = _.filter(this.props.recent.recentBuy, function(o) { return (o.state !== 'INVALID' || o.state !== 'UNKNOWN'); });
+            data = _.filter(this.props.recent.recentBuy, function(o) { return o.orderItemState === 'PAID' ; });
         }
         if(orderType === 3){
-            data = _.filter(this.props.recent.recentBuy, function(o) { return o.state === 'UNKNOWN'; });
+            data = _.filter(this.props.recent.recentBuy, function(o) { return o.orderItemState === 'WITHDRAWN'; });
+        }
+        if(orderType === 0){
+            data = this.props.recent.recentBuy;
         }
         return (
             <ListView
                 contentContainerStyle={styles.orderList}
-                dataSource={this.ds.cloneWithRows(data)}
+                dataSource={this.ds.cloneWithRows(this._buySource(data,orderType))}
                 renderRow={this._renderRow}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
                 enableEmptySections={true}
             />
         );
+    }
+
+    _buySource(data,orderType){
+        // data = _.slice(data, 0, 6);
+        let source = [];
+        let the = this;
+        _.each(data, (v, k) => {
+            if(v.syncItems.length > 0){
+                _.each(v.syncItems, (vv, kk) =>{
+                    const item = {
+                        id: vv.id,
+                        estimate: vv.syncEstimateEffect,
+                        real: vv.syncRealRefund,
+                        price: vv.syncItemPrice,
+                        title: vv.syncItemName,
+                        orderId: vv.syncOrderId,
+                        pic: vv.itemPicUrl,
+                        status: vv.status,
+                        orderType: orderType,
+                        time: vv.syncCreationDate
+                    };
+                    source.push(item);
+                });
+            } else {
+                const item = {
+                    id: v.id,
+                    orderId: v.orderId,
+                    status: v.orderItemState,
+                    orderType: orderType,
+                    time: vv.creationDate|| (new Date()).getTime()
+                };
+                source.push(item);
+            }
+        });
+        source = _.reverse(source);
+        return source;
     }
 
     render() {
@@ -112,6 +158,13 @@ class Order extends React.Component {
                         style={{height: 40, borderBottomColor: 'rgba(178,178,178,0.3)'}}
                     />}
                 >
+                    <View
+                        key='1'
+                        tabLabel='全部'
+                        style={{flex: 1}}
+                    >
+                        {this._orderList(0)}
+                    </View>
                     <View
                         key='1'
                         tabLabel='有效订单'

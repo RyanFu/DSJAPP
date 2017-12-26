@@ -46,18 +46,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         width: width,
-        height: 70,
+        height: 100,
         borderColor: 'rgba(155,155,155,0.1)',
         borderBottomWidth: 1,
         paddingVertical: 5
     },
     itemThumb: {
-        width: 60,
-        height: 60
+        width: 90,
+        height: 90
     },
     orderText: {
         flexDirection: 'column',
-        width: width - 60,
+        width: width - 90,
         paddingLeft: 10,
         paddingRight: 10,
         justifyContent: 'space-between',
@@ -98,6 +98,22 @@ const styles = StyleSheet.create({
         color: '#fc7d30',
         marginRight: 2
     },
+    orderTextDetail: {
+        flexDirection: 'column'
+    },
+    sText: {
+        fontSize: 11,
+        color: '#9b9b9b'
+    },
+    red: {
+        color: '#ff0000'
+    },
+    green: {
+        color: '#00d05d'
+    },
+    darkGreen: {
+        color: '#026734'
+    }
 });
 
 export default styles;
