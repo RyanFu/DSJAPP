@@ -61,6 +61,9 @@ class RedPacket extends React.Component {
         this._topSearch = this._topSearch.bind(this);
         this._onPressCross = this._onPressCross.bind(this);
         this._getRecentBuy = this._getRecentBuy.bind(this);
+        this._buySource = this._buySource.bind(this);
+        this._syncOrder = this._syncOrder.bind(this);
+
         this.state = {
             keyWord: '',
             searchItemHistory: [],
@@ -170,11 +173,7 @@ class RedPacket extends React.Component {
             };
             dispatch(fetchRecentBuy(params)).then(() => {
                 let copy = _.cloneDeep(this.props.recent.recentBuy);
-                copy = _.slice(copy, 0, 6);
-                _.each(copy, (v, k) => {
-                    copy[k].tkCommFee = v.tkCommFee / 100
-                });
-                the.setState({buySource: this.ds.cloneWithRows(_.reverse(copy))});
+                the._buySource(copy);
             });
 
             this.setState({token: token})
@@ -225,6 +224,38 @@ class RedPacket extends React.Component {
         );
     }
 
+    _buySource(data){
+        // data = _.slice(data, 0, 6);
+        let source = [];
+        let the = this;
+        _.each(data, (v, k) => {
+            if(v.syncItems.length > 0){
+                _.each(v.syncItems, (vv, kk) =>{
+                    const item = {
+                        estimate: vv.syncEstimateEffect,
+                        real: vv.syncRealRefund,
+                        price: vv.syncItemPrice,
+                        title: vv.syncItemName,
+                        orderId: vv.syncOrderId,
+                        pic: vv.itemPicUrl,
+                        status: vv.status
+                    };
+                    source.push(item);
+                });
+            } else {
+                const item = {
+                    orderId: v.orderId,
+                    status: v.orderItemState
+                };
+                source.push(item);
+            }
+        });
+        source = _.reverse(source);
+        source = _.slice(source, 0, 6);
+
+        the.setState({buySource: this.ds.cloneWithRows(source)});
+    }
+
     _getRecentBuy(){
         const the = this;
         const {dispatch} = this.props;
@@ -240,11 +271,12 @@ class RedPacket extends React.Component {
                 };
                 dispatch(fetchRecentBuy(params)).then(() => {
                     let copy = _.cloneDeep(this.props.recent.recentBuy);
-                    copy = _.slice(copy, 0, 6);
-                    _.each(copy, (v, k) => {
-                        copy[k].tkCommFee = v.tkCommFee / 100
-                    });
-                    the.setState({buySource: the.ds.cloneWithRows(_.reverse(copy))});
+                    // copy = _.slice(copy, 0, 6);
+                    // _.each(copy, (v, k) => {
+                    //     copy[k].tkCommFee = v.tkCommFee / 100
+                    // });
+                    // the.setState({buySource: the.ds.cloneWithRows(_.reverse(copy))});
+                    the._buySource(copy);
                     resolve(true);
                 });
             });
@@ -461,7 +493,7 @@ class RedPacket extends React.Component {
 
     _renderItemRow(rowData: string) {
         const jump = () => {
-            if (rowData.realRefund)
+            if (rowData.orderId)
                 this._jumpOrdersPage();
             else
                 this._jumpToTaobaoPage(rowData.itemId.toString(), rowData)
@@ -474,37 +506,39 @@ class RedPacket extends React.Component {
                 <View style={styles.sysRowC}>
                     <View style={styles.sysRow}>
                         <PrefetchImage
-                            imageUri={rowData.itemPicUrl}
+                            imageUri={rowData.itemPicUrl||rowData.pic}
                             imageStyle={styles.sysThumb}
                             resizeMode="cover"
                             width={width / 3 - 5}
                             height={width / 3 - 5}
-                            key={rowData.itemPicUrl}
+                            key={rowData.itemPicUrl||rowData.pic}
                         />
 
                         <View style={styles.recFlowPrice}>
                             <Text
-                                style={[styles.baseText, styles.recFlowText]}>￥{rowData.syncItemPrice||rowData.itemPrice}</Text>
+                                style={[styles.baseText, styles.recFlowText]}>￥{rowData.itemPrice||rowData.price}</Text>
 
                         </View>
                         <View style={styles.redPacketPrice}>
                             <Image style={styles.redIcon} source={require('../../assets/footer/red_.png')}/>
                             <Text
-                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals((rowData.syncRealRefund||rowData.tkCommFee) * this.state.ratio, 2)}</Text>
+                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals((rowData.tkCommFee||rowData.estimate) * this.state.ratio, 2)}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}
                                   numberOfLines={2}>
-                                {rowData.syncItemName||rowData.itemTitle}
+                                {rowData.itemTitle||rowData.title}
                             </Text>
                         </View>
 
                     </View>
                     {
-                        rowData.status == 'UNKNOWN' ? <View style={styles.syncShadow}>
+                        rowData.status == 'UNKNOWN' ||
+                        !rowData.status||
+                        !rowData.price    ? <View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
-                                    <Text style={styles.syncShadowText}>订单同步中,大约5分钟</Text>
+                                    <Text style={styles.syncShadowText}>订单同步中,大约需5分钟</Text>
                                 </View>
                             </View>
                         </View> : null
@@ -530,7 +564,8 @@ class RedPacket extends React.Component {
                             };
                             dispatch(fetchRecentBuy(params)).then(() => {
                                 const copy = _.cloneDeep(the.props.recent.recentBuy);
-                                the.setState({buySource: the.ds.cloneWithRows(_.reverse(copy))});
+                                // the.setState({buySource: the.ds.cloneWithRows(_.reverse(copy))});
+                                the._buySource(copy);
                             });
                         }
                     }, function (error) {

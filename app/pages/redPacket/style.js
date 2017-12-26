@@ -194,7 +194,8 @@ const styles = StyleSheet.create({
     syncShadow: {
         marginTop: 2,
         marginBottom: 0,
-        width: width / 3,
+        width: width / 3 - 6,
+        marginLeft: 3,
         backgroundColor: 'rgba(255,255,255,.95)',
         position: 'absolute',
         height: width/3 + 38
@@ -217,7 +218,8 @@ const styles = StyleSheet.create({
     },
     syncShadowText: {
         color: '#fc7d30',
-        fontSize: 10
+        fontSize: 10,
+        textAlign: 'center'
     },
     loadMore: {
         width: 40,
