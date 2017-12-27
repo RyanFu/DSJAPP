@@ -64,7 +64,7 @@ class SyncPopup extends React.Component {
                     <View style={styles.content}>
                         <Text style={styles.content1}>{this.props.order}</Text>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.dimText}>五分钟内，我们会审核完成您的订单，请耐心等待，谢谢！</Text>
+                            <Text style={styles.dimText}>{this.props.text?this.props.text:'五分钟内，我们会审核完成您的订单，请耐心等待，谢谢！'}</Text>
                         </View>
 
                     </View>

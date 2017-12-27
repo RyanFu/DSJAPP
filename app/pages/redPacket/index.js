@@ -82,6 +82,7 @@ class RedPacket extends React.Component {
             openOrderPage: false,
             token: null,
             refreshing: false,
+            syncMsg: ''
         };
     }
 
@@ -669,10 +670,10 @@ class RedPacket extends React.Component {
         let userId = 17321057664;
         let the = this;
 
-        let data = {};
-        data.orderId = orderId;
-        this._insertOrder(data);
-        return;
+        // let data = {};
+        // data.orderId = orderId;
+        // this._insertOrder(data);
+        // return;
 
         AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
             if (result) {
@@ -683,6 +684,7 @@ class RedPacket extends React.Component {
                         if(res.resultCode === 0){
                             the._onRefresh();
                         }
+                        this.setState({syncMsg: res.resultValues.message});
                     }, function (error) {
                         console.log(error);
                     })
@@ -733,6 +735,7 @@ class RedPacket extends React.Component {
                         onPressCross={this._onPressCross}
                         order={this.state.order}
                         show={true}
+                        text={this.state.syncMsg}
                     /> : null
                 }
                 <View style={[styles.block, styles.search]}>
