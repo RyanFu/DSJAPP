@@ -40,6 +40,7 @@ import StarRating from 'react-native-star-rating';
 import IconAS from 'react-native-vector-icons/FontAwesome';
 import StorageKeys from '../../constants/StorageKeys';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import * as Emoticons from '../emoticons';
 const Navigator = deprecatedComponents.Navigator;
 
 const {height, width} = Dimensions.get('window');
@@ -271,7 +272,7 @@ class Flow extends React.Component {
                         </TouchableOpacity>
                         <View style={styles.title}>
                             <Text style={styles.text} numberOfLines={2} lineBreakMode='tail'>
-                                {val.title}
+                                {Emoticons.parse(val.title)}
                             </Text>
                         </View>
                         <View style={styles.interaction}>
