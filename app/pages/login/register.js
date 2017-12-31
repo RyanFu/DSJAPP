@@ -67,7 +67,7 @@ export default class ForgetPasswordPage extends Component {
 
         let  body = JSON.stringify({
             purpose: 'login',
-            mobile: this.state.userId
+            mobile: this.state.phone
         });
 
         request( 'message/verification-code', 'POST', body)
