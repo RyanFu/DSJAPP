@@ -116,9 +116,9 @@ class SecurityPage extends React.Component {
                         text: '确定', onPress: () => {
                         const {navigator } = this.props;
                         let url = 'user/unbind/' + channel;
-                        if(channel === 'ALIPAY') {
-                            url = 'user/bindings/alipay/unbind';
-                        }
+//                         if(channel === 'ALIPAY') {
+//                             url = 'user/bindings/alipay/unbind';
+//                         }
                         Token.getToken(navigator).then((token) => {
                                 if (token) {
                                     request(url, 'post', '', token)
