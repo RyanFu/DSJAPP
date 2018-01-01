@@ -12,7 +12,8 @@ import {
     Animated,
     InteractionManager,
     Platform,
-    Alert
+    Alert,
+    Linking
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -49,7 +50,8 @@ class Friends extends React.Component {
             opacity: {},
             toLeft: {},
             height: {},
-            permissionFailure: false
+            permissionFailure: false,
+            downloadUrl: 'http://www.duoshouji.com'
         };
     }
 
@@ -221,7 +223,7 @@ class Friends extends React.Component {
                                             <Image source={require('../../assets/invite/follow.png')}></Image>
                                         </TouchableHighlight>
                                         :
-                                        <TouchableHighlight onPress={() => this._invite(rowData.phone)}
+                                        <TouchableHighlight onPress={() => this._sendSMS(rowData.phone)}
                                                             style={styles.button}>
                                             <Image source={require('../../assets/invite/invite.png')}></Image>
                                         </TouchableHighlight>
@@ -371,6 +373,23 @@ class Friends extends React.Component {
             this.setState({trueSwitchIsOn: value});
         }
 
+    }
+
+    _sendSMS(phone){
+        const preURL = 'smsto:';
+        const url = preURL + phone;
+        const body = '快来使用淘宝神器“剁手记”，全场领红包，看看我都分享了什么。' + this.state.downloadUrl;
+        Linking.canOpenURL(url).then(supported => {
+           if (supported) {
+               if(Platform.OS==="ios"){
+                 Linking.openURL("sms:12345678901&body=" + body);
+                }else{
+                 Linking.openURL("sms:12345678901?body=" + body);
+                }
+           } else {
+              console.log('无法打开该URI: ' + url);
+           }
+        })
     }
 
     render() {
