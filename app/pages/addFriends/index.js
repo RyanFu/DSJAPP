@@ -70,7 +70,7 @@ class Friends extends React.Component {
         this._getPermission();
     }
 
-    _getPermission()  {
+    _getPermission() {
         let the = this;
         new Promise((resolve, reject) => {
             Contacts.checkPermission((err, permission) => {
@@ -86,7 +86,7 @@ class Friends extends React.Component {
                 if (permission === 'denied') {
                     //for adroid
                     Contacts.requestPermission((err, permission) => {
-                        if( permission === 'denied'){
+                        if (permission === 'denied') {
                             this.setState({permissionFailure: true});
                             this.setState({trueSwitchIsOn: false});
                             resolve(false);
@@ -133,41 +133,43 @@ class Friends extends React.Component {
                                     array.push(obj);
                             });
 
-
-                            Token.getToken(navigator).then((token) => {
-                                if (token) {
-                                    the.setState({token: token});
-                                    let body = '';
-                                    _.each(array, (list) => {
-                                        body += 'mobiles=' + list.phone + '&';
-                                    });
-                                    //body = 'mobiles=' + body;
-                                    request('/user/mobile-contacts/status?' + body, 'GET', '', token)
-                                        .then((res) => {
-                                            if (res.resultCode === 0) {
-                                                try {
-                                                    _.each(res.resultValues, (list) => {
-                                                        let contact = _.find(array, {phone: list.mobile + ''});
-                                                        contact.userId = list.userId || 0;
-                                                        if (list.userId > 0)
-                                                            contact.hasRegistered = true;
-                                                        if (list.isFollowedBySessionUser)
-                                                            contact.hasBeFollowed = true;
-                                                    });
-                                                } catch (error) {
-                                                    console.log(error)
-                                                }
-
-                                                resolve(array)
-                                            }
-                                        }, function (error) {
-                                            console.log(error);
-                                        })
-                                        .catch(() => {
-                                            console.log('network error');
+                            if (array.length === 0)
+                                resolve([]);
+                            else
+                                Token.getToken(navigator).then((token) => {
+                                    if (token) {
+                                        the.setState({token: token});
+                                        let body = '';
+                                        _.each(array, (list) => {
+                                            body += 'mobiles=' + list.phone + '&';
                                         });
-                                }
-                            });
+                                        //body = 'mobiles=' + body;
+                                        request('/user/mobile-contacts/status?' + body, 'GET', '', token)
+                                            .then((res) => {
+                                                if (res.resultCode === 0) {
+                                                    try {
+                                                        _.each(res.resultValues, (list) => {
+                                                            let contact = _.find(array, {phone: list.mobile + ''});
+                                                            contact.userId = list.userId || 0;
+                                                            if (list.userId > 0)
+                                                                contact.hasRegistered = true;
+                                                            if (list.isFollowedBySessionUser)
+                                                                contact.hasBeFollowed = true;
+                                                        });
+                                                    } catch (error) {
+                                                        console.log(error)
+                                                    }
+
+                                                    resolve(array)
+                                                }
+                                            }, function (error) {
+                                                console.log(error);
+                                            })
+                                            .catch(() => {
+                                                console.log('network error');
+                                            });
+                                    }
+                                });
 
                         }
                     });
@@ -357,7 +359,7 @@ class Friends extends React.Component {
     _switchPermission(value) {
         if (value) {
             Contacts.requestPermission((err, permission) => {
-                if( permission === 'denied'){
+                if (permission === 'denied') {
                     this.setState({permissionFailure: true});
                     this.setState({trueSwitchIsOn: false});
                     Alert.alert('通讯录', "打开：设置 > 剁手记 > 通讯录, 开启读取通讯录权限");
@@ -366,7 +368,7 @@ class Friends extends React.Component {
                     this.setState({trueSwitchIsOn: value});
                 }
             });
-        }else {
+        } else {
             this.setState({permissionFailure: true});
             this.setState({dataSource: this.ds.cloneWithRows([])});
             this.setState({contacts: []});
@@ -375,20 +377,20 @@ class Friends extends React.Component {
 
     }
 
-    _sendSMS(phone){
-        const preURL = 'smsto:';
+    _sendSMS(phone) {
+        const preURL = 'sms:';
         const url = preURL + phone;
         const body = '快来使用淘宝神器“剁手记”，全场领红包，看看我都分享了什么。' + this.state.downloadUrl;
         Linking.canOpenURL(url).then(supported => {
-           if (supported) {
-               if(Platform.OS==="ios"){
-                 Linking.openURL("sms:12345678901&body=" + body);
-                }else{
-                 Linking.openURL("sms:12345678901?body=" + body);
+            if (supported) {
+                if (Platform.OS === "ios") {
+                    Linking.openURL(url+"&body=" + body);
+                } else {
+                    Linking.openURL(url+"?body=" + body);
                 }
-           } else {
-              console.log('无法打开该URI: ' + url);
-           }
+            } else {
+                console.log('无法打开该URI: ' + url);
+            }
         })
     }
 
