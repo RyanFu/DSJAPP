@@ -147,7 +147,7 @@ class MyMessagesPage extends Component {
                 type = 'comment';
                 break;
             case 'trans' :
-                type = 'rebate';
+                type = 'account';
                 break;
             case 'fan':
                 type = 'follow';

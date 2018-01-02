@@ -155,6 +155,7 @@ class Order extends React.Component {
                     tabBarActiveTextColor="#fc7d30"
                     tabBarInactiveTextColor="#9b9b9b"
                     tabBarUnderlineStyle={{backgroundColor: '#fc7d30', height: 1.5}}
+                    initialPage={0}
                     renderTabBar={() => <DefaultTabBar
                         style={{height: 40, borderBottomColor: 'rgba(178,178,178,0.3)'}}
                     />}

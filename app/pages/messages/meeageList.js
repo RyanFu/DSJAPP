@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -17,16 +17,18 @@ import styles from './styles';
 import Toolbar from '../../components/toolbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MessageDetailPage from './MessageDetailPage';
-import { connect } from 'react-redux';
-import { Token, timeFormat } from '../../utils/common';
+import {connect} from 'react-redux';
+import {Token, timeFormat} from '../../utils/common';
 import LoginPage from '../../pages/login';
-import {fetchMessageList,markAsRead} from '../../actions/message';
+import {fetchMessageList, markAsRead} from '../../actions/message';
 import CommentListPage from '../../pages/commentList';
 import FollowerPage from '../../pages/my/follower';
+import OrderPage from '../../pages/order';
 import StorageKeys from '../../constants/StorageKeys';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import Emoticons, * as emoticons from '../../components/emoticons';
 import _ from 'lodash';
+
 const Navigator = deprecatedComponents.Navigator;
 
 class MessageList extends React.Component {
@@ -42,7 +44,7 @@ class MessageList extends React.Component {
     }
 
     componentDidMount() {
-        const {dispatch,route,navigator} = this.props;
+        const {dispatch, route, navigator} = this.props;
         const the = this;
         Token.getToken(navigator).then((token) => {
             const params = {
@@ -59,11 +61,11 @@ class MessageList extends React.Component {
 
     }
 
-    _makeAsRead(rowID,rowData){
-        const {navigator,route,dispatch} = this.props;
+    _makeAsRead(rowID, rowData) {
+        const {navigator, route, dispatch} = this.props;
         const the = this;
 
-        if(route.type === 'comment'){
+        if (route.type === 'comment') {
             navigator.push({
                 component: CommentListPage,
                 name: 'CommentListPage',
@@ -71,8 +73,8 @@ class MessageList extends React.Component {
             });
         }
 
-        if(route.type === 'follow'){
-            AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY).then((meDetail)=> {
+        if (route.type === 'follow') {
+            AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY).then((meDetail) => {
                 if (meDetail !== null) {
                     const user = JSON.parse(meDetail);
                     navigator.push({
@@ -84,45 +86,60 @@ class MessageList extends React.Component {
             });
         }
 
-        Token.getToken(navigator).then((token) => {
-            const params = {
-                id: rowData.id,
-                token: token,
-                type: route.type
-            };
-
-            dispatch(markAsRead(params)).then((res) => {
-                if(res){
-                    the.setState({'dataSource': the.ds.cloneWithRows(the.props.message.messageList)});
-                    the.setState({messageList: the.props.message.messageList});
-                }
+        if (route.type === 'account') {
+            navigator.push({
+                component: OrderPage,
+                name: 'OrderPage',
+                to: 2
             });
-        });
+        }
+
+        if (!rowData.isRead)
+            Token.getToken(navigator).then((token) => {
+                const params = {
+                    id: rowData.id,
+                    token: token,
+                    type: route.type
+                };
+
+                dispatch(markAsRead(params)).then((res) => {
+                    if (res) {
+                        the.setState({'dataSource': the.ds.cloneWithRows(the.props.message.messageList)});
+                        the.setState({messageList: the.props.message.messageList});
+                    }
+                });
+            });
 
 
     }
 
-    _renderCommentRow(rowData:string, sectionID:number, rowID:number) {
+    _renderCommentRow(rowData: string, sectionID: number, rowID: number) {
         return (
-            <TouchableHighlight  underlayColor="transparent" activeOpacity={0.5} onPress={()=>{this._makeAsRead(rowID,rowData)}}>
+            <TouchableHighlight underlayColor="transparent" activeOpacity={0.5} onPress={() => {
+                this._makeAsRead(rowID, rowData)
+            }}>
                 <View>
                     <View style={styles.messageListRow}>
                         <View style={styles.messageListContent}>
                             <View style={styles.messageListTimeC}>
-                                <Text style={[styles.dimText,styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
+                                <Text
+                                    style={[styles.dimText, styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
                             </View>
 
                             <View style={styles.messageListDetail}>
                                 {
-                                    this.state.messageList[rowID]&& !this.state.messageList[rowID].isRead?<View style={[styles.unReadDot]}>
-                                    </View>:null
+                                    this.state.messageList[rowID] && !this.state.messageList[rowID].isRead ?
+                                        <View style={[styles.unReadDot]}>
+                                        </View> : null
                                 }
-                                <Text style={[styles.baseText,styles.messageListText,this.state.messageList[rowID]&&!this.state.messageList[rowID].isRead?{}:null]} >
+                                <Text
+                                    style={[styles.baseText, styles.messageListText, this.state.messageList[rowID] && !this.state.messageList[rowID].isRead ? {} : null]}>
                                     您有一条来自{rowData.commentAuthorNickname}关于《{rowData.noteTitle}》的评论：
                                 </Text>
                             </View>
-                            <View style={[styles.messageListDetail,styles.messageListDetailPreView]}>
-                                <Text style={styles.dimText} numberOfLines={1} lineBreakMode={"tail"}>{emoticons.parse(rowData.commentContent)}</Text>
+                            <View style={[styles.messageListDetail, styles.messageListDetailPreView]}>
+                                <Text style={styles.dimText} numberOfLines={1}
+                                      lineBreakMode={"tail"}>{emoticons.parse(rowData.commentContent)}</Text>
                             </View>
 
                         </View>
@@ -133,23 +150,28 @@ class MessageList extends React.Component {
         )
     }
 
-    _renderFollowRow(rowData:string, sectionID:number, rowID:number) {
+    _renderFollowRow(rowData: string, sectionID: number, rowID: number) {
         return (
-            <TouchableHighlight  underlayColor="transparent" activeOpacity={0.5} onPress={()=>{this._makeAsRead(rowID,rowData)}}>
+            <TouchableHighlight underlayColor="transparent" activeOpacity={0.5} onPress={() => {
+                this._makeAsRead(rowID, rowData)
+            }}>
                 <View>
                     <View style={styles.messageListRow}>
                         <View style={styles.messageListContent}>
                             <View style={styles.messageListTimeC}>
-                                <Text style={[styles.dimText,styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
+                                <Text
+                                    style={[styles.dimText, styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
                             </View>
 
                             <View style={styles.messageListDetail}>
                                 {
-                                    this.state.messageList[rowID]&& !this.state.messageList[rowID].isRead?<View style={[styles.unReadDot]}>
-                                    </View>:null
+                                    this.state.messageList[rowID] && !this.state.messageList[rowID].isRead ?
+                                        <View style={[styles.unReadDot]}>
+                                        </View> : null
                                 }
 
-                                <Text style={[styles.baseText,styles.messageListText,this.state.messageList[rowID]&&!this.state.messageList[rowID].isRead?{height: 26}:null]} >
+                                <Text
+                                    style={[styles.baseText, styles.messageListText, this.state.messageList[rowID] && !this.state.messageList[rowID].isRead ? {height: 26} : null]}>
                                     {rowData.message}
                                 </Text>
                             </View>
@@ -162,23 +184,27 @@ class MessageList extends React.Component {
         )
     }
 
-    _renderRebateRow(rowData:string, sectionID:number, rowID:number){
+    _renderRebateRow(rowData: string, sectionID: number, rowID: number) {
         return (
-            <TouchableHighlight  underlayColor="transparent" activeOpacity={0.5} onPress={()=>{this._makeAsRead(rowID,rowData)}}>
+            <TouchableHighlight underlayColor="transparent" activeOpacity={0.5} onPress={() => {
+                this._makeAsRead(rowID, rowData)
+            }}>
                 <View>
                     <View style={styles.messageListRow}>
                         <View style={styles.messageListContent}>
                             <View style={styles.messageListTimeC}>
-                                <Text style={[styles.dimText,styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
+                                <Text
+                                    style={[styles.dimText, styles.messageListTime]}>{rowData.createdDateTime ? timeFormat(rowData.createdDateTime, 'yyyy年MM月dd日 hh:mm:ss') : '2016-08-05'} </Text>
                             </View>
 
                             <View style={styles.messageListDetail}>
                                 {
-                                    this.state.messageList[rowID]&& !this.state.messageList[rowID].isRead?<View style={[styles.unReadDot]}>
-                                    </View>:null
+                                    this.state.messageList[rowID] && !this.state.messageList[rowID].isRead ?
+                                        <View style={[styles.unReadDot]}>
+                                        </View> : null
                                 }
 
-                                <Text style={[styles.baseText,styles.messageListText,this.state.messageList[rowID]&&!this.state.messageList[rowID].isRead?{height: 26}:null]} >
+                                <Text style={[styles.baseText, styles.messageListText]}>
                                     {rowData.message}
                                 </Text>
                             </View>
@@ -191,26 +217,50 @@ class MessageList extends React.Component {
         )
     }
 
-    _renderRow(rowData:string, sectionID:number, rowID:number) {
-        if(this.props.route.type === 'comment'){
-            return this._renderCommentRow(rowData:string, sectionID:number, rowID:number);
+    _renderRow(rowData: string, sectionID: number, rowID: number) {
+        if (this.props.route.type === 'comment') {
+            return this._renderCommentRow(rowData
+        :
+            string, sectionID
+        :
+            number, rowID
+        :
+            number
+        )
+            ;
         }
-        if(this.props.route.type === 'follow'){
-            return this._renderFollowRow(rowData:string, sectionID:number, rowID:number);
+        if (this.props.route.type === 'follow') {
+            return this._renderFollowRow(rowData
+        :
+            string, sectionID
+        :
+            number, rowID
+        :
+            number
+        )
+            ;
         }
-        if(this.props.route.type === 'rebate'){
-            return this._renderRebateRow(rowData:string, sectionID:number, rowID:number);
+        if (this.props.route.type === 'account') {
+            return this._renderRebateRow(rowData
+        :
+            string, sectionID
+        :
+            number, rowID
+        :
+            number
+        )
+            ;
         }
     }
 
     render() {
-        return(
+        return (
             <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
                 <Toolbar
                     title="消息"
                     navigator={this.props.navigator}
                     hideDrop={true}
-                    />
+                />
                 <ListView
                     contentContainerStyle={styles.messageList}
                     dataSource={this.state.dataSource}
@@ -218,7 +268,7 @@ class MessageList extends React.Component {
                     horizontal={false}
                     showsVerticalScrollIndicator={false}
                     enableEmptySections={true}
-                    />
+                />
 
 
             </View>
@@ -228,7 +278,7 @@ class MessageList extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { message } = state;
+    const {message} = state;
     return {
         message
     };
