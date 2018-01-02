@@ -25,6 +25,7 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 const dismissKeyboard = require('dismissKeyboard');
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import PrefetchImage from '../../components/prefetchImage';
+import images from '../../constants/images';
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -55,7 +56,7 @@ class Order extends React.Component {
                 <View>
                     <View style={styles.orderRow}>
                         <PrefetchImage
-                            imageUri={rowData.pic}
+                            imageUri={rowData.pic?rowData.pic:images.DEFAULT_IMAGE}
                             imageStyle={styles.itemThumb}
                             resizeMode="stretch"
                             width={60}
@@ -166,21 +167,21 @@ class Order extends React.Component {
                         {this._orderList(0)}
                     </View>
                     <View
-                        key='1'
+                        key='2'
                         tabLabel='有效订单'
                         style={{flex: 1}}
                     >
                         {this._orderList(1)}
                     </View>
                     <View
-                        key='2'
+                        key='3'
                         tabLabel='可提现订单'
                         style={{flex: 1}}
                     >
                         {this._orderList(2)}
                     </View>
                     <View
-                        key='3'
+                        key='4'
                         tabLabel='已提现订单'
                         style={{flex: 1}}
                     >
