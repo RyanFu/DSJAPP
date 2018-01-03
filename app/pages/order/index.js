@@ -131,7 +131,7 @@ class Order extends React.Component {
                     orderId: v.orderId,
                     status: v.orderItemState,
                     orderType: orderType,
-                    time: vv.creationDate|| (new Date()).getTime()
+                    time: v.creationDate|| (new Date()).getTime()
                 };
                 source.push(item);
             }
