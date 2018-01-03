@@ -243,7 +243,7 @@ class RedPacket extends React.Component {
                     };
                     source.push(item);
                 });
-            } else {
+            } else if(v.orderItemState !== 'CANCELSYNC') {
                 const item = {
                     orderId: v.orderId,
                     status: v.orderItemState
@@ -523,7 +523,7 @@ class RedPacket extends React.Component {
                         <View style={styles.redPacketPrice}>
                             <Image style={styles.redIcon} source={require('../../assets/footer/red_.png')}/>
                             <Text
-                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals((rowData.tkCommFee||rowData.estimate) * this.state.ratio, 2)}</Text>
+                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals((typeof rowData.tkCommFee != 'undefined' ? rowData.tkCommFee : rowData.estimate) * this.state.ratio, 2)}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}

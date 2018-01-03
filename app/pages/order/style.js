@@ -46,14 +46,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         width: width,
-        height: 100,
+        height: 104,
         borderColor: 'rgba(155,155,155,0.1)',
         borderBottomWidth: 1,
         paddingVertical: 5
     },
     itemThumb: {
         width: 90,
-        height: 90
+        height: 94
     },
     orderText: {
         flexDirection: 'column',

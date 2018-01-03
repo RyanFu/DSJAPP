@@ -21,7 +21,8 @@ import {connect} from 'react-redux';
 //import Emoticons, * as emoticons from 'react-native-emoticons';
 import AutoHideKeyboard from '../../components/autoHideBoard';
 import _ from 'lodash';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
+
 const dismissKeyboard = require('dismissKeyboard');
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import PrefetchImage from '../../components/prefetchImage';
@@ -43,8 +44,8 @@ class Order extends React.Component {
     componentDidMount() {
         const the = this;
         AsyncStorage.getItem('ratio', (error, result) => {
-            if(!error && result)
-            the.setState({ratio: result});
+            if (!error && result)
+                the.setState({ratio: result});
         });
 
         this._buySource(this.props.recent.recentBuy);
@@ -52,23 +53,29 @@ class Order extends React.Component {
 
     _renderRow(rowData) {
         return (
-            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5} >
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}>
                 <View>
                     <View style={styles.orderRow}>
                         <PrefetchImage
-                            imageUri={rowData.pic?rowData.pic:images.DEFAULT_IMAGE}
+                            imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
                             imageStyle={styles.itemThumb}
                             resizeMode="stretch"
                             width={60}
-                            height={90}
-                            key={rowData.id+rowData.orderType+'.'}
+                            height={94}
+                            key={rowData.id + rowData.orderType + '.'}
                         />
                         <View style={styles.orderText}>
-                            <Text style={styles.baseText} lineBreakMode={'tail'} numberOfLines={2}>{rowData.title}</Text>
+                            <Text style={styles.baseText} lineBreakMode={'tail'}
+                                  numberOfLines={2}>{rowData.title}</Text>
                             <View style={styles.orderTextDetail}>
-                                <Text style={[styles.dimText,styles.sText,rowData.orderType==1?styles.red:(rowData.orderType==2?styles.green:(rowData.orderType==3?styles.darkGreen:''))]}>预估红包：￥ {decimals(rowData.estimate*this.state.ratio, 2)}</Text>
-                                <Text style={[styles.dimText,styles.sText,rowData.orderType==1?styles.red:(rowData.orderType==2?styles.green:(rowData.orderType==3?styles.darkGreen:''))]}>实际红包：￥ {decimals(rowData.real*this.state.ratio, 2)}</Text>
-                                <Text style={[styles.dimText,styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
+                                <Text
+                                    style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>价格：￥ {rowData.price}</Text>
+                                <Text
+                                    style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>预估红包：￥ {decimals(rowData.estimate * this.state.ratio, 2)}</Text>
+                                <Text
+                                    style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>实际红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text>
+                                <Text
+                                    style={[styles.dimText, styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
 
                             </View>
                         </View>
@@ -78,24 +85,30 @@ class Order extends React.Component {
         )
     }
 
-    _orderList(orderType){
+    _orderList(orderType) {
         let data = null;
-        if(orderType === 2){
-            data = _.filter(this.props.recent.recentBuy, function(o) { return o.orderItemState === 'SETTLED'; });
+        if (orderType === 2) {
+            data = _.filter(this.props.recent.recentBuy, function (o) {
+                return o.orderItemState === 'SETTLED';
+            });
         }
-        if(orderType === 1){
-            data = _.filter(this.props.recent.recentBuy, function(o) { return o.orderItemState === 'PAID' ; });
+        if (orderType === 1) {
+            data = _.filter(this.props.recent.recentBuy, function (o) {
+                return o.orderItemState === 'PAID';
+            });
         }
-        if(orderType === 3){
-            data = _.filter(this.props.recent.recentBuy, function(o) { return o.orderItemState === 'WITHDRAWN'; });
+        if (orderType === 3) {
+            data = _.filter(this.props.recent.recentBuy, function (o) {
+                return o.orderItemState === 'WITHDRAWN';
+            });
         }
-        if(orderType === 0){
+        if (orderType === 0) {
             data = this.props.recent.recentBuy;
         }
         return (
             <ListView
                 contentContainerStyle={styles.orderList}
-                dataSource={this.ds.cloneWithRows(this._buySource(data,orderType))}
+                dataSource={this.ds.cloneWithRows(this._buySource(data, orderType))}
                 renderRow={this._renderRow}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
@@ -104,13 +117,13 @@ class Order extends React.Component {
         );
     }
 
-    _buySource(data,orderType){
+    _buySource(data, orderType) {
         // data = _.slice(data, 0, 6);
         let source = [];
         let the = this;
         _.each(data, (v, k) => {
-            if(v.syncItems.length > 0){
-                _.each(v.syncItems, (vv, kk) =>{
+            if (v.syncItems.length > 0) {
+                _.each(v.syncItems, (vv, kk) => {
                     const item = {
                         id: vv.id,
                         estimate: vv.syncEstimateEffect,
@@ -127,11 +140,15 @@ class Order extends React.Component {
                 });
             } else {
                 const item = {
+                    title: v.orderItemState === 'CANCELSYNC' ? '无效订单' : '同步中订单' + v.orderId,
                     id: v.id,
                     orderId: v.orderId,
                     status: v.orderItemState,
                     orderType: orderType,
-                    time: v.creationDate|| (new Date()).getTime()
+                    estimate: 0,
+                    real: 0,
+                    price: 0,
+                    time: v.creationDate || (new Date()).getTime()
                 };
                 source.push(item);
             }
