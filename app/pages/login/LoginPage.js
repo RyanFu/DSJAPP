@@ -102,7 +102,7 @@ export default class LoginPage extends Component {
                 return response.json();
             }
         }).then((responseJson) => {
-            if (responseJson.resultValues.loginResult === 'failed') {
+            if (responseJson.resultCode !== 0 || responseJson.resultValues.loginResult === 'failed') {
                 toast('微信验证失败');
                 return;
             }

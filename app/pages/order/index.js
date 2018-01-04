@@ -72,9 +72,11 @@ class Order extends React.Component {
                                     style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>价格：￥ {rowData.price}</Text>
                                 <Text
                                     style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>预估红包：￥ {decimals(rowData.estimate * this.state.ratio, 2)}</Text>
-                                <Text
-                                    style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>实际红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text>
-                                <Text
+                                {
+                                    rowData.orderType == 2 ? <Text
+                                        style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>可提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text>:null
+                                }
+                               <Text
                                     style={[styles.dimText, styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
 
                             </View>
