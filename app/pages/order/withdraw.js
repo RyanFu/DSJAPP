@@ -20,6 +20,7 @@ import BindZFBPage from '../settings/bindZFB';
 const Navigator = deprecatedComponents.Navigator;
 import _ from 'lodash';
 import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
+import Loading from '../../components/loading';
 
 class Withdraw extends React.Component {
     constructor(props) {
@@ -28,7 +29,8 @@ class Withdraw extends React.Component {
         this._withDraw = this._withDraw.bind(this);
         this.state = {
             availableRebate: 0,
-            cash: '0'
+            cash: '0',
+            doing: false
         };
     }
 
@@ -67,6 +69,7 @@ class Withdraw extends React.Component {
                                     if (v.bindingChannel === 'ALIPAY') {
                                         this._withDraw();
                                         alipayBind = true;
+                                        this.setState({doing: true});
                                     }
                                 });
                                 if(!alipayBind){
@@ -91,6 +94,7 @@ class Withdraw extends React.Component {
 
     _withDraw() {
         const { navigator } = this.props;
+        const the = this;
         Token.getToken(navigator).then((token) => {
                 if (token) {
                     request('/user/rebate/withdraw', 'POST', '', token)
@@ -102,11 +106,14 @@ class Withdraw extends React.Component {
                             } else {
                                 toast('提现失败，请核对支付宝账户信息后再尝试。');
                             }
+                            the.setState({doing: false});
                         }, function (error) {
                             console.log(error);
+                            the.setState({doing: false});
                         })
                         .catch(() => {
                             console.log('network error');
+                            the.setState({doing: false});
                         });
                 }
             }
@@ -137,6 +144,8 @@ class Withdraw extends React.Component {
                     navigator={this.props.navigator}
                     hideDrop={true}
                 />
+                {this.state.doing ? <Loading /> : null}
+
                 <View style={styles.totalCash}>
                     <Text style={styles.baseText}>可提金额:</Text>
                     <Text style={styles.baseText}> ￥{this.state.availableRebate}</Text>

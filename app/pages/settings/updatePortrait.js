@@ -109,6 +109,7 @@ class UpdatePortrait extends Component {
         const imageSize = {width,height} = photo;
         const {navigator} = this.props;
         this.setState({loading: true});
+        const the = this;
         ImageEditor.cropImage(photo.uri, {offset: {x: 0, y: 0}, size: imageSize, displaySize: imageSize}, (url) => {
             ImageStore.getBase64ForTag(url, (base64) => {
                 base64 = 'data:image/jpg;base64,' + base64;
@@ -135,16 +136,20 @@ class UpdatePortrait extends Component {
                                 toast('修改头像失败');
                             }
                             navigator.popToTop();
+                            the.setState({loading: true});
                         }).catch((error) => {
                             console.error(error);
+                            the.setState({loading: true});
                         });
                     }
                 });
             }, (error) => {
                 console.log(error);
+                the.setState({loading: true});
             });
         }, (error) => {
             console.log(error);
+            the.setState({loading: true});
         });
 
 
