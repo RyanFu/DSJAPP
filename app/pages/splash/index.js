@@ -1,20 +1,19 @@
 import React from 'react';
 import {
     Dimensions,
-    Image,
-    InteractionManager
+    AsyncStorage
 } from 'react-native';
 import {
     Token
 } from '../../utils/common';
 import Home from '../home';
-import LoginPage from '../login/LoginPage';
 import styles from './style';
 
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
 const splashImg = require('../../assets/logo/1.jpg');
 import ImageSlider from '../../components/imageSlider';
+import StorageKeys from '../../constants/StorageKeys';
 
 class Splash extends React.Component {
     constructor(props) {
@@ -22,7 +21,7 @@ class Splash extends React.Component {
         this.state = {
             hidden: true,
             position: 0,
-            countDown: 6
+            countDown: 10
         }
     }
 
@@ -62,6 +61,8 @@ class Splash extends React.Component {
             name: 'Home',
             params: {store: this.props.store}
         });
+
+        AsyncStorage.setItem(StorageKeys.SPLASH_SKIP, 'true');
     }
 
     render() {

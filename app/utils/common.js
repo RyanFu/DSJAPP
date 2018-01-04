@@ -21,7 +21,8 @@ export function naviGoBack(navigator) {
     return false;
 };
 
-export class Token {};
+export class Token {
+};
 
 Token.getToken = async function (navigator) {
     var token = null;
@@ -101,7 +102,7 @@ export function request(request, method, body, token) {
     let success;
 
     let headers;
-    if(request.headers) {
+    if (request.headers) {
         headers = request.headers;
     } else {
         headers = {
@@ -115,10 +116,10 @@ export function request(request, method, body, token) {
     if (method.toLowerCase() === 'post') {
         options.body = body;
     }
-    
+
     return new Promise((resolve, reject) => {
         let uri;
-        if(typeof request === 'string') {
+        if (typeof request === 'string') {
             uri = configs.serviceUrl + request;
         } else {
             uri = request.host + request.route
@@ -132,10 +133,10 @@ export function request(request, method, body, token) {
 
             const json = response.json();
             const xAppToken = response.headers.get("x-app-token");
-            if(xAppToken) {
+            if (xAppToken) {
                 AsyncStorage.setItem(StorageKeys.X_APP_TOKEN, xAppToken);
             }
-            if(response.status == 407){
+            if (response.status == 407) {
                 toast('网络连接不可用，请检查您的网络！')
             }
             return json;
@@ -191,8 +192,8 @@ export function follow(userId, token) {
         });
 }
 
-export function toast(message){
-    if(Platform.OS === 'ios'){
+export function toast(message) {
+    if (Platform.OS === 'ios') {
         Toast.show(message, {
             duration: Toast.durations.SHORT,
             position: Toast.positions.CENTER,
@@ -215,13 +216,13 @@ export function toast(message){
         });
 
     } else {
-        ToastAndroid.show(message, ToastAndroid.SHORT,ToastAndroid.BOTTOM);
+        ToastAndroid.show(message, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
     }
 }
 
-export function timeFormat(time,parrent) {
+export function timeFormat(time, parrent) {
     const data = new Date(time);
-    let cal = (fmt)=>{
+    let cal = (fmt) => {
         let o = {
             "M+": data.getMonth() + 1, //月份
             "d+": data.getDate(), //日
@@ -231,11 +232,11 @@ export function timeFormat(time,parrent) {
             "q+": Math.floor((data.getMonth() + 3) / 3), //季度
             "S": data.getMilliseconds() //毫秒
         };
-        if (/(y+)/.test(fmt)){
+        if (/(y+)/.test(fmt)) {
             fmt = fmt.replace(RegExp.$1, (data.getFullYear() + "").substr(4 - RegExp.$1.length));
         }
-        for (var k in o){
-            if (new RegExp("(" + k + ")").test(fmt)){
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             }
         }
@@ -245,21 +246,22 @@ export function timeFormat(time,parrent) {
 }
 
 export function removeAllStorage() {
-   _.each(StorageKeys, function(v,k){
-       if(k === 'SEARCH_ITEM' ||
-           k === 'SEARCH_NOTE'){
-           return
-       }
-       try {
-           AsyncStorage.removeItem(v);
-       } catch (error) {
-           console.error('Failed to remove token, AsyncStorage error: ' + error.message);
-       }
+    _.each(StorageKeys, function (v, k) {
+        if (k === 'SEARCH_ITEM' ||
+            k === 'SEARCH_NOTE' ||
+            k === 'SPLASH_SKIP') {
+            return
+        }
+        try {
+            AsyncStorage.removeItem(v);
+        } catch (error) {
+            console.error('Failed to remove token, AsyncStorage error: ' + error.message);
+        }
 
-   });
+    });
 }
 
 export function decimals(num, pos) {
-    const pow = Math.pow(10,pos?pos:2);
-    return Math.floor(num*pow)/pow;
+    const pow = Math.pow(10, pos ? pos : 2);
+    return Math.floor(num * pow) / pow;
 }

@@ -21,6 +21,8 @@ const StorageKeys = {
     SEARCH_ITEM: '@duoshouji:item',
 
     SEARCH_NOTE: '@duoshouji:note',
+
+    SPLASH_SKIP: '@duoshouji:splash',
 };
 
 module.exports = StorageKeys;

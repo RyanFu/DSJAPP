@@ -6,12 +6,16 @@ import {
     StatusBar,
     BackHandler,
     View,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    AsyncStorage
 } from 'react-native';
-import { connect, storeShape } from 'react-redux';
+import {connect, storeShape} from 'react-redux';
 import Splash from '../pages/splash';
-import { naviGoBack } from '../utils/common';
+import {naviGoBack} from '../utils/common';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import StorageKeys from '../constants/StorageKeys';
+import Home from './home';
+
 const Navigator = deprecatedComponents.Navigator;
 
 let tempNavigator;
@@ -27,8 +31,20 @@ class Nav extends React.Component {
         BackHandler.addEventListener('hardwareBackPress', this._goBack);
         this.state = {
             animated: true,
-            hidden: false
-        }
+            hidden: false,
+            firstOpen: true,
+            check: false,
+        };
+    }
+
+    componentWillMount() {
+        const the = this;
+        AsyncStorage.getItem(StorageKeys.SPLASH_SKIP).then((res) => {
+            if (res === 'true') {
+                the.setState({firstOpen: false})
+            }
+            the.setState({check: true})
+        });
     }
 
     _goBack() {
@@ -43,7 +59,7 @@ class Nav extends React.Component {
         let Component = route.component;
         tempNavigator = navigator;
 
-        if(route.name === 'Home'){
+        if (route.name === 'Home') {
             DeviceEventEmitter.emit('newView', true);
             DeviceEventEmitter.emit('newBuy', true);
         }
@@ -54,22 +70,35 @@ class Nav extends React.Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
                 <StatusBar
-                    hidden = {this.state.hidden}
+                    hidden={this.state.hidden}
                     backgroundColor="#000"
                     barStyle="default"
-                    />
-                <Navigator
-                    ref="navigator"
-                    style={styles.navigator}
-                    configureScene={this._configureScene}
-                    renderScene={this._renderScene}
-                    initialRoute={{
-                        component: Splash,
-                        name: 'Splash'
-                      }}
-                    />
+                />
+                {
+                    this.state.firstOpen && this.state.check ? <Navigator
+                        ref="navigator"
+                        style={styles.navigator}
+                        configureScene={this._configureScene}
+                        renderScene={this._renderScene}
+                        initialRoute={{
+                            component: Splash,
+                            name: 'Splash'
+                        }}
+                    /> : (this.state.check ?
+                        <Navigator
+                            ref="navigator"
+                            style={styles.navigator}
+                            configureScene={this._configureScene}
+                            renderScene={this._renderScene}
+                            initialRoute={{
+                                component: Home,
+                                name: 'Home'
+                            }}
+                        /> : null)
+                }
+
             </View>
         );
     }
