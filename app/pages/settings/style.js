@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
     },
     separatorHorizontal: {
         borderBottomWidth:1,
-        borderBottomColor:'#ccc'
+        borderBottomColor:'#eee'
     },
     text: {
-        fontSize:16,
+        fontSize:14,
         color:'#686868',
         flex:1
     },

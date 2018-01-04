@@ -1,6 +1,3 @@
-/**
- * Created by lyan2 on 16/9/22.
- */
 import React  from 'react';
 import {
     View,
@@ -17,6 +14,8 @@ import ProfilePage from './profile';
 import AboutUsPage from './aboutUs';
 import { request, Token, toast, removeAllStorage } from '../../utils/common';
 import Home from '../home';
+import About from '../about';
+
 //import * as CacheManager from 'react-native-http-cache';
 
 var chevronRightIcon = <Icon style={[styles.messageLinkIcon]} size={16} name="angle-right"/>;
@@ -40,8 +39,8 @@ class SettingPage extends React.Component {
         const { navigator } = this.props;
         if(navigator) {
             navigator.push({
-                name: 'AboutUsPage',
-                component: AboutUsPage
+                name: 'About',
+                component: About
             })
         }
     }
@@ -118,6 +117,10 @@ class SettingPage extends React.Component {
         toast('当前已是最新版本');
     }
 
+    _gotoMarket() {
+
+    }
+
     render() {
         return(
             <View style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : {marginTop: 21}]}>
@@ -127,7 +130,8 @@ class SettingPage extends React.Component {
                     hideDrop={true}
                     />
 
-                <TouchableHighlight onPress={this._onProfilePress.bind(this)}>
+                <View style={[styles.separatorHorizontal,{marginTop: 10}]} />
+                <TouchableHighlight onPress={this._onProfilePress.bind(this)} >
                     <View style={styles.row}>
                         <Text style={styles.text}>个人资料</Text>
                         {chevronRightIcon}
@@ -137,7 +141,7 @@ class SettingPage extends React.Component {
 
                 <TouchableHighlight onPress={this._onPressSecurity.bind(this)}>
                     <View style={styles.row}>
-                        <Text style={styles.text}>账户与安全</Text>
+                        <Text style={styles.text}>账号绑定</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
@@ -145,15 +149,15 @@ class SettingPage extends React.Component {
 
                 <TouchableHighlight onPress={this._onPressAboutUs.bind(this)}>
                     <View style={styles.row}>
-                        <Text style={styles.text}>关于我们</Text>
+                        <Text style={styles.text}>关于剁手记</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
                 <View style={styles.separatorHorizontal} />
 
-                <TouchableHighlight>
+                <TouchableHighlight onPress={this._gotoMarket.bind(this)}>
                     <View style={styles.row}>
-                        <Text style={styles.text}>功能说明</Text>
+                        <Text style={styles.text}>鼓励一下</Text>
                         {chevronRightIcon}
                     </View>
                 </TouchableHighlight>
