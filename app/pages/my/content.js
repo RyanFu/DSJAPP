@@ -423,11 +423,13 @@ export default class MyContent extends Component {
     }
 
     _withdraw() {
-        if(this.state.user.availableRebate && this.state.user.availableRebate > 0){
+        if(this.state.user.availableRebate && this.state.user.availableRebate > 0.1){
             this._jumpWithdrawPage();
+        } else if(this.state.user.availableRebate > 0) {
+            toast('亲，提现金额最低不得少于0.1元');
         } else {
-            // this._jumpWithdrawPage();
             toast('亲，暂时没有可提金额哦');
+
         }
     }
 
