@@ -36,7 +36,7 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems:'center',
         marginTop:5,
-        width: width/7*3,
+        width: width/10*3,
         marginLeft: 5
     },
     gender: {
@@ -47,7 +47,7 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems:'center',
         marginTop:5,
-        width: width/7*4,
+        width: width/10*7,
         paddingLeft: 0
     },
     summaryContainer: {
@@ -199,6 +199,6 @@ export default styles = StyleSheet.create({
     myNameText: {
         fontSize: 14,
         color: '#9b9b9b',
-        paddingLeft: 0
+        paddingLeft: 6
     }
 });
