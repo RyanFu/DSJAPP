@@ -40,6 +40,7 @@ import deprecatedComponents from 'react-native-deprecated-custom-components';
 import DetailPage from '../../pages/detail';
 import OrdersPage from '../../pages/order';
 import WithdrawPage from '../../pages/order/withdraw';
+import * as Emoticons from '../../components/emoticons';
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -310,7 +311,7 @@ export default class MyContent extends Component {
                     </TouchableOpacity>
 
 
-                    <Text style={styles.noteTitle}>{data.detail.title}</Text>
+                    <Text style={styles.noteTitle}>{Emoticons.parse(data.detail.title)}</Text>
                     <View style={styles.noteAssets}>
                         <View style={styles.noteAsset}>
                             <Image source={zanImg}/>
