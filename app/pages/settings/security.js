@@ -166,6 +166,8 @@ class SecurityPage extends React.Component {
                         }
                     ]
                 );
+            else if (channel === 'TAOBAO')
+                toast('您购买淘宝商品时会自动绑定淘宝账号')
         }
 
     }
