@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import { Token, toast, request, naviGoBack } from '../../utils/common';
-import { connect } from 'react-redux';
+import {Token, toast, request, naviGoBack} from '../../utils/common';
+import {connect} from 'react-redux';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import StorageKeys from '../../constants/StorageKeys';
 import PhoneCodeButton from '../../../app/components/button/PhoneCodeButton';
+import _ from 'lodash';
 const Navigator = deprecatedComponents.Navigator;
 import configs from '../../constants/configs';
 import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
@@ -34,25 +35,52 @@ class BindZFB extends React.Component {
     }
 
     componentDidMount() {
-        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY,(err,result)=>{
-            if(!err){
+        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result) => {
+            if (!err) {
                 result = JSON.parse(result);
                 this.setState({userId: result.userId});
             }
         });
+
+        const {navigator} = this.props;
+        const the = this;
+        Token.getToken(navigator).then((token) => {
+                if (token) {
+                    request('user/bindings', 'get', '', token)
+                        .then((res) => {
+                            if (res.resultCode === 0) {
+                                alipayBind = false;
+                                _.each(res.resultValues, (v, k) => {
+                                    if (v.bindingChannel === 'ALIPAY') {
+                                        the.setState({account: v.account, name: v.name || v.nickname || ''});
+                                    }
+                                });
+                            } else {
+                                bind();
+                            }
+
+                        }, function (error) {
+                            console.log(error);
+                        })
+                        .catch(() => {
+                            console.log('network error');
+                        });
+                }
+            }
+        );
     }
 
     _submit() {
-        const { navigator } = this.props;
-        if(!this.state.account){
+        const {navigator} = this.props;
+        if (!this.state.account) {
             toast('请输入您的淘宝账户');
             return;
         }
-        if(!this.state.name){
+        if (!this.state.name) {
             toast('请输入您的姓名');
             return;
         }
-        if(!this.state.code){
+        if (!this.state.code) {
             toast('请输入验证吗');
             return;
         }
@@ -71,8 +99,8 @@ class BindZFB extends React.Component {
                                 toast('绑定成功');
                                 naviGoBack(navigator);
                                 DeviceEventEmitter.emit('bindingUpdated', true);
-                            } else if(res.resultCode === 1) {
-                                if(res.resultErrorMessage == 'Verification code is invalid.')
+                            } else if (res.resultCode === 1) {
+                                if (res.resultErrorMessage == 'Verification code is invalid.')
                                     toast('验证码不正确');
                                 else
                                     toast(res.resultErrorMessage);
@@ -90,16 +118,16 @@ class BindZFB extends React.Component {
 
     _validate() {
         if (!this.state.phone || this.state.phone.length < 11) {
-            this.setState({validForm:false});
+            this.setState({validForm: false});
             return;
         }
 
         if (!this.state.code || this.state.code.length < 6) {
-            this.setState({validForm:false});
+            this.setState({validForm: false});
             return;
         }
 
-        this.setState({validForm:true});
+        this.setState({validForm: true});
     }
 
     _sendCode() {
@@ -107,12 +135,12 @@ class BindZFB extends React.Component {
 
         this.setState({sending: true});
 
-        let  body = JSON.stringify({
+        let body = JSON.stringify({
             purpose: 'bind',
             mobile: this.state.userId
         });
 
-        request( 'message/verification-code', 'POST', body)
+        request('message/verification-code', 'POST', body)
             .then((res) => {
                 if (res.resultCode == 0) {
                     toast('验证码已发送');
@@ -144,7 +172,7 @@ class BindZFB extends React.Component {
                     <Text style={styles.baseText}>请设置您用于提现的支付宝账户</Text>
                 </View>
                 <View style={styles.input}>
-                    <Text style={[styles.baseText,styles.inputLabel]}>收款方式</Text>
+                    <Text style={[styles.baseText, styles.inputLabel]}>收款方式</Text>
                     <TextInput
                         style={[styles.inputText, Platform.OS === 'android' ? null : {height: 38}]}
                         placeholderTextColor='#bebebe'
@@ -156,50 +184,58 @@ class BindZFB extends React.Component {
                     />
                 </View>
                 <View style={styles.input}>
-                    <Text style={[styles.baseText,styles.inputLabel]}>收款账户</Text>
+                    <Text style={[styles.baseText, styles.inputLabel]}>收款账户</Text>
                     <TextInput
                         style={[styles.inputText, Platform.OS === 'android' ? null : {height: 38}]}
                         placeholderTextColor='#bebebe'
                         underlineColorAndroid='transparent'
                         returnKeyType='next'
                         value={this.state.account}
-                        onChangeText={(text) => {this.setState({account: text})}}
+                        onChangeText={(text) => {
+                            this.setState({account: text})
+                        }}
                         keyboardType='default'
                         placeholder='请输入支付宝账户'
                     />
                 </View>
                 <View style={styles.input}>
-                    <Text style={[styles.baseText,styles.inputLabel]}>收款人</Text>
+                    <Text style={[styles.baseText, styles.inputLabel]}>收款人</Text>
                     <TextInput
                         style={[styles.inputText, Platform.OS === 'android' ? null : {height: 38}]}
                         placeholderTextColor='#bebebe'
                         underlineColorAndroid='transparent'
                         returnKeyType='next'
                         value={this.state.name}
-                        onChangeText={(text) => {this.setState({name: text})}}
+                        onChangeText={(text) => {
+                            this.setState({name: text})
+                        }}
                         keyboardType='default'
                         placeholder='请输入真实姓名'
                     />
                 </View>
                 <View style={styles.input}>
-                    <Text style={[styles.baseText,styles.inputLabel]}>手机验证码</Text>
+                    <Text style={[styles.baseText, styles.inputLabel]}>手机验证码</Text>
                     <TextInput
                         style={[styles.inputText, Platform.OS === 'android' ? null : {height: 38}]}
                         placeholderTextColor='#bebebe'
                         underlineColorAndroid='transparent'
                         returnKeyType='done'
                         value={this.state.code}
-                        onChangeText={(text) => {this.setState({code: text}); this._validate();}}
+                        onChangeText={(text) => {
+                            this.setState({code: text});
+                            this._validate();
+                        }}
                         keyboardType='numeric'
                         placeholder='请输入验证码'
                         maxLength={6}
                     />
                     <View style={styles.code}>
-                        <PhoneCodeButton  onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
+                        <PhoneCodeButton onPress={this._sendCode.bind(this)}
+                                         sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
                     </View>
                 </View>
                 <View style={styles.submit}>
-                    <TouchableOpacity style={styles.button} onPress={()=>this._submit()}>
+                    <TouchableOpacity style={styles.button} onPress={() => this._submit()}>
                         <Text style={styles.buttonFont}>绑定</Text>
                     </TouchableOpacity>
                 </View>
