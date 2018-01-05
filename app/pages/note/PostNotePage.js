@@ -289,8 +289,12 @@ class PostNotePage extends Component {
     }
 
     _statCount(title) {
-        this.setState({titleLength: 30 - title.length});
-        this.state.title = title;
+        if(!title||title.length<=30){
+            this.setState({titleLength: 30 - title.length});
+            this.state.title = title;
+            return true;
+        }
+        return false;
     }
 
     _renderSelectedPhotos() {
@@ -353,8 +357,11 @@ class PostNotePage extends Component {
         const commentRight = _.slice(this.state[this.state.focus], this.state.cursorL, this.state[this.state.focus].length);
 
         if(this.state.focus === 'title'){
-            this._statCount(this.state.title);
-            this.setState({title: _.join(commentLeft, '') + val.code + _.join(commentRight, '')});
+            if((this.state.title.length+val.code.length)<=30){
+                this.setState({title: _.join(commentLeft, '') + val.code + _.join(commentRight, '')});
+                this.setState({titleLength: 30 - this.state.title.length - val.code.length});
+
+            }
         }
         if(this.state.focus === 'content')
             this.setState({content: _.join(commentLeft, '') + val.code + _.join(commentRight, '')});
