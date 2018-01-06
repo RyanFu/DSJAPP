@@ -230,25 +230,29 @@ class RedPacket extends React.Component {
         let source = [];
         let the = this;
         _.each(data, (v, k) => {
-            if(v.syncItems.length > 0){
-                _.each(v.syncItems, (vv, kk) =>{
+
+            if(v.orderItemState !== 'CANCELSYNC' && v.orderItemState !== 'FAILED' && v.orderItemState) {
+
+                if(v.syncItems.length > 0){
+                    _.each(v.syncItems, (vv, kk) =>{
+                        const item = {
+                            estimate: vv.syncEstimateEffect,
+                            real: vv.syncRealRefund,
+                            price: vv.syncItemPrice,
+                            title: vv.syncItemName,
+                            orderId: vv.syncOrderId,
+                            pic: vv.itemPicUrl,
+                            status: v.orderItemState
+                        };
+                        source.push(item);
+                    });
+                } else {
                     const item = {
-                        estimate: vv.syncEstimateEffect,
-                        real: vv.syncRealRefund,
-                        price: vv.syncItemPrice,
-                        title: vv.syncItemName,
-                        orderId: vv.syncOrderId,
-                        pic: vv.itemPicUrl,
-                        status: vv.status
+                        orderId: v.orderId,
+                        status: v.orderItemState
                     };
                     source.push(item);
-                });
-            } else if(v.orderItemState !== 'CANCELSYNC') {
-                const item = {
-                    orderId: v.orderId,
-                    status: v.orderItemState
-                };
-                source.push(item);
+                }
             }
         });
         source = _.reverse(source);
