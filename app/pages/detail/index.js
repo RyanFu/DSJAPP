@@ -147,7 +147,7 @@ class Detail extends React.Component {
 
         Token.getToken(navigator).then((token) => {
             if (token) {
-                baiChuanApi.jump(itemId, 'tmall', (error, res) => {
+                baiChuanApi.jump(itemId,'', 'tmall', (error, res) => {
                     if (error) {
                         console.error(error);
                     } else {

@@ -15,13 +15,14 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import {decimals} from '../../utils/common';
+import {decimals, Token} from '../../utils/common';
 import {timeFormat} from '../../utils/common';
 import {connect} from 'react-redux';
 //import Emoticons, * as emoticons from 'react-native-emoticons';
 import AutoHideKeyboard from '../../components/autoHideBoard';
 import _ from 'lodash';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
+import baiChuanApi from 'react-native-taobao-baichuan-api';
 
 const dismissKeyboard = require('dismissKeyboard');
 import deprecatedComponents from 'react-native-deprecated-custom-components';
@@ -53,7 +54,7 @@ class Order extends React.Component {
 
     _renderRow(rowData) {
         return (
-            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}>
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5} onPress={() => this._jumpToOrderPage(rowData.orderId.toString())}>
                 <View>
                     <View style={styles.orderRow}>
                         <PrefetchImage
@@ -168,6 +169,22 @@ class Order extends React.Component {
         });
         source = _.reverse(source);
         return source;
+    }
+
+    _jumpToOrderPage(orderId) {
+        const {navigator} = this.props;
+        const type = 'taobao';
+
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                baiChuanApi.jump('', orderId, type, (error, res) => {
+                    if (error) {
+                        console.error(error);
+                    }
+                })
+            }
+        });
+        this.setState({openOrderPage: true});
     }
 
     render() {

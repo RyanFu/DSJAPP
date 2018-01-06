@@ -135,7 +135,7 @@ class SearchItem extends React.Component {
         const { navigator,dispatch } = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
-                Taobao.jump(itemId, type, (error, res) => {
+                Taobao.jump(itemId, '', type, (error, res) => {
                     if (error) {
                         console.error(error);
                     } else {

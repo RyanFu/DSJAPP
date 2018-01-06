@@ -589,7 +589,7 @@ class RedPacket extends React.Component {
 
         Token.getToken(navigator).then((token) => {
             if (token) {
-                baiChuanApi.jump(itemId, type, (error, res) => {
+                baiChuanApi.jump(itemId, '', type, (error, res) => {
                     if (error) {
                         console.error(error);
                     } else {
@@ -656,7 +656,7 @@ class RedPacket extends React.Component {
 
         Token.getToken(navigator).then((token) => {
             if (token) {
-                baiChuanApi.jump('', type, (error, res) => {
+                baiChuanApi.jump('', '0', type, (error, res) => {
                     if (error) {
                         console.error(error);
                     }
