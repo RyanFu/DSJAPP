@@ -60,8 +60,8 @@ class Order extends React.Component {
                             imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
                             imageStyle={styles.itemThumb}
                             resizeMode="stretch"
-                            width={60}
-                            height={94}
+                            width={108}
+                            height={108}
                             key={rowData.id + rowData.orderType + '.'}
                         />
                         <View style={styles.orderText}>
@@ -79,6 +79,14 @@ class Order extends React.Component {
                                <Text
                                     style={[styles.dimText, styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
 
+                                <View style={styles.shop}>
+                                    <Image
+                                        style={{width:12,height: 12,opacity:0.5,marginRight:4}}
+                                        resizeMode={'cover'}
+                                        source={require('../../assets/search/shop.png')}
+                                    />
+                                    <Text style={[styles.dimText, styles.sText]}>{rowData.shop|| ''}</Text>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -96,7 +104,7 @@ class Order extends React.Component {
         }
         if (orderType === 1) {
             data = _.filter(this.props.recent.recentBuy, function (o) {
-                return o.orderItemState === 'PAID';
+                return o.orderItemState === 'PAID' || o.orderItemState === 'NEW';
             });
         }
         if (orderType === 3) {
@@ -105,7 +113,9 @@ class Order extends React.Component {
             });
         }
         if (orderType === 0) {
-            data = this.props.recent.recentBuy;
+            data = _.filter(this.props.recent.recentBuy, function (o) {
+                return o.orderItemState !== 'CANCELSYNC';
+            });
         }
         return (
             <ListView
@@ -136,13 +146,14 @@ class Order extends React.Component {
                         pic: vv.itemPicUrl,
                         status: vv.status,
                         orderType: orderType,
-                        time: vv.syncCreationDate
+                        time: vv.syncCreationDate,
+                        shop: vv.syncStoreName
                     };
                     source.push(item);
                 });
             } else {
                 const item = {
-                    title: v.orderItemState === 'CANCELSYNC' ? '无效订单' : '同步中订单' + v.orderId,
+                    title: v.orderItemState === 'CANCELSYNC' || !v.orderItemState ? '无效订单' : '同步中订单' + v.orderId,
                     id: v.id,
                     orderId: v.orderId,
                     status: v.orderItemState,

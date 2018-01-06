@@ -46,18 +46,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         width: width,
-        height: 104,
+        height: 118,
         borderColor: 'rgba(155,155,155,0.1)',
         borderBottomWidth: 1,
         paddingVertical: 5
     },
     itemThumb: {
-        width: 90,
-        height: 94
+        width: 108,
+        height: 108,
     },
     orderText: {
         flexDirection: 'column',
-        width: width - 90,
+        width: width - 108,
         paddingLeft: 10,
         paddingRight: 10,
         justifyContent: 'space-between',
@@ -113,6 +113,10 @@ const styles = StyleSheet.create({
     },
     darkGreen: {
         color: '#026734'
+    },
+    shop: {
+        flexDirection: 'row',
+        marginTop: 2
     }
 });
 
