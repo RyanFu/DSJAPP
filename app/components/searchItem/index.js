@@ -173,6 +173,7 @@ class SearchItem extends React.Component {
             tag.imageUrl = data.itemPicUrl;
             tag.url = '';
             tag.itemId = data.itemId;
+            tag.redPacket = decimals(data.tkCommFee*this.state.ratio, 2);
             tag.urlCategory = 'taobao';
             tag.price = data.itemPrice;
             DeviceEventEmitter.emit('newTag', tag);

@@ -467,7 +467,12 @@ class Detail extends React.Component {
                                                         </Text>
                                                         <View style={styles.recPriceFrame}>
                                                             <Text
-                                                                style={[styles.baseText, styles.recPrice]}>{val.price ? '￥' + val.price : ''}</Text>
+                                                                style={[styles.baseText, styles.recPrice]}>{val.price ? '价格：￥' + val.price : ''}</Text>
+                                                        </View>
+                                                        <View style={styles.recRedFrame}>
+                                                            <Image style={styles.redIcon} source={require('../../assets/footer/red_.png')}/>
+                                                            <Text
+                                                                style={[styles.baseText,styles.recRedText]}>{val.redPacket ? '￥' + val.redPacket : '￥0'}</Text>
                                                         </View>
 
                                                     </View>

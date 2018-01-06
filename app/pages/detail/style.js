@@ -267,8 +267,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     recPrice: {
-        fontSize: 26,
-        lineHeight: 26
+        fontSize: 22,
+        lineHeight: 24
     },
     recPriceFrame: {
         flexDirection: 'row',
@@ -294,6 +294,20 @@ const styles = StyleSheet.create({
         paddingLeft: 4,
         lineHeight: 20,
         paddingBottom: 0
+    },
+    redIcon:{
+        width: 20,
+        height: 20,
+        marginTop: 3
+    },
+    recRedFrame: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    recRedText: {
+        fontSize: 18,
+        marginLeft: 5,
+        paddingTop: 6
     }
 });
 

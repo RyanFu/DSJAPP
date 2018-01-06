@@ -530,6 +530,7 @@ class PhotoEditPage extends Component {
             the.state.currentTag.itemId = val.itemId;
             the.state.currentTag.price = val.price.toString();
             the.state.currentTag.urlCategory = val.urlCategory;
+            the.state.currentTag.redPacket = val.redPacket.toString();
             the.state.currentTag.url = val.url;
             the.setState({currentTag: Object.assign({}, the.state.currentTag,  {url: val.url})});
 
@@ -908,7 +909,7 @@ class PhotoEditPage extends Component {
                     animationType={"slide"}
                     transparent={false}
                     visible={this.state.optionsModalVisible}
-                    onRequestClose={() => {alert("Modal has been closed.")}}
+                    onRequestClose={() => {toast("Modal has been closed.")}}
                     >
                     <View
                         style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
