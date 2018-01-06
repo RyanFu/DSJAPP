@@ -68,11 +68,11 @@ class PhotosReviewPage extends Component {
         let {currentPhotoIndex} = this.state;
 
         dispatch({type:StoreActions.REMOVE_NOTE_PHOTO, index: currentPhotoIndex});
-        this.setState({currentPhotoIndex: currentPhotoIndex-1});
+        this.setState({currentPhotoIndex: currentPhotoIndex?currentPhotoIndex-1:currentPhotoIndex});
         this.refreshPostNotePage && this.refreshPostNotePage();
         //this.scrollableTab.goToPage(this.state.currentPhotoIndex);
 
-        if (currentPhotoIndex <= 0) {
+        if (this.state.notePhotos.length === 0) {
             if(navigator) {
                 navigator.pop();
             }
