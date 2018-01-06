@@ -59,10 +59,10 @@ class Order extends React.Component {
                     <View style={styles.orderRow}>
                         <PrefetchImage
                             imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
-                            imageStyle={styles.itemThumb}
-                            resizeMode="stretch"
-                            width={108}
-                            height={108}
+                            imageStyle={[styles.itemThumb,{marginTop: rowData.pic ? null: 24}]}
+                            resizeMode="contain"
+                            width={rowData.pic ? 108: 60}
+                            height={rowData.pic ? 108: 60}
                             key={rowData.id + rowData.orderType + '.'}
                         />
                         <View style={styles.orderText}>
