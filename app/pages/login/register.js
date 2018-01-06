@@ -129,7 +129,7 @@ export default class ForgetPasswordPage extends Component {
                 DeviceEventEmitter.emit('newBuy', true);
                 return true;
             } else {
-                Alert.alert('注册失败', "非常抱歉，您可以尝试再次注册！");
+                Alert.alert('注册失败', "注册失败，账号可能已经存在，请更换号码或稍后再试！");
             }
 
 

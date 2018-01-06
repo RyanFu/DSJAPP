@@ -34,7 +34,7 @@ class Binding extends React.Component {
         }
         
         let body = {
-            phone: this.state.phone
+            mobile: this.state.phone
         };
         body = JSON.stringify(body);
         request('/message/verification-code', 'POST', body)
