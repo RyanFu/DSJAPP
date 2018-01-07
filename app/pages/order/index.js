@@ -11,11 +11,12 @@ import {
     Keyboard,
     ListView,
     Image,
-    AsyncStorage
+    AsyncStorage,
+    RefreshControl
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import {decimals, Token} from '../../utils/common';
+import {decimals, request, toast, Token} from '../../utils/common';
 import {timeFormat} from '../../utils/common';
 import {connect} from 'react-redux';
 //import Emoticons, * as emoticons from 'react-native-emoticons';
@@ -28,6 +29,8 @@ const dismissKeyboard = require('dismissKeyboard');
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import PrefetchImage from '../../components/prefetchImage';
 import images from '../../constants/images';
+import StorageKeys from "../../constants/StorageKeys";
+import {fetchRecentBuy} from "../../actions/recent";
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -38,7 +41,9 @@ class Order extends React.Component {
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: this.ds.cloneWithRows([]),
-            ratio: 0.7
+            ratio: 0.7,
+            refreshing: false,
+            token: null
         };
     }
 
@@ -50,11 +55,22 @@ class Order extends React.Component {
         });
 
         this._buySource(this.props.recent.recentBuy);
+
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                the.setState({token: token});
+            }
+        });
     }
 
     _renderRow(rowData) {
         return (
-            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5} onPress={() => this._jumpToOrderPage(rowData.orderId.toString())}>
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}
+                              onPress={() => this._jumpToOrderPage(rowData.orderId.toString())}
+                              onLongPress={() => {
+                                  this._cancelSync(rowData.orderId)
+                              }}
+            >
                 <View>
                     <View style={styles.orderRow}>
                         <PrefetchImage
@@ -126,6 +142,14 @@ class Order extends React.Component {
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
                 enableEmptySections={true}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => this._onRefresh()}
+                        colors={['#fc7d30']}
+                        tintColor={['#fc7d30']}
+                    />
+                }
             />
         );
     }
@@ -154,7 +178,7 @@ class Order extends React.Component {
                 });
             } else {
                 const item = {
-                    title: v.orderItemState === 'CANCELSYNC' || !v.orderItemState ? '无效订单' : '同步中订单' + v.orderId,
+                    title: v.orderItemState === 'CANCELSYNC' || !v.orderItemState ? '订单无效' + v.orderId : '订单同步中' + v.orderId,
                     id: v.id,
                     orderId: v.orderId,
                     status: v.orderItemState,
@@ -186,6 +210,82 @@ class Order extends React.Component {
         });
         this.setState({openOrderPage: true});
     }
+
+    _cancelSync(orderId) {
+        let userId = 17321057664;
+        let the = this;
+
+        const cancel = (orderId)=>{
+            AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
+                if (result) {
+                    result = JSON.parse(result);
+                    userId = result.userId || userId;
+                    request('/mapuserorder/unmap?userId=' + userId + '&orderId=' + orderId, 'GET', '', the.state.token)
+                        .then((res) => {
+                            if(res.resultCode === 0){
+                                toast(res.resultValues.message);
+                                the._getBuyList();
+                            }
+                        }, function (error) {
+                            console.log(error);
+                        })
+                        .catch(() => {
+                            console.log('network error');
+                        });
+                }
+            });
+        };
+
+        Alert.alert(
+            '跟单',
+            '您需要取消此订单跟单吗？',
+            [
+                {text: '取消', onPress: () => console.log('')},
+                {text: '确定', onPress: () =>{
+                        cancel(orderId);
+                    }
+
+                },
+            ]
+        )
+    }
+
+    _getBuyList(){
+        const the = this;
+        const {dispatch} = this.props;
+        return new Promise((resolve,reject) => {
+            Token.getToken().then((token) => {
+                if (!token) {
+                    dispatch(fetchRecentBuy());
+                    the.setState({buySource: the.ds.cloneWithRows([])});
+                    resolve(false);
+                    return;
+                }
+                const params = {
+                    token: token
+                };
+                dispatch(fetchRecentBuy(params)).then(() => {
+                    let copy = _.cloneDeep(this.props.recent.recentBuy);
+                    the._buySource(copy);
+                    resolve(true);
+                });
+            });
+        })
+    }
+
+    _onRefresh() {
+        const the = this;
+        this.setState({refreshing: true});
+        this._getBuyList()
+            .then((res)=>{
+                if(res)
+                    the.setState({refreshing: false});
+            });
+        setTimeout(()=>{
+            the.setState({refreshing: false});
+        },3000);
+    }
+
 
     render() {
         return (

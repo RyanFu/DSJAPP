@@ -683,10 +683,11 @@ class RedPacket extends React.Component {
             if (result) {
                 result = JSON.parse(result);
                 userId = result.userId || userId;
-                request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET')
+                request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET', '', token)
                     .then((res) => {
                         if(res.resultCode === 0){
-                            the._onRefresh();
+                            // the._onRefresh();
+                            this._getRecentBuy();
                         }
                         this.setState({syncMsg: res.resultValues.message});
                     }, function (error) {
@@ -706,6 +707,7 @@ class RedPacket extends React.Component {
             .then(()=>{
                 this.setState({refreshing: false});
             });
+        this._topSearch();
         setTimeout(()=>{
             this.setState({refreshing: false});
         },3000)
