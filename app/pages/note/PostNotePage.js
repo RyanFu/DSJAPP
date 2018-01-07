@@ -301,9 +301,9 @@ class PostNotePage extends Component {
         let {height, width} = Dimensions.get('window');
         let that = this;
         let morePhoto = (
-            <TouchableHighlight key='morePhoto' style={styles.morePhotoBox} onPress={this._addMorePhoto.bind(this)}>
+            <TouchableOpacity key='morePhoto' style={styles.morePhotoBox} onPress={this._addMorePhoto.bind(this)}>
                 <Icon size={16} name="plus" color={colors.gray}/>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
 
         let { notePhotos } = this.state.draftNote;
@@ -316,11 +316,11 @@ class PostNotePage extends Component {
         if (notePhotos != null && notePhotos.length > 0) {
             notePhotos.forEach(function (notePhoto, index) {
                 let image = (
-                    <TouchableHighlight key={notePhoto.photo.uri+index}
+                    <TouchableOpacity key={notePhoto.photo.uri+index}
                                         onPress={() => that._onPressPhoto.call(that, index)}>
                         <Image source={{uri:notePhoto.image}} style={styles.uploadAvatar} width={imageWidth}
                                height={imageHeight}/>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 );
                 photos.push(image);
             });
@@ -453,10 +453,10 @@ class PostNotePage extends Component {
                         style={{zIndex: 1000}}
                         />
 
-                    <TouchableHighlight onPress={this._sendNote.bind(this)}
+                    <TouchableOpacity onPress={this._sendNote.bind(this)}
                                         style={{padding: 15, justifyContent:'center', backgroundColor: colors.orange, flexDirection: 'row', position: 'absolute', bottom: 0, left: 0, right: 0}}>
                         <Text style={{color: '#fff', fontSize:18}}>发布</Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
             </TouchableWithoutFeedback>
         );
