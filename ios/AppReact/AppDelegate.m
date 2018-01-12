@@ -56,13 +56,16 @@
   
   [[RCTBundleURLProvider sharedSettings] setDefaults];
   
+  [[UpdateDataLoader sharedInstance] createPath];  
+  [[UpdateDataLoader sharedInstance] getAppVersion];  
   NSString* iOSBundlePath = [[UpdateDataLoader sharedInstance] iOSFileBundlePath];
 
   if ([[NSFileManager defaultManager] fileExistsAtPath:iOSBundlePath]) {
-    jsCodeLocation = [NSURL URLWithString:iOSBundlePath];
+    jsCodeLocation = [NSURL URLWithString:[iOSBundlePath stringByAppendingString:@"/index.ios.jsbundle"]];
   }else{
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   }
+  NSLog(@"文件dakai路径为：%@",jsCodeLocation);
   
 //  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation

@@ -1,6 +1,6 @@
 
 #import "UpdateDataLoader.h"
-#import "DownLoadTool.h"
+#import "DownloadTool.h"
 
 @implementation UpdateDataLoader
 + (UpdateDataLoader *) sharedInstance
@@ -95,4 +95,4 @@
     [dictionary writeToFile:filePath atomically:YES];
 }
 
-
+@end
