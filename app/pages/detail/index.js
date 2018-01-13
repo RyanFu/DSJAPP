@@ -156,6 +156,7 @@ class Detail extends React.Component {
                             orders = res.orders;
                             data.orderId = orders[0];
                             this._insertOrder(data);
+                            this._tracking(data);
                         }
                     }
                 })
@@ -173,6 +174,35 @@ class Detail extends React.Component {
                         if (res.resultCode === 0) {
                             toast('购买成功');
                             DeviceEventEmitter.emit('portraitUpdated', true);
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    })
+                    .catch(() => {
+                        console.log('network error');
+                    });
+
+            }
+        });
+    }
+
+    _tracking(data) {
+        const {detail, route} = this.props;
+        const noteId = route.note.noteId;
+        data = {
+            trackingName: "itemReferal",
+            trackingValue: {
+                noteUser: detail.note[noteId].authorId,
+                itemId: data.itemId
+            }
+        };
+        data = JSON.stringify(data);
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                request('uTracking/Tracking','POST',data,token)
+                    .then((res) => {
+                        if (res.resultCode === 0) {
+                            console.log('add tracking');
                         }
                     }, function (error) {
                         console.log(error);
