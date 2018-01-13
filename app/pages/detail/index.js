@@ -141,25 +141,48 @@ class Detail extends React.Component {
     }
 
 
-    _jumpToRecommendPage(itemId) {
+    _jumpToRecommendPage(data) {
         const { navigator } = this.props;
         // const type = data.userType === 1? 'tmall' : 'taobao';
 
         Token.getToken(navigator).then((token) => {
             if (token) {
-                baiChuanApi.jump(itemId,'', 'tmall', (error, res) => {
+                baiChuanApi.jump(data.itemId,'', 'tmall', (error, res) => {
                     if (error) {
                         console.error(error);
                     } else {
                         let orders;
                         if (res) { //交易成功
-                            orders = res.oders;
+                            orders = res.orders;
+                            data.orderId = orders[0];
+                            this._insertOrder(data);
                         }
                     }
                 })
             }
         });
 
+    }
+
+    _insertOrder(data) {
+        data = JSON.stringify(data);
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                request('user/order','POST',data,token)
+                    .then((res) => {
+                        if (res.resultCode === 0) {
+                            toast('购买成功');
+                            DeviceEventEmitter.emit('portraitUpdated', true);
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    })
+                    .catch(() => {
+                        console.log('network error');
+                    });
+
+            }
+        });
     }
 
     _jumpToUserPage(userId) {
@@ -235,7 +258,7 @@ class Detail extends React.Component {
     _jumpToWebview(val) {
         const {navigator} = this.props;
         if (val.itemId) {
-            this._jumpToRecommendPage(val.itemId);
+            this._jumpToRecommendPage(val);
             return;
         }
         navigator.push({
