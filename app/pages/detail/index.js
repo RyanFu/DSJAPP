@@ -524,7 +524,7 @@ class Detail extends React.Component {
                                                         <View style={styles.recRedFrame}>
                                                             <Image style={styles.redIcon} source={require('../../assets/footer/red_.png')}/>
                                                             <Text
-                                                                style={[styles.baseText,styles.recRedText]}>{val.estimatedEffecive ? '￥' + val.estimatedEffecive : '￥0'}</Text>
+                                                                style={[styles.baseText,styles.recRedText]}>{val.estimatedEffective ? '￥' + val.estimatedEffective : '￥0'}</Text>
                                                         </View>
 
                                                     </View>

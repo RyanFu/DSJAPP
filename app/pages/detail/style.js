@@ -263,17 +263,18 @@ const styles = StyleSheet.create({
     },
     recContent: {
         width: width / 4 * 3 -40,
+        height: width/4,
         marginLeft: 10,
         flexDirection: 'column',
     },
     recPrice: {
-        fontSize: 22,
+        fontSize: 18,
         lineHeight: 24
     },
     recPriceFrame: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 15
+        marginTop: 4
     },
     recPriceOld: {
         textDecorationLine: 'line-through',
