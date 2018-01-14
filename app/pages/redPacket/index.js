@@ -464,7 +464,7 @@ class RedPacket extends React.Component {
     }
 
     _onEndReached() {
-        if (this.props.recent.recentBuy.length > 6)
+        if (this.state.buySource.rowIdentities.length > 6)
             this.setState({isLoadMore: true});
     }
 
