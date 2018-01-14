@@ -144,7 +144,7 @@ class Detail extends React.Component {
     _jumpToRecommendPage(data) {
         const { navigator } = this.props;
         // const type = data.userType === 1? 'tmall' : 'taobao';
-
+        this._tracking(data);
         Token.getToken(navigator).then((token) => {
             if (token) {
                 baiChuanApi.jump(data.itemId,'', 'tmall', (error, res) => {
@@ -156,7 +156,6 @@ class Detail extends React.Component {
                             orders = res.orders;
                             data.orderId = orders[0];
                             this._insertOrder(data);
-                            this._tracking(data);
                         }
                     }
                 })
