@@ -113,6 +113,10 @@ class Home extends React.Component {
                 });
             }
         );
+
+        this.backFromTBEventD  = DeviceEventEmitter.addListener('showTip', (val)=> {
+            this.setState({showTip: true});
+        });
     }
 
     _jumpToDetailPage(note) {
@@ -151,6 +155,7 @@ class Home extends React.Component {
         this.subscriptionNote.remove();
         this.subscriptionEvent.remove();
         this.backFromTBEvent.remove();
+        this.backFromTBEventD.remove();
     }
 
     componentWillMount() {

@@ -89,7 +89,9 @@ const styles = StyleSheet.create({
         right: 10,
         top: 7,
         zIndex: 1000,
-        backgroundColor: 'rgba(0,0,0,0)'
+        backgroundColor: 'rgba(0,0,0,0)',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     auto: {
         flex: 1,
@@ -273,6 +275,9 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 16,
         marginTop: 6
+    },
+    what: {
+        marginLeft: 4
     }
 });
 

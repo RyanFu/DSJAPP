@@ -713,6 +713,10 @@ class RedPacket extends React.Component {
         },3000)
     }
 
+    _showTip() {
+        DeviceEventEmitter.emit('showTip', true);
+    }
+
     render() {
         var rows = [];
         _.each(this.state.searchItemHistory, (v, k) => {
@@ -816,6 +820,15 @@ class RedPacket extends React.Component {
                                                             <Text
                                                                 style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步</Text>
                                                         </TouchableOpacity>
+                                                        <TouchableOpacity  style={styles.what}
+                                                                           onPress={() => this._showTip()}>
+                                                            <Icon
+                                                                name='md-help-circle'
+                                                                size={22}
+                                                                color={'#666'}
+                                                            />
+                                                        </TouchableOpacity>
+
                                                     </View>
                                                     <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
                                                 </View>
