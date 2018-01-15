@@ -28,7 +28,7 @@ import CreateNotePage from '../note';
 import Channel from '../channel';
 import AddFriends from '../addFriends';
 import {showorHideFilter} from '../../actions/home';
-import {Token,request} from '../../utils/common';
+import {Token, request, toast} from '../../utils/common';
 import HomeContainer from './homeContainer';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
 import RedPacket from '../redPacket';
@@ -36,10 +36,9 @@ import {fetchMessageNum} from '../../actions/message';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 const Navigator = deprecatedComponents.Navigator;
 import DetailPage from '../../pages/detail';
+import SyncTipsPopup from '../../components/syncTipsPopup';
+import StorageKeys from "../../constants/StorageKeys";
 
-const addImg = require('../../assets/header/add.png');
-const searchImg = require('../../assets/header/search.png');
-const settingImg = require('../../assets/personal/setting.png');
 const Event = NativeModules.Event;
 
 class Home extends React.Component {
@@ -56,7 +55,8 @@ class Home extends React.Component {
             currentTab: 0,
             tabForRefresh: false,
             newNote: false,
-            fetchMessage: 1
+            fetchMessage: 1,
+            showTip: false,
         }
     }
 
@@ -79,7 +79,6 @@ class Home extends React.Component {
     };
 
     componentDidMount() {
-
         const emitter = new NativeEventEmitter(baiChuanApi);
         const eventEmitter = new NativeEventEmitter(Event);
 
@@ -104,6 +103,16 @@ class Home extends React.Component {
         );
 
 
+        this.backFromTBEvent =  emitter.addListener(
+            'backFromTB',
+            (res) => {
+                AsyncStorage.getItem('neverShowSyncTip', (error, result) => {
+                    if(!result || result !== 'true'){
+                        this.setState({showTip: true});
+                    }
+                });
+            }
+        );
     }
 
     _jumpToDetailPage(note) {
@@ -141,6 +150,7 @@ class Home extends React.Component {
         this.subscriptionTb.remove();
         this.subscriptionNote.remove();
         this.subscriptionEvent.remove();
+        this.backFromTBEvent.remove();
     }
 
     componentWillMount() {
@@ -235,6 +245,13 @@ class Home extends React.Component {
         });
     }
 
+    _onPressCross(never) {
+        this.setState({showTip: false});
+        if(never){
+            AsyncStorage.setItem('neverShowSyncTip', 'true');
+        }
+    }
+
     render() {
         return (
             <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]} visible='hidden'>
@@ -252,6 +269,12 @@ class Home extends React.Component {
                     //        hideDrop={this.state.showToolbar}
                     //        />
                     //) :null
+                }
+                {
+                    this.state.showTip ? <SyncTipsPopup
+                        onPressCross={(never)=>this._onPressCross(never)}
+                        show={true}
+                    /> : null
                 }
 
                 <ScrollableTabView
