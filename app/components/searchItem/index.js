@@ -162,6 +162,7 @@ class SearchItem extends React.Component {
             this._getForTag(data);
         } else {
             this.props.tipShow();
+            data.tkCommFee = decimals(data.tkCommFee*this.state.ratio, 2);
             this.props.itemData(itemId, data, this._jumpToTaobaoPage);
         }
     }

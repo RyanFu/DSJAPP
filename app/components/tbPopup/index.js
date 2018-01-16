@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
         zIndex: 100
     },
     rectangle: {
-        width: width * 8 / 13,
-        height: height *2 / 5,
+        width: 220,
+        height: 225,
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,1)',
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     },
     title: {
         flexDirection: 'row',
-        height: 50
+        height: 30
     },
     titleLine: {
         width: 40,
