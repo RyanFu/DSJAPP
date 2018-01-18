@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-update')
     compile project(':react-native-wx')
     compile project(':react-native-weibo')
     compile project(':react-native-webview-bridge')

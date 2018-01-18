@@ -3,6 +3,7 @@ package com.appreact;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cn.reactnative.modules.update.UpdatePackage;
 import cn.reactnative.modules.wx.WeChatPackage;
 import cn.reactnative.modules.weibo.WeiboPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new UpdatePackage(),
             new WeChatPackage(),
             new WeiboPackage(),
             new WebViewBridgePackage(),
