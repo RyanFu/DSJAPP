@@ -56,16 +56,26 @@
   
   [[RCTBundleURLProvider sharedSettings] setDefaults];
   
-  [[UpdateDataLoader sharedInstance] createPath];  
-  [[UpdateDataLoader sharedInstance] getAppVersion];  
-  NSString* iOSBundlePath = [[UpdateDataLoader sharedInstance] iOSFileBundlePath];
-
-  if ([[NSFileManager defaultManager] fileExistsAtPath:iOSBundlePath]) {
-    jsCodeLocation = [NSURL URLWithString:[iOSBundlePath stringByAppendingString:@"/index.ios.jsbundle"]];
-  }else{
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-  }
-  NSLog(@"文件dakai路径为：%@",jsCodeLocation);
+//  [[UpdateDataLoader sharedInstance] createPath];  
+//  [[UpdateDataLoader sharedInstance] getAppVersion];  
+//  NSString* iOSBundlePath = [[UpdateDataLoader sharedInstance] iOSFileBundlePath];
+//
+//  if ([[NSFileManager defaultManager] fileExistsAtPath:iOSBundlePath]) {
+////    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+//    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"index.ios" withExtension:@"jsbundle"];
+//
+////    jsCodeLocation = [NSURL URLWithString:[iOSBundlePath stringByAppendingString:@"/index.ios.jsbundle"]];
+//  }else{
+//    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+//  }
+  
+#if DEBUG
+  // 原来的jsCodeLocation保留在这里
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+#else
+  // 非DEBUG情况下启用热更新
+  jsCodeLocation=[RCTHotUpdate bundleURL];
+#endif
   
 //  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation

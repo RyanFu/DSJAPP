@@ -94,6 +94,54 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>share68.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>reactnative.cn</key>
+			<dict>
+            	<key>NSExceptionAllowsInsecureHTTPLoads</key>
+            	<true/>
+            	<key>NSExceptionRequiresForwardSecrecy</key>
+            	<false/>
+            	<key>NSIncludesSubdomains</key>
+            	<true/>
+            </dict>
+            <key>alimama.com</key>
+            <dict>
+                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                 <true/>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+                 </dict>
+            <key>taobao.com</key>
+            <dict>
+                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                 <true/>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+                 </dict>
+            <key>dsj-search-service.herokuapp.com</key>
+            <dict>
+                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                 <true/>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+            </dict>                        			
+		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>此应用需要您的同意才能拍照</string>
