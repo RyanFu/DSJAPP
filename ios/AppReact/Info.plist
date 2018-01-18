@@ -140,7 +140,7 @@
                  <false/>
                  <key>NSIncludesSubdomains</key>
                  <true/>
-            </dict>                        			
+            </dict>
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>

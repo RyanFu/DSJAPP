@@ -18,6 +18,7 @@
 #import "MLink.h"
 #import "UpdateDataLoader.h"
 #import "DownloadTool.h"
+#import "RCTHotUpdate.h"
 
 @implementation AppDelegate
 

@@ -100,3 +100,4 @@ android/app/libs
 android/keystores/debug.keystore
 ios/AppReact.xcodeproj/project.pbxproj
 ios/bundle/
+.update
