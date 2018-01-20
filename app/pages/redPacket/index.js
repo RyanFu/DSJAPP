@@ -683,7 +683,7 @@ class RedPacket extends React.Component {
             if (result) {
                 result = JSON.parse(result);
                 userId = result.userId || userId;
-                request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET', '', token)
+                request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET', '', this.state.token)
                     .then((res) => {
                         if(res.resultCode === 0){
                             // the._onRefresh();
