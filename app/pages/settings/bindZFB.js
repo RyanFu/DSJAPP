@@ -52,7 +52,7 @@ class BindZFB extends React.Component {
                                 alipayBind = false;
                                 _.each(res.resultValues, (v, k) => {
                                     if (v.bindingChannel === 'ALIPAY') {
-                                        the.setState({account: v.account, name: v.name || v.nickname || ''});
+                                        the.setState({account: v.details.alipayAccount || '', name: v.details.realName || ''});
                                     }
                                 });
                             } else {
