@@ -204,7 +204,11 @@ class SecurityPage extends React.Component {
                                 toast('成功解除绑定');
                                 the._getBindingInfo();
                             }
+                            else {
+                                toast('解除绑定失败，请重试！');
+                            }
                         }, function (error) {
+                            toast('解除绑定失败，请重试！');
                             console.log(error);
                         })
                         .catch(() => {
