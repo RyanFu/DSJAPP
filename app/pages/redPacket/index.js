@@ -216,25 +216,25 @@ class RedPacket extends React.Component {
                     if (data
                         && /^[0-9]*$/.test(data)
                         && the.state.openOrderPage) {
-                        the.setState({order: data, showTip: true});
+                        this.setState({openOrderPage: false});
                         the._syncOrder(data);
-                        Clipboard.setString('');
+
                     }
                 });
             }
         );
     }
 
-    _buySource(data){
+    _buySource(data) {
         // data = _.slice(data, 0, 6);
         let source = [];
         let the = this;
         _.each(data, (v, k) => {
 
-            if(v.orderItemState !== 'CANCELSYNC' && v.orderItemState !== 'FAILED' && v.orderItemState) {
+            if (v.orderItemState !== 'CANCELSYNC' && v.orderItemState !== 'FAILED' && v.orderItemState) {
 
-                if(v.syncItems.length > 0){
-                    _.each(v.syncItems, (vv, kk) =>{
+                if (v.syncItems.length > 0) {
+                    _.each(v.syncItems, (vv, kk) => {
                         const item = {
                             estimate: vv.syncEstimateEffect,
                             real: vv.syncRealRefund,
@@ -261,10 +261,10 @@ class RedPacket extends React.Component {
         the.setState({buySource: this.ds.cloneWithRows(source)});
     }
 
-    _getRecentBuy(){
+    _getRecentBuy() {
         const the = this;
         const {dispatch} = this.props;
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             Token.getToken().then((token) => {
                 if (!token) {
                     dispatch(fetchRecentBuy());
@@ -511,17 +511,17 @@ class RedPacket extends React.Component {
                 <View style={styles.sysRowC}>
                     <View style={styles.sysRow}>
                         <PrefetchImage
-                            imageUri={rowData.itemPicUrl||rowData.pic}
+                            imageUri={rowData.itemPicUrl || rowData.pic}
                             imageStyle={styles.sysThumb}
                             resizeMode="cover"
                             width={width / 3 - 5}
                             height={width / 3 - 5}
-                            key={rowData.itemPicUrl||rowData.pic}
+                            key={rowData.itemPicUrl || rowData.pic}
                         />
 
                         <View style={styles.recFlowPrice}>
                             <Text
-                                style={[styles.baseText, styles.recFlowText]}>￥{rowData.itemPrice||rowData.price}</Text>
+                                style={[styles.baseText, styles.recFlowText]}>￥{rowData.itemPrice || rowData.price}</Text>
 
                         </View>
                         <View style={styles.redPacketPrice}>
@@ -532,15 +532,15 @@ class RedPacket extends React.Component {
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}
                                   numberOfLines={2}>
-                                {rowData.itemTitle||rowData.title}
+                                {rowData.itemTitle || rowData.title}
                             </Text>
                         </View>
 
                     </View>
                     {
                         (rowData.status == 'UNKNOWN' ||
-                        !rowData.status||
-                        !rowData.price) &&  rowData.orderId  ? <View style={styles.syncShadow}>
+                            !rowData.status ||
+                            !rowData.price) && rowData.orderId ? <View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
                                     <Text style={styles.syncShadowText}>订单同步中,大约需5分钟</Text>
@@ -679,17 +679,25 @@ class RedPacket extends React.Component {
         // this._insertOrder(data);
         // return;
 
-        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
+        AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result) => {
             if (result) {
                 result = JSON.parse(result);
                 userId = result.userId || userId;
                 request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET', '', this.state.token)
                     .then((res) => {
-                        if(res.resultCode === 0){
+                        if (res.resultCode === 0) {
                             // the._onRefresh();
                             this._getRecentBuy();
+                            the.setState({
+                                order: orderId,
+                                showTip: true,
+                                syncMsg: res.resultValues.message
+                            });
+                        } else {
+                            toast(res.resultValues.message);
                         }
-                        this.setState({syncMsg: res.resultValues.message});
+                        Clipboard.setString('');
+
                     }, function (error) {
                         console.log(error);
                     })
@@ -700,17 +708,17 @@ class RedPacket extends React.Component {
         });
     }
 
-    _onRefresh(){
+    _onRefresh() {
         let the = this;
         this.setState({refreshing: true});
         this._getRecentBuy()
-            .then(()=>{
+            .then(() => {
                 this.setState({refreshing: false});
             });
         this._topSearch();
-        setTimeout(()=>{
+        setTimeout(() => {
             this.setState({refreshing: false});
-        },3000)
+        }, 3000)
     }
 
     _showTip() {
@@ -820,8 +828,8 @@ class RedPacket extends React.Component {
                                                             <Text
                                                                 style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity  style={styles.what}
-                                                                           onPress={() => this._showTip()}>
+                                                        <TouchableOpacity style={styles.what}
+                                                                          onPress={() => this._showTip()}>
                                                             <Icon
                                                                 name='md-help-circle'
                                                                 size={22}

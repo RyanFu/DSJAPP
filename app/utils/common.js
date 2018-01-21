@@ -141,12 +141,17 @@ export function request(request, method, body, token) {
             }
             return json;
         }).then((responseData) => {
+
             if (success) {
                 resolve(responseData);
             } else {
                 reject(responseData);
             }
         }).catch((error) => {
+            if(error.message.indexOf('"Network request failed"')){
+                toast('网络连接不可用，请检查您的网络！');
+            }
+
             reject(error);
         });
     });
