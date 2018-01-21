@@ -1,6 +1,6 @@
 'use strict';
 
-import React  from 'react';
+import React from 'react';
 import {
     StyleSheet,
     Dimensions
@@ -9,13 +9,13 @@ import {
 const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    baseText:{
+    baseText: {
         fontSize: 13,
         color: '#4a4a4a',
-        lineHeight: 18,
+        lineHeight: 20,
         paddingBottom: 2
     },
-    dimText:{
+    dimText: {
         color: '#9b9b9b',
     },
     container: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginBottom: 10,
         flexDirection: 'column',
-        flex:1
+        flex: 1
     },
     user: {
         flex: 1,
@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 16,
         height: 16,
-        width: width-150,
+        width: width - 150,
         color: '#4a4a4a',
     },
     date: {
         fontSize: 11,
         lineHeight: 11,
         height: 11,
-        width: width-150,
+        width: width - 150,
         marginTop: 5,
         color: '#9b9b9b',
     },
@@ -84,11 +84,20 @@ const styles = StyleSheet.create({
     description: {
         padding: 15,
     },
+    location: {
+        paddingLeft: 15,
+        paddingBottom: 10,
+        flexDirection: 'row',
+        justifyContent: 'flex-start'
+    },
+    locationText: {
+        fontSize: 12
+    },
     dTitle: {
         marginBottom: 14,
     },
     tags: {
-        padding: 15,
+        padding: 0,
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignSelf: 'flex-start',
@@ -108,7 +117,7 @@ const styles = StyleSheet.create({
         color: '#9b9b9b'
     },
     float: {
-        flex:1,
+        flex: 1,
         flexDirection: 'row',
         position: 'absolute',
         width: width,
@@ -119,11 +128,11 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(155,155,155,0.1)',
     },
     floatOp: {
-        width: width/2,
+        width: width / 2,
 
     },
     floatOpView: {
-        flex:1,
+        flex: 1,
         flexDirection: 'row',
         alignSelf: 'center',
         alignItems: 'center',
@@ -203,7 +212,7 @@ const styles = StyleSheet.create({
         color: '#4a4a4a',
         fontSize: 13,
         height: 22,
-        maxWidth: width-40,
+        maxWidth: width - 40,
         lineHeight: 22
     },
     recommendByUser: {
@@ -253,17 +262,17 @@ const styles = StyleSheet.create({
     sysFromFrame: {
         marginBottom: 10
     },
-    recFrame:{
+    recFrame: {
         flexDirection: 'row',
         marginBottom: 10,
         marginTop: 5
     },
-    recThumb:{
+    recThumb: {
         width: width / 4
     },
     recContent: {
-        width: width / 4 * 3 -40,
-        height: width/4,
+        width: width / 4 * 3 - 40,
+        height: width / 4,
         marginLeft: 10,
         flexDirection: 'column',
     },
@@ -287,7 +296,7 @@ const styles = StyleSheet.create({
         //marginTop: 98,
         bottom: 19,
         marginLeft: 3,
-        width: width/3-6,
+        width: width / 3 - 6,
         position: 'absolute'
     },
     recFlowText: {
@@ -296,7 +305,7 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         paddingBottom: 0
     },
-    redIcon:{
+    redIcon: {
         width: 20,
         height: 20,
         marginTop: 3
