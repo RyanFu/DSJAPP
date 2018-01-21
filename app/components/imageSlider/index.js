@@ -72,8 +72,9 @@ export default class ImageSlider extends Component {
         super(props);
 
         this.state = {
+            position: this.props.initialPosition,
             position: 0,
-            height: new Animated.Value(this._scaleHeight(this.props.images[0])),
+            height: new Animated.Value(this._scaleHeight(this.props.images[this.props.initialPosition||0])),
             left: new Animated.Value(0),
             scrolling: false,
             timeout: null,
@@ -87,6 +88,11 @@ export default class ImageSlider extends Component {
         }
 
     }
+
+    static defaultProps = {
+        position: 0,
+        initialPosition: 0
+    };
 
     _move(index) {
         const width = Dimensions.get('window').width;
@@ -139,9 +145,9 @@ export default class ImageSlider extends Component {
     componentWillMount() {
         const width = Dimensions.get('window').width;
 
-        if (typeof this.props.position === 'number') {
-            this.state.left.setValue(-(width * this.props.position));
-        }
+        // if (typeof this.props.position === 'number') {
+        //     this.state.left.setValue(-(width * this.props.position));
+        // }
 
         let release = (e, gestureState) => {
             const width = Dimensions.get('window').width;
@@ -222,6 +228,14 @@ export default class ImageSlider extends Component {
                 else
                     clearInterval(this.state.interval);
             }, 1000);
+
+
+        if(this.props.position){
+            setTimeout(()=>{
+                this.setState({scrolling: true});
+                this._move(this.props.position)
+            },0);
+        }
     }
 
     componentWillUnmount() {

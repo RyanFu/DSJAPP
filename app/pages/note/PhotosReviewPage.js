@@ -67,10 +67,12 @@ class PhotosReviewPage extends Component {
         const {dispatch, navigator} = this.props;
         let {currentPhotoIndex} = this.state;
 
-        dispatch({type:StoreActions.REMOVE_NOTE_PHOTO, index: currentPhotoIndex});
         this.setState({currentPhotoIndex: currentPhotoIndex?currentPhotoIndex-1:currentPhotoIndex});
+
+        dispatch({type:StoreActions.REMOVE_NOTE_PHOTO, index: currentPhotoIndex});
         this.refreshPostNotePage && this.refreshPostNotePage();
         //this.scrollableTab.goToPage(this.state.currentPhotoIndex);
+        this.setState({notePhotos: this.props.draftNote.notePhotos});
 
         if (this.state.notePhotos.length === 0) {
             if(navigator) {
@@ -111,7 +113,10 @@ class PhotosReviewPage extends Component {
                 };
                 images.push(image);
             });
+        } else {
+            return null;
         }
+
         return (
             <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
                 <Toolbar
@@ -122,11 +127,15 @@ class PhotosReviewPage extends Component {
                     onRightIconClicked={this._onPressDelete.bind(this)}
                     />
                 <ScrollView style={{height: height - 60}}>
-                    <ImageSlider
-                        images={images}
-                        position={this.state.currentPhotoIndex}
-                        onPositionChanged={position => this.setState({currentPhotoIndex: position})}
-                        />
+                    {
+                        this.state.currentPhotoIndex>=0?  <ImageSlider
+                            images={images}
+                            initialPosition={this.state.currentPhotoIndex}
+                            position={this.state.currentPhotoIndex}
+                            onPositionChanged={position => this.setState({currentPhotoIndex: position})}
+                        />: null
+                    }
+
                 </ScrollView>
 
 
