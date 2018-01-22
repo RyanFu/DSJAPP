@@ -134,7 +134,7 @@ class MessageList extends React.Component {
                                 }
                                 <Text
                                     style={[styles.baseText, styles.messageListText, this.state.messageList[rowID] && !this.state.messageList[rowID].isRead ? {} : null]}>
-                                    您有一条来自{rowData.commentAuthorNickname}关于《{rowData.noteTitle}》的评论：
+                                    您有一条来自{rowData.commentAuthorNickname}关于《{emoticons.parse(rowData.noteTitle)}》的评论：
                                 </Text>
                             </View>
                             <View style={[styles.messageListDetail, styles.messageListDetailPreView]}>
