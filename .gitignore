@@ -101,3 +101,4 @@ android/keystores/debug.keystore
 ios/AppReact.xcodeproj/project.pbxproj
 ios/bundle/
 .update
+ios/ipa/
