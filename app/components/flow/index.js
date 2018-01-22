@@ -479,7 +479,7 @@ var styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     boxContainer: {
-        flexDirection: 'column',
+        flexDirection: 'column'
     },
     thumb: {
         width: (width / 100) * 47,
@@ -487,15 +487,15 @@ var styles = StyleSheet.create({
         overflow: 'hidden',
     },
     title: {
-        height: 28,
+        height: 32,
         margin: 6,
         marginTop: 24,
     },
     text: {
         flex: 1,
         color: '#4a4a4a',
-        fontSize: 11,
-        lineHeight: 13,
+        fontSize: 12,
+        lineHeight: 18,
     },
     container: {
         paddingTop: 0,
@@ -537,7 +537,7 @@ var styles = StyleSheet.create({
         alignSelf: 'center',
         width: (width / 100) * 47 - 20,
         borderTopWidth: 1,
-        paddingTop: 2,
+        paddingTop: 1,
         marginBottom: 10,
         borderColor: '#cecece',
     },
@@ -566,13 +566,14 @@ var styles = StyleSheet.create({
         minWidth: 24,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        marginBottom:  3
+        marginBottom:  4
     },
     commentInterText: {
         marginRight: 10,
     },
     likeInterText: {
         marginRight: 0,
+        marginBottom: 4
     },
     center: {
         alignItems: 'center'
