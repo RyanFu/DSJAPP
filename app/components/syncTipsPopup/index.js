@@ -61,7 +61,7 @@ class SyncTipsPopup extends React.Component {
                     <View style={styles.content}>
                         <View style={styles.row}>
                             <Text style={styles.baseText}>
-                                请您做以下操作以便获得购物红包
+                                没有看到您的订单吗？请您手动跟单以便获得购物红包
                             </Text>
                         </View>
                         <View style={styles.row}>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
     rectangle: {
         width: 290,
-        height: 315,
+        height: 330,
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,1)',
