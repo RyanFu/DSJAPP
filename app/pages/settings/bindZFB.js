@@ -164,7 +164,7 @@ class BindZFB extends React.Component {
         return (
             <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
                 <Toolbar
-                    title="绑定支付宝"
+                    title= {this.props.route.update?"编辑支付宝":"绑定支付宝"}
                     navigator={this.props.navigator}
                     hideDrop={true}
                 />
@@ -236,7 +236,7 @@ class BindZFB extends React.Component {
                 </View>
                 <View style={styles.submit}>
                     <TouchableOpacity style={styles.button} onPress={() => this._submit()}>
-                        <Text style={styles.buttonFont}>绑定</Text>
+                        <Text style={styles.buttonFont}>保存</Text>
                     </TouchableOpacity>
                 </View>
 

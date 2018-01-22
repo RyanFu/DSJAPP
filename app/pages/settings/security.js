@@ -126,7 +126,7 @@ class SecurityPage extends React.Component {
                     [
                         {
                             text: '修改', onPress: () => {
-                                this._jumpToZFBPage();
+                                this._jumpToZFBPage('update');
                             }
                         },
                         {
@@ -220,12 +220,13 @@ class SecurityPage extends React.Component {
 
     }
 
-    _jumpToZFBPage() {
+    _jumpToZFBPage(update) {
         const {navigator} = this.props;
         navigator.push({
             component: BindZFBPage,
             name: 'BindZFBPage',
-            sceneConfigs: Navigator.SceneConfigs.FloatFromRight
+            sceneConfigs: Navigator.SceneConfigs.FloatFromRight,
+            update: update ? true : false
         });
     }
 
