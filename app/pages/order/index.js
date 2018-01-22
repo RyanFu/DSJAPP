@@ -12,7 +12,8 @@ import {
     ListView,
     Image,
     AsyncStorage,
-    RefreshControl
+    RefreshControl,
+    Button
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -63,48 +64,123 @@ class Order extends React.Component {
         });
     }
 
+    _statusText(status) {
+        switch (status) {
+            case 'NEW':
+                return '订单同步';
+            case 'PAID':
+                return '订单付款';
+            case 'SETTLED':
+                return '订单收货';
+            case 'FAILED':
+                return '订单失效';
+            case 'WITHDRAWN':
+                return '提现成功';
+            case 'CANCELSYNC':
+                return '取消跟单';
+            default:
+                return '无效订单';
+        }
+    }
+
+    _textColor(status) {
+        switch (status) {
+            case 'NEW':
+                return 'grey';
+            case 'PAID':
+                return 'green';
+            case 'SETTLED':
+                return 'red';
+            case 'FAILED':
+                return 'grey';
+            case 'WITHDRAWN':
+                return 'darkGreen';
+            case 'CANCELSYNC':
+                return '';
+            default:
+                return 'grey';
+        }
+    }
+
     _renderRow(rowData) {
         return (
-            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}
-                              onPress={() => this._jumpToOrderPage(rowData.orderId.toString())}
-                              onLongPress={() => {
-                                  this._cancelSync(rowData.orderId)
-                              }}
-            >
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}>
                 <View>
                     <View style={styles.orderRow}>
-                        <PrefetchImage
-                            imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
-                            imageStyle={[styles.itemThumb,{marginTop: rowData.pic ? null: 24}]}
-                            resizeMode="contain"
-                            width={rowData.pic ? 108: 60}
-                            height={rowData.pic ? 108: 60}
-                            key={rowData.id + rowData.orderType + '.'}
-                        />
-                        <View style={styles.orderText}>
-                            <Text style={styles.baseText} lineBreakMode={'tail'}
-                                  numberOfLines={2}>{rowData.title}</Text>
-                            <View style={styles.orderTextDetail}>
-                                <Text
-                                    style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>价格：￥ {rowData.price}</Text>
-                                <Text
-                                    style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>预估红包：￥ {decimals(rowData.estimate * this.state.ratio, 2)}</Text>
-                                {
-                                    rowData.orderType == 2 ? <Text
-                                        style={[styles.dimText, styles.sText, rowData.orderType == 1 ? styles.red : (rowData.orderType == 2 ? styles.green : (rowData.orderType == 3 ? styles.darkGreen : ''))]}>可提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text>:null
-                                }
-                               <Text
-                                    style={[styles.dimText, styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
+                        <View style={styles.header}>
+                            <Text
+                                style={[styles.dimText, styles.sText, styles[this._textColor(rowData.status)]]}>
+                                {this._statusText(rowData.status)}
+                            </Text>
+                            <Text
+                                style={[styles.dimText, styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
+                        </View>
+                        <View style={styles.orderRowInner}>
+                            <PrefetchImage
+                                imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
+                                imageStyle={[styles.itemThumb, {marginTop: rowData.pic ? null : 24}]}
+                                resizeMode="contain"
+                                width={rowData.pic ? 108 : 60}
+                                height={rowData.pic ? 108 : 60}
+                                key={rowData.id + rowData.orderType + '.'}
+                            />
+                            <View style={styles.orderText}>
+                                <Text style={styles.baseText} lineBreakMode={'tail'}
+                                      numberOfLines={2}>{rowData.title}</Text>
+                                {rowData.status && rowData.status !== 'CANCELSYNC' && rowData.status !== 'NEW' ?
+                                    <View style={styles.orderTextDetail}>
+                                        <Text
+                                            style={[styles.dimText, styles.sText,styles[this._textColor(rowData.status)]]}>价格：￥ {rowData.price} × {rowData.mount ? rowData.mount : 1}</Text>
+                                        {
+                                            rowData.status === 'PAID' ?
+                                                <Text
+                                                    style={[styles.dimText, styles.sText,styles[this._textColor(rowData.status)]]}>预估红包：￥ {decimals(rowData.estimate * this.state.ratio, 2)}</Text> : null
+                                        }
+                                        {
+                                            rowData.status === 'SETTLED' ? <Text
+                                                style={[styles.dimText, styles.sText,styles[this._textColor(rowData.status)]]}>可提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
+                                        }
+                                        {
+                                            rowData.status === 'WITHDRAWN' ? <Text
+                                                style={[styles.dimText, styles.sText, styles[this._textColor(rowData.status)]]}>已提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
+                                        }
 
-                                <View style={styles.shop}>
-                                    <Image
-                                        style={{width:12,height: 12,opacity:0.5,marginRight:4}}
-                                        resizeMode={'cover'}
-                                        source={require('../../assets/search/shop.png')}
-                                    />
-                                    <Text style={[styles.dimText, styles.sText]}>{rowData.shop|| ''}</Text>
-                                </View>
+                                        <View style={styles.shop}>
+                                            <Image
+                                                style={{width: 12, height: 12, opacity: 0.5, marginRight: 4}}
+                                                resizeMode={'cover'}
+                                                source={require('../../assets/search/shop.png')}
+                                            />
+                                            <Text style={[styles.dimText, styles.sText]}>{rowData.shop || ''}</Text>
+                                        </View>
+
+                                    </View> : null
+                                }
                             </View>
+                        </View>
+
+                        <View style={styles.footer}>
+                            <Text style={[styles.dimText, styles.sText]}>
+                                订单号：{rowData.orderId}
+                            </Text>
+                            <View style={styles.buttons}>
+                                <TouchableOpacity
+                                    style={[styles.button, styles.buttonGrey]}
+                                    onPress={() => this._jumpToOrderPage(rowData.orderId.toString())}>
+                                    <Text style={[styles.buttonFont, styles.buttonGreyFont]}>更多详情</Text>
+                                </TouchableOpacity>
+                                {
+                                    !rowData.status || (rowData.status && rowData.status !== 'WITHDRAWN') ?
+                                        <TouchableOpacity
+                                            style={[styles.button, styles.buttonGrey]}
+                                            onPress={() => {
+                                                this._cancelSync(rowData.orderId)
+                                            }}>
+                                            <Text style={[styles.buttonFont, styles.buttonGreyFont]}>取消跟单</Text>
+                                        </TouchableOpacity> : null
+                                }
+                            </View>
+
                         </View>
                     </View>
                 </View>
@@ -172,7 +248,8 @@ class Order extends React.Component {
                         status: vv.status,
                         orderType: orderType,
                         time: vv.syncCreationDate,
-                        shop: vv.syncStoreName
+                        shop: vv.syncStoreName,
+                        mount: vv.syncItemCount
                     };
                     source.push(item);
                 });
@@ -188,6 +265,9 @@ class Order extends React.Component {
                     price: 0,
                     time: v.creationDate || (new Date()).getTime()
                 };
+                if(v.orderItemState === 'CANCELSYNC'){
+                    item.title = '订单正在同步，5分钟内完成...';
+                }
                 source.push(item);
             }
         });
@@ -215,14 +295,14 @@ class Order extends React.Component {
         let userId = 17321057664;
         let the = this;
 
-        const cancel = (orderId)=>{
-            AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result)=> {
+        const cancel = (orderId) => {
+            AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result) => {
                 if (result) {
                     result = JSON.parse(result);
                     userId = result.userId || userId;
                     request('/mapuserorder/unmap?userId=' + userId + '&orderId=' + orderId, 'GET', '', the.state.token)
                         .then((res) => {
-                            if(res.resultCode === 0){
+                            if (res.resultCode === 0) {
                                 toast(res.resultValues.message);
                                 the._getBuyList();
                             }
@@ -237,11 +317,12 @@ class Order extends React.Component {
         };
 
         Alert.alert(
-            '跟单',
+            '',
             '您需要取消此订单跟单吗？',
             [
                 {text: '取消', onPress: () => console.log('')},
-                {text: '确定', onPress: () =>{
+                {
+                    text: '确定', onPress: () => {
                         cancel(orderId);
                     }
 
@@ -250,10 +331,10 @@ class Order extends React.Component {
         )
     }
 
-    _getBuyList(){
+    _getBuyList() {
         const the = this;
         const {dispatch} = this.props;
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             Token.getToken().then((token) => {
                 if (!token) {
                     dispatch(fetchRecentBuy());
@@ -277,13 +358,13 @@ class Order extends React.Component {
         const the = this;
         this.setState({refreshing: true});
         this._getBuyList()
-            .then((res)=>{
-                if(res)
+            .then((res) => {
+                if (res)
                     the.setState({refreshing: false});
             });
-        setTimeout(()=>{
+        setTimeout(() => {
             the.setState({refreshing: false});
-        },3000);
+        }, 3000);
     }
 
 

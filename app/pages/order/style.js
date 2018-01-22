@@ -40,17 +40,24 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0)',
         color: '#fff'
     },
-    orderRow: {
+    orderRowInner: {
         flexDirection: 'row',
-        backgroundColor: '#fff',
+        backgroundColor: '#f4f4f4',
         justifyContent: 'center',
         alignItems: 'flex-start',
         width: width,
         height: 118,
-        borderColor: 'rgba(155,155,155,0.1)',
-        borderBottomWidth: 1,
-        paddingVertical: 5
+        paddingVertical: 5,
     },
+    orderRow:{
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        marginBottom: 10,
+        backgroundColor: '#f1f1f1',
+
+    },
+
     itemThumb: {
         width: 108,
         height: 108,
@@ -117,6 +124,47 @@ const styles = StyleSheet.create({
     shop: {
         flexDirection: 'row',
         marginTop: 2
+    },
+    header: {
+        height: 24,
+        width: width,
+        backgroundColor: '#fff',
+        borderColor: 'rgba(155,155,155,0.2)',
+        borderTopWidth: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        flexDirection: 'row'
+    },
+    footer: {
+        height: 24,
+        width: width,
+        backgroundColor: '#fff',
+        borderColor: 'rgba(155,155,155,0.2)',
+        borderBottomWidth: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        flexDirection: 'row'
+
+    },
+    buttonGrey: {
+        height: 16,
+        backgroundColor: '#fff',
+        borderColor: '#9b9b9b',
+        borderWidth: 1,
+        borderRadius: 2,
+        paddingHorizontal: 4,
+        margin: 0,
+        marginBottom: 0,
+        marginLeft: 6
+    },
+    buttonGreyFont: {
+        fontSize: 10,
+        color: '#9b9b9b'
+    },
+    buttons: {
+        flexDirection: 'row',
     }
 });
 
