@@ -222,7 +222,9 @@ const styles = StyleSheet.create({
     },
     tipFont: {
         fontSize: 11,
-        height: 12,
+        height: 28,
+        marginTop: 12,
+        lineHeight: 14
     },
     tipIcon: {
         color: '#fc7d30',
