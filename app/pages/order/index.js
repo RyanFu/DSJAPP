@@ -197,7 +197,7 @@ class Order extends React.Component {
         }
         if (orderType === 1) {
             data = _.filter(this.props.recent.recentBuy, function (o) {
-                return o.orderItemState === 'PAID' || o.orderItemState === 'NEW';
+                return o.orderItemState === 'PAID' ;
             });
         }
         if (orderType === 3) {
