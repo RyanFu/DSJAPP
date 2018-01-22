@@ -544,7 +544,7 @@ class PhotoEditPage extends Component {
         const the = this;
         webviewbridge.postMessage(JSON.stringify({type: 'removeTag', data: this.state.currentTag}));
         _.remove(this.state.tags, function(n,k) {
-            return k.index  == the.state.currentTag.index;
+            return k  == the.state.currentTag.index;
         });
         this.setState({showRemoveTagButton: false, currentTag: {x: the.state.currentTag.x, y: the.state.currentTag.y}})
     }
