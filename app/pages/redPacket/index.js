@@ -216,7 +216,6 @@ class RedPacket extends React.Component {
                     if (data
                         && /^[0-9]*$/.test(data)
                         && the.state.openOrderPage) {
-                        this.setState({openOrderPage: false});
                         the._syncOrder(data);
 
                     }
@@ -696,6 +695,8 @@ class RedPacket extends React.Component {
                         } else {
                             toast(res.resultValues.message);
                         }
+                        the.setState({openOrderPage: false});
+
                         Clipboard.setString('');
 
                     }, function (error) {

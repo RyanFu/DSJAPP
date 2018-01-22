@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+
 const ReactNative = require('react-native');
 const {
     Platform,
@@ -13,12 +14,12 @@ const {
     StatusBar,
     DeviceEventEmitter,
     NativeEventEmitter,
-    NativeModules
-    } = ReactNative;
-import { connect } from 'react-redux';
+    NativeModules,
+} = ReactNative;
+import {connect} from 'react-redux';
 import styles from './style';
 import TabBar from './tab';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Toolbar from '../../components/toolbar';
 import Flow from '../../components/flow';
 import HomeFilter from '../../components/homeFilter';
@@ -34,10 +35,12 @@ import baiChuanApi from 'react-native-taobao-baichuan-api';
 import RedPacket from '../redPacket';
 import {fetchMessageNum} from '../../actions/message';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+
 const Navigator = deprecatedComponents.Navigator;
 import DetailPage from '../../pages/detail';
 import SyncTipsPopup from '../../components/syncTipsPopup';
 import StorageKeys from "../../constants/StorageKeys";
+import {Clipboard} from "react-native";
 
 const Event = NativeModules.Event;
 
@@ -68,7 +71,7 @@ class Home extends React.Component {
             3: '消息',
             4: '我的'
         },
-        cameraPress: (navigator)=> {
+        cameraPress: (navigator) => {
             navigator.push({
                 component: CreateNotePage,
                 name: 'CreateNotePage',
@@ -103,24 +106,29 @@ class Home extends React.Component {
         );
 
 
-        this.backFromTBEvent =  emitter.addListener(
+        this.backFromTBEvent = emitter.addListener(
             'backFromTB',
             (res) => {
-                AsyncStorage.getItem('neverShowSyncTip', (error, result) => {
-                    if(!result || result !== 'true'){
-                        this.setState({showTip: true});
+                Clipboard.getString().then((data) => {
+                    if (!data || !/^[0-9]*$/.test(data)) {
+                        AsyncStorage.getItem('neverShowSyncTip', (error, result) => {
+                            if (!result || result !== 'true') {
+                                this.setState({showTip: true});
+                            }
+                        });
                     }
                 });
+
             }
         );
 
-        this.backFromTBEventD  = DeviceEventEmitter.addListener('showTip', (val)=> {
+        this.backFromTBEventD = DeviceEventEmitter.addListener('showTip', (val) => {
             this.setState({showTip: true});
         });
     }
 
     _jumpToDetailPage(note) {
-        const { navigator } = this.props;
+        const {navigator} = this.props;
         navigator.push({
             component: DetailPage,
             name: 'DetailPage',
@@ -131,7 +139,7 @@ class Home extends React.Component {
 
 
     _bindTaobao(openId) {
-        const { navigator } = this.props;
+        const {navigator} = this.props;
         Token.getToken(navigator).then((token) => {
                 if (token) {
                     request('user/bindings/taobao/' + openId, 'POST', '', token)
@@ -160,9 +168,9 @@ class Home extends React.Component {
 
     componentWillMount() {
         let the = this;
-        this.subscriptionNote = DeviceEventEmitter.addListener('newNote', ()=> {
+        this.subscriptionNote = DeviceEventEmitter.addListener('newNote', () => {
             the.setState({'newNote': true});
-            setTimeout(()=> {
+            setTimeout(() => {
                 the.setState({'newNote': false})
             }, 10)
         });
@@ -170,7 +178,7 @@ class Home extends React.Component {
     }
 
     _showFilter() {
-        const { dispatch} = this.props;
+        const {dispatch} = this.props;
         if (this.props.home.showFilter) {
             dispatch(showorHideFilter(false));
         } else {
@@ -197,12 +205,12 @@ class Home extends React.Component {
             this.setState({currentTab: data.i});
         } else {
             this.setState({tabForRefresh: true});
-            setTimeout(()=> {
+            setTimeout(() => {
                 this.setState({tabForRefresh: false});
             }, 10)
         }
         if (data.i == 3 || data.i == 4) {
-            setTimeout(()=> {
+            setTimeout(() => {
                 this.setState({showToolbar: false});
             }, 2000)
 
@@ -229,7 +237,7 @@ class Home extends React.Component {
     }
 
     _onLeftIconClicked() {
-        const { navigator } = this.props;
+        const {navigator} = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
                 navigator.push({
@@ -242,7 +250,7 @@ class Home extends React.Component {
     }
 
     _onRightIconClicked() {
-        const { navigator } = this.props;
+        const {navigator} = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
                 //todo
@@ -252,7 +260,7 @@ class Home extends React.Component {
 
     _onPressCross(never) {
         this.setState({showTip: false});
-        if(never){
+        if (never) {
             AsyncStorage.setItem('neverShowSyncTip', 'true');
         }
     }
@@ -277,20 +285,20 @@ class Home extends React.Component {
                 }
                 {
                     this.state.showTip ? <SyncTipsPopup
-                        onPressCross={(never)=>this._onPressCross(never)}
+                        onPressCross={(never) => this._onPressCross(never)}
                         show={true}
                     /> : null
                 }
 
                 <ScrollableTabView
                     scrollWithoutAnimation={true}
-                    style={{marginTop: 0, }}
+                    style={{marginTop: 0,}}
                     tabBarPosition='overlayBottom'
                     initialPage={0}
                     renderTabBar={() => <TabBar {...this.props} newNote={this.state.newNote}/>}
                     onChangeTab={this._onChangeTab.bind(this)}
                     locked={true}
-                    >
+                >
                     <RedPacket tabLabel="ios-cash-outline" style={styles.tabView} dispatch={this.props.dispatch}
                                navigator={this.props.navigator}/>
 
@@ -304,7 +312,7 @@ class Home extends React.Component {
                               tag='all'
                               navigator={this.props.navigator}
                               dispatch={this.props.dispatch}
-                            />
+                        />
                     </HomeContainer>
 
                     <ScrollView tabLabel="md-camera" style={styles.tabView}>
@@ -331,7 +339,7 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { home, flow } = state;
+    const {home, flow} = state;
     return {
         home,
         flow

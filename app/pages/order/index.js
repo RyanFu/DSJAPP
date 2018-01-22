@@ -265,7 +265,7 @@ class Order extends React.Component {
                     price: 0,
                     time: v.creationDate || (new Date()).getTime()
                 };
-                if(v.orderItemState === 'CANCELSYNC'){
+                if(v.orderItemState === 'NEW'){
                     item.title = '订单正在同步，5分钟内完成...';
                 }
                 source.push(item);
