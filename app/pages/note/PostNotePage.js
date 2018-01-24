@@ -55,13 +55,15 @@ class PostNotePage extends Component {
             draftNote: this.props.draftNote,
             token: null,
             posting: false,
-            titleLength: 30,
+            titleLength: 255,
             starCount: 0,
             addressModelVisible: false,
             addressDataSource: addressDS,
             showEmoticons: false,
             cursorL: 0,
-            focus: 'title'
+            focus: 'title',
+            titleMax: 255,
+            contentMax: 2000
         };
 
         Token.getToken(navigator).then((token) => {
@@ -114,9 +116,10 @@ class PostNotePage extends Component {
             enableHighAccuracy: true
         });
 
-        this._statCount(this.state.title);
         this.setState({title: this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.title : ''});
         this.setState({content: this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.content : ''});
+        this._statCount(this.state.title);
+        this._statContentCount(this.state.content);
     }
 
     _onCancel() {
@@ -288,10 +291,37 @@ class PostNotePage extends Component {
         }
     }
 
+    _inputContent(content) {
+        if(!this._statContentCount(content)){
+            content = emoticons.stringify(content);
+            content = content.substring(0, this.state.contentMax);
+            this.setState({content: emoticons.parse(content)});
+        }
+    }
+
+    _statContentCount(content) {
+        const length = emoticons.stringify(content).length;
+        if(!content||length<=this.state.contentMax){
+            this.setState({content: content});
+            return true;
+        }
+        return false;
+    }
+
+    _inputTitle(title) {
+        if(!this._statCount(title)){
+            title = emoticons.stringify(title);
+            title = title.substring(0, this.state.titleMax);
+            this.setState({titleLength: 0});
+            this.setState({title: emoticons.parse(title)});
+        }
+    }
+
     _statCount(title) {
-        if(!title||title.length<=30){
-            this.setState({titleLength: 30 - title.length});
-            this.state.title = title;
+        const length = emoticons.stringify(title).length;
+        if(!title||length<=this.state.titleMax){
+            this.setState({titleLength: this.state.titleMax - length});
+            this.setState({title: title});
             return true;
         }
         return false;
@@ -357,14 +387,17 @@ class PostNotePage extends Component {
         const commentRight = _.slice(this.state[this.state.focus], this.state.cursorL, this.state[this.state.focus].length);
 
         if(this.state.focus === 'title'){
-            if((this.state.title.length+val.code.length)<=30){
+            if(emoticons.stringify(this.state.title+val.code).length<=this.state.titleMax){
                 this.setState({title: _.join(commentLeft, '') + val.code + _.join(commentRight, '')});
-                this.setState({titleLength: 30 - this.state.title.length - val.code.length});
+                this.setState({titleLength: this.state.titleMax - emoticons.stringify(this.state.title).length - emoticons.stringify(val.code).length});
 
             }
         }
-        if(this.state.focus === 'content')
-            this.setState({content: _.join(commentLeft, '') + val.code + _.join(commentRight, '')});
+        if(this.state.focus === 'content'){
+            if(emoticons.stringify(this.state.content+val.code).length<=this.state.contentMax){
+                this.setState({content: _.join(commentLeft, '') + val.code + _.join(commentRight, '')});
+            }
+        }
     }
 
 
@@ -380,8 +413,10 @@ class PostNotePage extends Component {
             this._statCount(this.state.title);
             this.setState({title: _.join(_.dropRight(emoticons.splitter(commentLeft)), '') + _.join(commentRight, '')});
         }
-        if(this.state.focus === 'content')
+        if(this.state.focus === 'content'){
+            this._statContentCount(this.state.content);
             this.setState({content: _.join(_.dropRight(emoticons.splitter(commentLeft)), '') + _.join(commentRight, '')});
+        }
 
     }
 
@@ -406,22 +441,23 @@ class PostNotePage extends Component {
                     <View style={styles.main}>
                         <View
                             style={{borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row', paddingVertical: 8,height: 38, margin: 5,marginHorizontal:15}}>
-                            <TextInput ref='titleInput' placeholder='添加标题' defaultValue={this.state.title}
+                            <TextInput ref='titleInput' placeholder='添加标题' value={this.state.title}
                                        clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                                       onChangeText={(value) => this._statCount(value)}
+                                       onChangeText={(value) => this._inputTitle(value)}
                                        onFocus={()=>this._Focus('title')}
                                        onSelectionChange={(event)=>this._getSelection(event)}
-                                       returnKeyType="next" maxLength={30} style={[styles.textInputS, {flex:1}]}/>
+                                       returnKeyType="next" maxLength={this.state.titleMax} style={[styles.textInputS, {flex:1}]}/>
                             <Text>{this.state.titleLength}</Text>
                         </View>
                         <View style={{flexDirection: 'row', paddingVertical:10, marginHorizontal: 15,height: 100}}>
-                            <TextInput ref='contentInput' placeholder='说点你的心得吧' defaultValue={this.state.content}
+                            <TextInput ref='contentInput' placeholder='说点你的心得吧' value={this.state.content}
                                        clearButtonMode='while-editing' underlineColorAndroid='transparent'
                                        returnKeyType="next" multiline={true} numberOfLines={8}
                                        style={[styles.textInputS, {flex:1}]}
                                        onFocus={()=>this._Focus('content')}
+                                       maxLength={this.state.contentMax}
                                        onSelectionChange={(event)=>this._getSelection(event)}
-                                       onChangeText={(value) => this.state.content = value}/>
+                                       onChangeText={(value) => this._inputContent(value)}/>
                         </View>
                         <View
                             style={[{borderBottomWidth: 1, borderBottomColor: '#ccc', paddingVertical:10, marginHorizontal: 15}]}>
