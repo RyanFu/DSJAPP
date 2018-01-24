@@ -18,6 +18,7 @@ import * as WechatAPI from '../../../node_modules/react-native-wx';
 //import * as WeiboAPI from 'react-native-weibo';
 import {toast} from '../../utils/common';
 import configs from '../../constants/configs';
+import * as Emoticons from '../../components/emoticons';
 
 var {height, width} = Dimensions.get('window');
 const propTypes = {
@@ -55,8 +56,8 @@ class Share extends React.Component {
     _shareToWechat() {
         const data = {
             type: 'news',
-            title : this.props.note.title,
-            description : this.props.note.content,
+            title : Emoticons.parse(this.props.note.title),
+            description : Emoticons.parse(this.props.note.content),
             webpageUrl : configs.mobileServiceUrl+ 'detail/'+this.props.noteId,
             imageUrl: this.props.thumbUrl,
         };
