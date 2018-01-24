@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#f4f4f4',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'stretch',
         width: width,
         height: 118,
         paddingVertical: 5,
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         justifyContent: 'space-between',
-        height: 60
     },
     totalCash: {
         flexDirection: 'row',
@@ -106,11 +105,14 @@ const styles = StyleSheet.create({
         marginRight: 2
     },
     orderTextDetail: {
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     sText: {
         fontSize: 11,
         color: '#9b9b9b'
+    },
+    pText: {
+      lineHeight: 16
     },
     red: {
         color: '#ff0000'

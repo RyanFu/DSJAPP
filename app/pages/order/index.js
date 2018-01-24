@@ -115,10 +115,10 @@ class Order extends React.Component {
                             <Text
                                 style={[styles.dimText, styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
                         </View>
-                        <View style={styles.orderRowInner}>
+                        <View style={[styles.orderRowInner,{alignItems: rowData.pic? 'stretch': 'center'}]}>
                             <PrefetchImage
                                 imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
-                                imageStyle={[styles.itemThumb, {marginTop: rowData.pic ? null : 24}]}
+                                imageStyle={[styles.itemThumb, {marginTop: rowData.pic ? null : null}]}
                                 resizeMode="contain"
                                 width={rowData.pic ? 108 : 60}
                                 height={rowData.pic ? 108 : 60}
@@ -130,28 +130,28 @@ class Order extends React.Component {
                                 {rowData.status && rowData.status !== 'CANCELSYNC' && rowData.status !== 'NEW' ?
                                     <View style={styles.orderTextDetail}>
                                         <Text
-                                            style={[styles.dimText, styles.sText,styles[this._textColor(rowData.status)]]}>价格：￥ {rowData.price} × {rowData.mount ? rowData.mount : 1}</Text>
+                                            style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>价格：￥ {rowData.price} × {rowData.mount ? rowData.mount : 1}</Text>
                                         {
                                             rowData.status === 'PAID' ?
                                                 <Text
-                                                    style={[styles.dimText, styles.sText,styles[this._textColor(rowData.status)]]}>预估红包：￥ {decimals(rowData.estimate * this.state.ratio, 2)}</Text> : null
+                                                    style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>预估红包：￥ {decimals(rowData.estimate * this.state.ratio, 2)}</Text> : null
                                         }
                                         {
                                             rowData.status === 'SETTLED' ? <Text
-                                                style={[styles.dimText, styles.sText,styles[this._textColor(rowData.status)]]}>可提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
+                                                style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>可提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
                                         }
                                         {
                                             rowData.status === 'WITHDRAWN' ? <Text
-                                                style={[styles.dimText, styles.sText, styles[this._textColor(rowData.status)]]}>已提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
+                                                style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>已提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
                                         }
 
                                         <View style={styles.shop}>
                                             <Image
-                                                style={{width: 12, height: 12, opacity: 0.5, marginRight: 4}}
+                                                style={{width: 12, height: 12, opacity: 0.5, marginRight: 4,marginTop:3}}
                                                 resizeMode={'cover'}
                                                 source={require('../../assets/search/shop.png')}
                                             />
-                                            <Text style={[styles.dimText, styles.sText]}>{rowData.shop || ''}</Text>
+                                            <Text style={[styles.dimText, styles.sText, styles.pText]}>{rowData.shop || ''}</Text>
                                         </View>
 
                                     </View> : null
@@ -170,7 +170,7 @@ class Order extends React.Component {
                                     <Text style={[styles.buttonFont, styles.buttonGreyFont]}>更多详情</Text>
                                 </TouchableOpacity>
                                 {
-                                    !rowData.status || (rowData.status && rowData.status !== 'WITHDRAWN') ?
+                                    !rowData.status || (rowData.status && rowData.status === 'NEW') ?
                                         <TouchableOpacity
                                             style={[styles.button, styles.buttonGrey]}
                                             onPress={() => {
