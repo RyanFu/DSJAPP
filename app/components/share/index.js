@@ -57,7 +57,7 @@ class Share extends React.Component {
         const data = {
             type: 'news',
             title : Emoticons.parse(this.props.note.title),
-            description : Emoticons.parse(this.props.note.content),
+            description : Emoticons.parse(this.props.note.content.substring(0,100)),
             webpageUrl : configs.mobileServiceUrl+ 'detail/'+this.props.noteId,
             imageUrl: this.props.thumbUrl,
         };
@@ -66,7 +66,10 @@ class Share extends React.Component {
                 if(!res)
                     toast('您还未安装微信');
                 else
-                    WechatAPI.shareToSession(data);
+                    WechatAPI.shareToSession(data)
+                        .catch((error) => {
+                            toast('分享失败，请重试')
+                        });
             });
     }
 
@@ -83,7 +86,10 @@ class Share extends React.Component {
                 if(!res)
                     toast('您还未安装微信');
                 else
-                    WechatAPI.shareToTimeline(data);
+                    WechatAPI.shareToTimeline(data)
+                        .catch((error) => {
+                            toast('分享失败，请重试')
+                        });;
             });
     }
 
