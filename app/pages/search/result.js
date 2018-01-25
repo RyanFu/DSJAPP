@@ -11,7 +11,10 @@ import {
     Platform,
     TouchableWithoutFeedback,
     Image,
-    AsyncStorage
+    AsyncStorage,
+    NativeEventEmitter,
+    Vibration,
+    Clipboard
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -29,6 +32,8 @@ import ConditionTab from './conditionTab';
 import StoreActions from '../../constants/actions';
 import Flow from '../../components/flow';
 import TbPopup from '../../components/tbPopup';
+import baiChuanApi from 'react-native-taobao-baichuan-api';
+import SyncTipsPopup from '../../components/syncTipsPopup';
 
 class SearchResult extends React.Component {
     constructor(props) {
@@ -45,7 +50,8 @@ class SearchResult extends React.Component {
             itemId: null,
             itemData: null,
             callback: null,
-            ratio: 0.7
+            ratio: 0.7,
+            showbackTip: false,
         };
     }
 
@@ -77,11 +83,38 @@ class SearchResult extends React.Component {
         AsyncStorage.getItem('ratio', (error, result) => {
             the.setState({ratio: result});
         });
+
+
+        const emitter = new NativeEventEmitter(baiChuanApi);
+        this.backFromTBEvent = emitter.addListener(
+            'backFromTB',
+            (res) => {
+                Clipboard.getString().then((data) => {
+                    if (!data || !/^[0-9]*$/.test(data)) {
+                        AsyncStorage.getItem('neverShowSyncTip', (error, result) => {
+                            if (!result || result === 'true') {
+                                this.setState({showbackTip: true});
+                                Vibration.vibrate();
+                            }
+                        });
+                    }
+                });
+
+            }
+        );
     }
 
     componentWillUnmount() {
         const { dispatch } = this.props;
         dispatch({type: StoreActions.SEARCH_CONDITION_RESET});
+        this.backFromTBEvent.remove();
+    }
+
+    _onPressCross(never) {
+        this.setState({showTip: false});
+        if (never) {
+            AsyncStorage.setItem('neverShowSyncTip', 'true');
+        }
     }
 
     _goBack() {
@@ -136,6 +169,12 @@ class SearchResult extends React.Component {
                         redPacket={this.state.redPacket}
                         show={true}
                         /> : null
+                }
+                {
+                    this.state.showbackTip ? <SyncTipsPopup
+                        onPressCross={(never) => this._onPressCross(never)}
+                        show={true}
+                    /> : null
                 }
                 <View style={styles.searchHeader}>
                     <ImageButton

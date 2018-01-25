@@ -14,7 +14,10 @@ import {
     Platform,
     DeviceEventEmitter,
     AsyncStorage,
-    CameraRoll
+    CameraRoll,
+    NativeEventEmitter,
+    Vibration,
+    Clipboard
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -40,6 +43,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Webview from '../../components/webview';
 import StorageKeys from '../../constants/StorageKeys';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import SyncTipsPopup from '../../components/syncTipsPopup';
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -64,7 +68,8 @@ class Detail extends React.Component {
             position: 0,
             noteUpdated: false,
             showSave: false,
-            currentImage: null
+            currentImage: null,
+            showbackTip: false,
         };
     }
 
@@ -140,7 +145,37 @@ class Detail extends React.Component {
             let taobaoList = the.props.recommend.recommendList.taobao ? the.props.recommend.recommendList.taobao : [];
             the.setState({'commendTaobaoSource': the.ds.cloneWithRows(taobaoList)})
         });
+
+        const emitter = new NativeEventEmitter(baiChuanApi);
+        this.backFromTBEvent = emitter.addListener(
+            'backFromTB',
+            (res) => {
+                Clipboard.getString().then((data) => {
+                    if (!data || !/^[0-9]*$/.test(data)) {
+                        AsyncStorage.getItem('neverShowSyncTip', (error, result) => {
+                            if (!result || result === 'true') {
+                                this.setState({showbackTip: true});
+                                Vibration.vibrate();
+                            }
+                        });
+                    }
+                });
+
+            }
+        );
     }
+
+    componentWillUnmount() {
+        this.backFromTBEvent.remove();
+    }
+
+    _onPressCross(never) {
+        this.setState({showTip: false});
+        if (never) {
+            AsyncStorage.setItem('neverShowSyncTip', 'true');
+        }
+    }
+
 
 
     _jumpToRecommendPage(data) {
@@ -386,6 +421,12 @@ class Detail extends React.Component {
                     rightImg={shareImg}
                     onRightIconClicked={this._onSharePress}
                 />
+                {
+                    this.state.showbackTip ? <SyncTipsPopup
+                        onPressCross={(never) => this._onPressCross(never)}
+                        show={true}
+                    /> : null
+                }
                 <ScrollView style={styles.main}>
 
                     <View style={[styles.note, styles.block]}>

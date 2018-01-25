@@ -15,6 +15,7 @@ const {
     DeviceEventEmitter,
     NativeEventEmitter,
     NativeModules,
+    Vibration
 } = ReactNative;
 import {connect} from 'react-redux';
 import styles from './style';
@@ -82,6 +83,8 @@ class Home extends React.Component {
     };
 
     componentDidMount() {
+        const { navigator } = this.props;
+
         const emitter = new NativeEventEmitter(baiChuanApi);
         const eventEmitter = new NativeEventEmitter(Event);
 
@@ -109,11 +112,15 @@ class Home extends React.Component {
         this.backFromTBEvent = emitter.addListener(
             'backFromTB',
             (res) => {
+                const routesLength = navigator.getCurrentRoutes().length;
+                if(routesLength > 1)
+                    return;
                 Clipboard.getString().then((data) => {
                     if (!data || !/^[0-9]*$/.test(data)) {
                         AsyncStorage.getItem('neverShowSyncTip', (error, result) => {
-                            if (!result || result !== 'true') {
+                            if (!result || result === 'true') {
                                 this.setState({showTip: true});
+                                Vibration.vibrate();
                             }
                         });
                     }
@@ -123,6 +130,9 @@ class Home extends React.Component {
         );
 
         this.backFromTBEventD = DeviceEventEmitter.addListener('showTip', (val) => {
+            const routesLength = navigator.getCurrentRoutes().length;
+            if(routesLength > 1)
+                return;
             this.setState({showTip: true});
         });
     }
