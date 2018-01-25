@@ -449,10 +449,10 @@ class PostNotePage extends Component {
                                        returnKeyType="next" maxLength={this.state.titleMax} style={[styles.textInputS, {flex:1}]}/>
                             <Text>{this.state.titleLength}</Text>
                         </View>
-                        <View style={{flexDirection: 'row', paddingVertical:10, marginHorizontal: 15,height: 100}}>
+                        <View style={{flexDirection: 'row', paddingVertical:10, marginHorizontal: 15,height: 150}}>
                             <TextInput ref='contentInput' placeholder='说点你的心得吧' value={this.state.content}
                                        clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                                       returnKeyType="next" multiline={true} numberOfLines={8}
+                                       returnKeyType="done" multiline={true} numberOfLines={8}
                                        style={[styles.textInputS, {flex:1}]}
                                        onFocus={()=>this._Focus('content')}
                                        maxLength={this.state.contentMax}
