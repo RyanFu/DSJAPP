@@ -116,8 +116,8 @@ class PostNotePage extends Component {
             enableHighAccuracy: true
         });
 
-        this.setState({title: this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.title : ''});
-        this.setState({content: this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.content : ''});
+        this.state.title = this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.title : '';
+        this.state.content = this.props.draftNote.noteTitleAndContent? this.props.draftNote.noteTitleAndContent.content : '';
         this._statCount(this.state.title);
         this._statContentCount(this.state.content);
     }
