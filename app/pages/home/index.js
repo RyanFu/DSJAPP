@@ -118,7 +118,7 @@ class Home extends React.Component {
                 Clipboard.getString().then((data) => {
                     if (!data || !/^[0-9]*$/.test(data)) {
                         AsyncStorage.getItem('neverShowSyncTip', (error, result) => {
-                            if (!result || result === 'true') {
+                            if (!result || result !== 'true') {
                                 this.setState({showTip: true});
                                 Vibration.vibrate();
                             }
