@@ -24,7 +24,7 @@ import Home from '../home';
 import {
     Token,
     toast,
-    request
+    request, isIphoneX
 } from '../../utils/common';
 import Button from '../../../app/components/button/Button';
 import PhoneCodeButton from '../../../app/components/button/PhoneCodeButton';
@@ -166,7 +166,7 @@ export default class ForgetPasswordPage extends Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
 
                 <View style={styles.navigator}>
                     <Icon.Button name="angle-left" size={32} color="#4a4a4a" backgroundColor="transparent" onPress={this._onPasswordLoginLink.bind(this)}>

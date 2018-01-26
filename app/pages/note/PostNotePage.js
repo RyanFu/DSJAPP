@@ -32,6 +32,7 @@ import PhotosReviewPage from './PhotosReviewPage';
 import styles from './style';
 import Home from '../home';
 import {
+    isIphoneX,
     Token
 } from '../../utils/common';
 // import Emoticons, * as emoticons from 'react-native-emoticons';
@@ -428,7 +429,7 @@ class PostNotePage extends Component {
             <TouchableWithoutFeedback style={{flex:1}} onPress={dismissKeyboard}>
 
                 <View
-                    style={[styles.pushContainer, {minHeight: height}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                    style={[styles.pushContainer, {minHeight: height}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                     <Toolbar
                         title="发布笔记"
                         navigator={this.props.navigator}

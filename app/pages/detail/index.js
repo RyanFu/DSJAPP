@@ -34,7 +34,7 @@ import {fetchCommentsList} from '../../actions/comments';
 import {fetchRecommendList} from '../../actions/recommend';
 import {connect} from 'react-redux';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
-import {Token, follow, timeFormat, like, request, toast} from '../../utils/common';
+import {Token, follow, timeFormat, like, request, toast, isIphoneX} from '../../utils/common';
 import _ from 'lodash';
 import imagesConstants from '../../constants/images';
 // import * as Emoticons from 'react-native-emoticons';
@@ -350,7 +350,7 @@ class Detail extends React.Component {
         let marks = [];
         if (!detail.note[noteId]) {
             return (
-                <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                     <Toolbar
                         title="笔记详情"
                         navigator={this.props.navigator}
@@ -413,7 +413,7 @@ class Detail extends React.Component {
             star.push(<Icon key={'md-star-outline' + i} name={'md-star-outline'} size={24} color={'#bdbdbd'}/>);
         }
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="笔记详情"
                     navigator={this.props.navigator}

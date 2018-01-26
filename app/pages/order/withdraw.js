@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import { Token, toast, request, naviGoBack } from '../../utils/common';
+import {Token, toast, request, naviGoBack, isIphoneX} from '../../utils/common';
 import { connect } from 'react-redux';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import StorageKeys from '../../constants/StorageKeys';
@@ -138,7 +138,7 @@ class Withdraw extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="提现"
                     navigator={this.props.navigator}

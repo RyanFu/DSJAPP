@@ -20,7 +20,7 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 import StoreActions from '../../constants/actions';
 import Toolbar from '../../components/toolbar';
 import colors from '../../constants/colors';
-import { naviGoBack } from '../../utils/common';
+import {isIphoneX, naviGoBack} from '../../utils/common';
 import styles from './style';
 import ImageSlider from '../../components/imageSlider';
 
@@ -118,7 +118,7 @@ class PhotosReviewPage extends Component {
         }
 
         return (
-            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title={this.state.currentPhotoIndex + 1 + "/" + this.state.notePhotos.length}
                     navigator={this.props.navigator}

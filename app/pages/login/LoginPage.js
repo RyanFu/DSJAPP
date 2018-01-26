@@ -31,7 +31,7 @@ import * as WechatAPI from 'react-native-wx';
 import {
     Token,
     toast,
-    request
+    request, isIphoneX
 } from '../../utils/common';
 import StorageKeys from '../../constants/StorageKeys';
 import {fetchUserInfo} from '../../actions/user';
@@ -257,7 +257,7 @@ export default class LoginPage extends Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
 
 
                 <View style={styles.navigator}>

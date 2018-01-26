@@ -26,7 +26,7 @@ import styles from './styles';
 import MessageDetailPage from './MessageDetailPage';
 import MessageList from './meeageList';
 import {
-    getToken,
+    getToken, isIphoneX,
     Token
 } from '../../utils/common';
 import {fetchMessageNum} from '../../actions/message';
@@ -206,7 +206,7 @@ class MyMessagesPage extends Component {
 
     render() {
         return (
-            <View style={{marginTop: 21}}>
+            <View style={(isIphoneX()? {marginTop: 41}: {marginTop: 21})}>
 
                 <ListView dataSource={this.state.dataSource}
                           renderSectionHeader={this._renderSectionHeader}

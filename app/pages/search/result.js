@@ -34,6 +34,7 @@ import Flow from '../../components/flow';
 import TbPopup from '../../components/tbPopup';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
 import SyncTipsPopup from '../../components/syncTipsPopup';
+import {isIphoneX} from "../../utils/common";
 
 class SearchResult extends React.Component {
     constructor(props) {
@@ -161,7 +162,7 @@ class SearchResult extends React.Component {
     render() {
         const page = this.props.route.type ? parseInt(this.props.route.type) : 0;
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 {
                     this.state.showTip?<TbPopup
                         onPressButton={this._onPressTipButton}

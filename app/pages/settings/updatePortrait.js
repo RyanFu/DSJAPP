@@ -20,7 +20,7 @@ import PhoneLib from '../../components/camera/PhoneLib';
 import StoreActions from '../../constants/actions';
 import ImageButton from '../../components/toolbar/ImageButton';
 import styles from '../note/style';
-import { request, Token, toast } from '../../utils/common';
+import {request, Token, toast, isIphoneX} from '../../utils/common';
 import configs from '../../constants/configs';
 import Loading from '../../components/loading';
 const arrowImg = require('../../assets/header/arrow.png');
@@ -189,7 +189,7 @@ class UpdatePortrait extends Component {
         }
 
         return (
-            <View style={[styles.container, {height}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, {height}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="所有照片"
                     onTitlePress={this._onPressImageLib.bind(this)}

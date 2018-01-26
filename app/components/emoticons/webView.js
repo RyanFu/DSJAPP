@@ -16,6 +16,7 @@ import {
     Platform,
     Button,
 } from 'react-native';
+import {isIphoneX} from "../../utils/common";
 const {height, width} = Dimensions.get('window');
 var backImg = require('./rg_left.png');
 
@@ -38,7 +39,7 @@ class Webview extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]} visible='hidden'>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]} visible='hidden'>
                 <View style={styles.toolbar}>
                     <TouchableOpacity
                         style={styles.leftIOSContainer}

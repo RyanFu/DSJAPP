@@ -11,7 +11,7 @@ import {
 import styles from './style';
 import Toolbar from '../../components/toolbar';
 import Content from '../my/content';
-import {Token} from '../../utils/common';
+import {isIphoneX, Token} from '../../utils/common';
 import {fetchUserInfo, fetchUserNotes} from '../../actions/user';
 import { connect } from 'react-redux';
 
@@ -37,7 +37,7 @@ class User extends React.Component {
 
     render() {
         return(
-            <View style={[{flex: 1},Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[{flex: 1},Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="Ta的主页"
                     navigator={this.props.navigator}

@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import StorageKeys from '../../constants/StorageKeys';
 import images from '../../constants/images';
 import portraitPage from '../settings/portrait';
-import { toast, Token, request } from '../../utils/common';
+import {toast, Token, request, isIphoneX} from '../../utils/common';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 const Navigator = deprecatedComponents.Navigator;
 
@@ -130,7 +130,7 @@ class ProfilePage extends React.Component {
     render() {
         return (
             <View key="m"
-                  style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                  style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="个人资料"
                     navigator={this.props.navigator}

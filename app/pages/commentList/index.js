@@ -19,7 +19,7 @@ import Toolbar from '../../components/toolbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CommentPage from '../../pages/comment';
 import { connect } from 'react-redux';
-import { Token, timeFormat } from '../../utils/common';
+import {Token, timeFormat, isIphoneX} from '../../utils/common';
 import LoginPage from '../../pages/login';
 import images from '../../constants/images';
 // import * as Emoticons from 'react-native-emoticons';
@@ -108,7 +108,7 @@ class CommentList extends React.Component {
 
     render() {
         return(
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="评论"
                     navigator={this.props.navigator}

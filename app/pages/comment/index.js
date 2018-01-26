@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import { request,toast } from '../../utils/common';
+import {isIphoneX, request, toast} from '../../utils/common';
 import { Token } from '../../utils/common';
 import {fetchCommentsList} from '../../actions/comments';
 import { connect } from 'react-redux';
@@ -132,7 +132,7 @@ class Comment extends React.Component {
         return (
             <TouchableWithoutFeedback style={{flex:1}} onPress={dismissKeyboard}>
 
-                <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                     <Toolbar
                         title="评论"
                         navigator={this.props.navigator}

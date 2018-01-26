@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import {decimals, request, toast, Token} from '../../utils/common';
+import {decimals, isIphoneX, request, toast, Token} from '../../utils/common';
 import {timeFormat} from '../../utils/common';
 import {connect} from 'react-redux';
 //import Emoticons, * as emoticons from 'react-native-emoticons';
@@ -370,7 +370,7 @@ class Order extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null :(isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="交易"
                     navigator={this.props.navigator}

@@ -6,6 +6,7 @@ import {
     WebView
 } from 'react-native';
 import Toolbar from '../../components/toolbar/index';
+import {isIphoneX} from "../../utils/common";
 
 class H5 extends React.Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class H5 extends React.Component {
 
     render() {
         return(
-            <View style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title={this.props.route.title}
                     navigator={this.props.navigator}

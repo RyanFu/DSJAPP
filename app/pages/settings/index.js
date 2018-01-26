@@ -12,7 +12,7 @@ import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
 import SecurityPage from './security';
 import ProfilePage from './profile';
 import AboutUsPage from './aboutUs';
-import { request, Token, toast, removeAllStorage } from '../../utils/common';
+import {request, Token, toast, removeAllStorage, isIphoneX} from '../../utils/common';
 import Home from '../home';
 import About from '../about';
 
@@ -123,7 +123,7 @@ class SettingPage extends React.Component {
 
     render() {
         return(
-            <View style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="设置"
                     navigator={this.props.navigator}

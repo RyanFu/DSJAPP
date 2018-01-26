@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as WechatAPI from '../../../node_modules/react-native-wx';
-import {toast} from '../../utils/common';
+import {isIphoneX, toast} from '../../utils/common';
 import configs from '../../constants/configs';
 import Toolbar from '../../components/toolbar';
 import Loading from '../../components/loading';
@@ -280,7 +280,7 @@ class Webview extends React.Component {
     }
     render() {
         return (
-            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title={toolbarTitle}
                     navigator={this.props.navigator}

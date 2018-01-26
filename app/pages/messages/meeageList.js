@@ -18,7 +18,7 @@ import Toolbar from '../../components/toolbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MessageDetailPage from './MessageDetailPage';
 import {connect} from 'react-redux';
-import {Token, timeFormat} from '../../utils/common';
+import {Token, timeFormat, isIphoneX} from '../../utils/common';
 import LoginPage from '../../pages/login';
 import {fetchMessageList, markAsRead} from '../../actions/message';
 import CommentListPage from '../../pages/commentList';
@@ -255,7 +255,7 @@ class MessageList extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="消息"
                     navigator={this.props.navigator}

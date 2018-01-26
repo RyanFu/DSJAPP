@@ -4,7 +4,8 @@ import {
     AsyncStorage,
     InteractionManager,
     ToastAndroid,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
 import StorageKeys from '../constants/StorageKeys';
 import configs from '../constants/configs';
@@ -12,6 +13,16 @@ import LoginPage from '../pages/login/LoginPage';
 import Toast from 'react-native-root-toast';
 import _ from 'lodash';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+
+export function isIphoneX() {
+    const dimen = Dimensions.get('window');
+    return (
+        Platform.OS === 'ios' &&
+        !Platform.isPad &&
+        !Platform.isTVOS &&
+        (dimen.height === 812 || dimen.width === 812)
+    );
+}
 
 export function naviGoBack(navigator) {
     if (navigator && navigator.getCurrentRoutes().length > 1) {

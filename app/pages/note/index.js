@@ -23,6 +23,7 @@ import PhotoEditPage from './PhotoEditPage';
 import ImageButton from '../../components/toolbar/ImageButton';
 const arrowImg = require('../../assets/header/arrow.png');
 import styles from './style';
+import {isIphoneX} from "../../utils/common";
 
 class SelectPhotoPage extends Component {
     constructor(props, context) {
@@ -165,7 +166,7 @@ class SelectPhotoPage extends Component {
             }
         }
         return (
-            <View style={[styles.container, {height}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, {height}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="所有照片"
                     onTitlePress={this._onPressImageLib.bind(this)}

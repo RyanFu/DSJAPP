@@ -15,6 +15,7 @@ import {
     WebView,
     Platform
 } from 'react-native';
+import {isIphoneX} from "../../utils/common";
 var injectedJavaScript = `
     delete window.postMessage
 `;
@@ -46,7 +47,7 @@ class More extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="添加商品"
                     navigator={this.props.navigator}

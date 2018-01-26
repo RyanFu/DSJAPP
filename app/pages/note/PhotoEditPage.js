@@ -61,7 +61,7 @@ import Webview from '../../components/webview';
 import SearchPage from '../search';
 
 import _ from 'lodash';
-import {toast} from "../../utils/common";
+import {isIphoneX, toast} from "../../utils/common";
 let WebViewBridge = WebView;
 let clone = require('lodash/clone');
 
@@ -561,7 +561,7 @@ class PhotoEditPage extends Component {
         //console.log(height);
 
         return (
-            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="编辑照片"
                     navigator={this.props.navigator}
@@ -912,7 +912,7 @@ class PhotoEditPage extends Component {
                     onRequestClose={() => {toast("Modal has been closed.")}}
                     >
                     <View
-                        style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                        style={[styles.container, {height: height - 21}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                         { this.state.categoryOptionsVisible ? <CategoryOptionList style={{flex:1}}
                                                                                   onCancel={() => {this.showCategoryModal.call(this, false);}}
                                                                                   onSelect={(rowData)=> this._onCategorySelect.call(this, rowData) }/> : null}

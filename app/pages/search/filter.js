@@ -13,7 +13,7 @@ import {
 import styles from './filterStyle';
 import { connect } from 'react-redux';
 import Toolbar from '../../components/toolbar';
-import { naviGoBack } from '../../utils/common';
+import {isIphoneX, naviGoBack} from '../../utils/common';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/Ionicons';
 const arrowUpIcon = <Icon name={'ios-arrow-up-outline'} size={26} color={ 'rgba(252, 125, 48, 0.4)'}/>;
@@ -151,7 +151,7 @@ class Filter extends React.Component {
         if (this.state.trigger >= 0)
             return (
                 <View
-                    style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : {paddingTop: 0}]}>
+                    style={[{backgroundColor: '#f5f5f5', flex: 1},Platform.OS === 'android' ? null : (isIphoneX()? {paddingTop: 20}: {paddingTop: 0})]}>
                     <Toolbar
                         title="筛选"
                         navigator={this.props.navigator}

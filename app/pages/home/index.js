@@ -36,6 +36,7 @@ import baiChuanApi from 'react-native-taobao-baichuan-api';
 import RedPacket from '../redPacket';
 import {fetchMessageNum} from '../../actions/message';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import {isIphoneX} from '../../utils/common';
 
 const Navigator = deprecatedComponents.Navigator;
 import DetailPage from '../../pages/detail';
@@ -277,7 +278,7 @@ class Home extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]} visible='hidden'>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]} visible='hidden'>
                 {
 
                     //this.state.showToolbar ? (

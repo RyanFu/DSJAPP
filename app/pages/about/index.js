@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
-import {Token, request, toast} from '../../utils/common';
+import {Token, request, toast, isIphoneX} from '../../utils/common';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import Icon from '../../../node_modules/react-native-vector-icons/FontAwesome';
 import H5Page from '../h5';
@@ -49,7 +49,7 @@ class About extends React.Component {
         return (
             <TouchableWithoutFeedback style={{flex: 1}}>
 
-                <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+                <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                     <Toolbar
                         title="关于剁手记"
                         navigator={this.props.navigator}

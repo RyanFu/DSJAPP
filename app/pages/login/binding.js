@@ -12,7 +12,7 @@ import {
 import styles from './bindingStyle';
 import Toolbar from '../../components/toolbar';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Token, toast, request } from '../../utils/common';
+import {Token, toast, request, isIphoneX} from '../../utils/common';
 import { connect } from 'react-redux';
 import SendCodePage from './sendCode';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
@@ -67,7 +67,7 @@ class Binding extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <Toolbar
                     title="账号绑定"
                     navigator={this.props.navigator}

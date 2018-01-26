@@ -19,7 +19,7 @@ import styles from './style';
 import Toolbar from '../../components/toolbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImageButton from '../../components/toolbar/ImageButton.js';
-import {naviGoBack, Token, request, toast, follow} from '../../utils/common';
+import {naviGoBack, Token, request, toast, follow, isIphoneX} from '../../utils/common';
 import Contacts from 'react-native-contacts';
 import images from '../../constants/images';
 import UserPage from '../../pages/user';
@@ -396,7 +396,7 @@ class Friends extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, {minHeight: height}, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, {minHeight: height}, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <View style={styles.search}>
                     <ImageButton
                         source={backImg}

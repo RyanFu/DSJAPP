@@ -30,6 +30,7 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 import _ from 'lodash';
 import { request } from '../../utils/common';
 import configs from '../../constants/configs';
+import {isIphoneX} from "../../utils/common";
 
 class Search extends React.Component {
     constructor(props) {
@@ -219,7 +220,7 @@ class Search extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : {marginTop: 21}]}>
+            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
                 <View style={styles.searchHeader}>
                     <ImageButton
                         source={backImg}
