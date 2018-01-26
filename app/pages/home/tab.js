@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import LoginPage from '../../pages/login';
 import { Token } from '../../utils/common';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+import {isIphoneX} from '../../utils/common';
+
 const Navigator = deprecatedComponents.Navigator;
 
 let tabIcons = [];
@@ -99,10 +101,10 @@ class TabBar extends React.Component {
     }
 
     render() {
-        return (<View style={[styles.tabs, this.props.style, ]}>
+        return (<View style={[styles.tabs, this.props.style, {height: isIphoneX()?65:50 }]}>
             {this.props.tabs.map((tab, i) => {
                 return <TouchableOpacity ref={(component) => this.tabComponent.push(component)}
-                                         key={tab} onPress={() => this._onIconPress(i)} style={styles.tab}>
+                                         key={tab} onPress={() => this._onIconPress(i)} style={[styles.tab,{paddingBottom: isIphoneX()?20:10 }]}>
                     {
                         i == 0 ?
                             <Image
