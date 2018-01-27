@@ -228,6 +228,7 @@ class Search extends React.Component {
                         onPress={this._onLeftIconClicked}
                         />
                     <TextInput
+                        clearButtonMode='while-editing'
                         style={styles.searchText}
                         placeholder={'搜索商品或笔记'}
                         placeholderTextColor='#bebebe'

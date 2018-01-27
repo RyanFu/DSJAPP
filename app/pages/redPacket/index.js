@@ -764,6 +764,7 @@ class RedPacket extends React.Component {
                     <Text style={[styles.baseText, {fontSize: 14, color: '#fc7d30'}]}>淘宝购物全场都有红包拿，还不快搜！</Text>
                     <View style={styles.searchHeader}>
                         <TextInput
+                            clearButtonMode='while-editing'
                             style={styles.searchText}
                             placeholder={'搜索商品或笔记'}
                             placeholderTextColor='#bebebe'

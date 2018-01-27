@@ -36,6 +36,12 @@ export default class PhoneCodeButton extends Component {
         }
     }
 
+    componentDidMount() {
+        if(this.props.sendSuccess){
+            this._countDown();
+        }
+    }
+
     onPressBtn() {
         if (this.state.hasSent)
             return;

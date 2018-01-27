@@ -29,7 +29,7 @@ class SendCode extends React.Component {
             loginChannel: this.props.route.loginChannel,
             loginChannelUserId: this.props.route.loginChannelUserId,
             sending: true,
-            sendSuccess: false
+            sendSuccess: true
         };
     }
 
