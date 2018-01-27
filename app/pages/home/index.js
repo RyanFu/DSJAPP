@@ -37,6 +37,7 @@ import RedPacket from '../redPacket';
 import {fetchMessageNum} from '../../actions/message';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import {isIphoneX} from '../../utils/common';
+import LoginPage from '../login/LoginPage';
 
 const Navigator = deprecatedComponents.Navigator;
 import DetailPage from '../../pages/detail';
@@ -136,6 +137,17 @@ class Home extends React.Component {
                 return;
             this.setState({showTip: true});
         });
+
+        this.sessionEvent = DeviceEventEmitter.addListener('sessionExpired', (val) => {
+            if(val && navigator.getCurrentRoutes()[navigator.getCurrentRoutes().length-1].name !== 'LoginPage')
+                navigator.push({
+                    component: LoginPage,
+                    name: 'LoginPage',
+                    sceneConfigs: Navigator.SceneConfigs.FloatFromBottom
+                });
+        });
+
+        DeviceEventEmitter
     }
 
     _jumpToDetailPage(note) {
@@ -175,6 +187,7 @@ class Home extends React.Component {
         this.subscriptionEvent.remove();
         this.backFromTBEvent.remove();
         this.backFromTBEventD.remove();
+        this.sessionEvent.remove();
     }
 
     componentWillMount() {

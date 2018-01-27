@@ -5,7 +5,8 @@ import {
     InteractionManager,
     ToastAndroid,
     Platform,
-    Dimensions
+    Dimensions,
+    DeviceEventEmitter
 } from 'react-native';
 import StorageKeys from '../constants/StorageKeys';
 import configs from '../constants/configs';
@@ -137,7 +138,7 @@ export function request(request, method, body, token) {
         if (typeof request === 'string') {
             uri = configs.serviceUrl + request;
         } else {
-            uri = request.host ? request.host : configs.serviceUrl + request.route
+            uri = (request.host ? request.host : configs.serviceUrl) + request.route
         }
         fetch(uri, options).then((response) => {
             if (response.status == 200) {
@@ -154,16 +155,19 @@ export function request(request, method, body, token) {
             if (response.status == 407) {
                 toast('网络连接不可用，请检查您的网络！')
             }
-            if(response.status == 403) {
+            if(response.status == 403 && token) {
+                if (request.navigator && response.status == 403 && token) {
+                    request.navigator.push({
+                        component: LoginPage,
+                        name: 'LoginPage',
+                        sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.FloatFromBottom
+                    });
+                } else {
+                    DeviceEventEmitter.emit('sessionExpired', true);
+                }
                 removeAllStorage();
             }
-            if (request.navigator && response.status == 403) {
-                request.navigator.push({
-                    component: LoginPage,
-                    name: 'LoginPage',
-                    sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.FloatFromBottom
-                });
-            }
+
             status = response.status;
             return json;
         }).then((responseData) => {
