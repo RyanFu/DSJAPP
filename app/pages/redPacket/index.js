@@ -172,7 +172,7 @@ class RedPacket extends React.Component {
             const params = {
                 token: token
             };
-            dispatch(fetchRecentBuy(params)).then(() => {
+            dispatch(fetchRecentBuy(params)).then((res) => {
                 let copy = _.cloneDeep(this.props.recent.recentBuy);
                 the._buySource(copy);
             });
@@ -271,7 +271,7 @@ class RedPacket extends React.Component {
                 if (!token) {
                     dispatch(fetchRecentBuy());
                     the.setState({buySource: the.ds.cloneWithRows([])});
-                    return;
+                    return resolve(false);
                 }
                 const params = {
                     token: token
@@ -716,7 +716,7 @@ class RedPacket extends React.Component {
         let the = this;
         this.setState({refreshing: true});
         this._getRecentBuy()
-            .then(() => {
+            .then((res) => {
                 this.setState({refreshing: false});
             });
         this._topSearch();

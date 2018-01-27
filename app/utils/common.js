@@ -154,6 +154,9 @@ export function request(request, method, body, token) {
             if (response.status == 407) {
                 toast('网络连接不可用，请检查您的网络！')
             }
+            if(response.status == 403) {
+                removeAllStorage();
+            }
             if (request.navigator && response.status == 403) {
                 request.navigator.push({
                     component: LoginPage,

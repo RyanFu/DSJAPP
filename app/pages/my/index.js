@@ -91,7 +91,7 @@ class MyHomePage extends Component {
             let params = {
                 token: token
             };
-            fetchUserInfo(params).then(()=>{
+            fetchUserInfo(params).then((res)=>{
                 dispatch(fetchUserNotes(params)).then(() => {
                     this.setState({refreshing: false});
                 });
