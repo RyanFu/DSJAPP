@@ -11,7 +11,10 @@ const initialState = {
 const recent = function (state = initialState, action = {}) {
     switch (action.type) {
         case types.ADD_RECENT_VIEW:
-            const recentView = _.uniqBy(state.recentView.concat(action.info),'itemId');
+            let recentView = _.uniqBy(state.recentView.concat(action.info),'itemId');
+            if(recentView.length > 20){
+                recentView = _.tail(recentView);
+            }
             AsyncStorage.setItem('recent_view', JSON.stringify(recentView));
             return Object.assign({}, state, {
                 recentView: recentView
