@@ -111,6 +111,7 @@ Token.isTokenValid = async function () {
 
 export function request(request, method, body, token) {
     let success;
+    let status = 200;
 
     let headers;
     if (request.headers) {
@@ -118,10 +119,13 @@ export function request(request, method, body, token) {
     } else {
         headers = {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-App-Token': token ? token : ''
+            'Content-Type': 'application/json'
         };
     }
+    if(token) {
+        headers['X-App-Token'] = token
+    }
+
     let options = {method, headers: headers};
 
     if (method.toLowerCase() === 'post') {
@@ -133,7 +137,7 @@ export function request(request, method, body, token) {
         if (typeof request === 'string') {
             uri = configs.serviceUrl + request;
         } else {
-            uri = request.host + request.route
+            uri = request.host ? request.host : configs.serviceUrl + request.route
         }
         fetch(uri, options).then((response) => {
             if (response.status == 200) {
@@ -150,16 +154,24 @@ export function request(request, method, body, token) {
             if (response.status == 407) {
                 toast('网络连接不可用，请检查您的网络！')
             }
+            if (request.navigator && response.status == 403) {
+                request.navigator.push({
+                    component: LoginPage,
+                    name: 'LoginPage',
+                    sceneConfigs: deprecatedComponents.Navigator.SceneConfigs.FloatFromBottom
+                });
+            }
+            status = response.status;
             return json;
         }).then((responseData) => {
-
+            responseData.status = status;
             if (success) {
                 resolve(responseData);
             } else {
                 reject(responseData);
             }
         }).catch((error) => {
-            if(error.message.indexOf('"Network request failed"')){
+            if (error.message.indexOf('"Network request failed"')) {
                 toast('网络连接不可用，请检查您的网络！');
             }
 

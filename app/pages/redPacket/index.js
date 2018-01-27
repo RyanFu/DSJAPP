@@ -139,7 +139,7 @@ class RedPacket extends React.Component {
 
     componentDidMount() {
         const the = this;
-        const {dispatch} = this.props;
+        const {dispatch, navigator} = this.props;
 
         AsyncStorage.getItem(StorageKeys.SEARCH_ITEM, (error, result) => {
             result = _.reverse(JSON.parse(result));
@@ -193,8 +193,11 @@ class RedPacket extends React.Component {
         //     tick++;
         // }, 2000);
 
-
-        request('/rebate/ratio', 'GET')
+        const req = {
+            route: '/rebate/ratio',
+            navigator: navigator
+        };
+        request(req, 'GET')
             .then((res) => {
                 if (res && res.resultValues)
                     AsyncStorage.setItem('ratio', res.resultValues);
