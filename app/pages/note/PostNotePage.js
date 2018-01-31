@@ -60,6 +60,7 @@ class PostNotePage extends Component {
             token: null,
             posting: false,
             titleLength: 255,
+            contentLength: 2000,
             starCount: 0,
             addressModelVisible: false,
             addressDataSource: addressDS,
@@ -282,6 +283,7 @@ class PostNotePage extends Component {
         if (!this._statContentCount(content)) {
             content = emoticons.stringify(content);
             content = content.substring(0, this.state.contentMax);
+            this.setState({contentLength: 0});
             this.setState({content: emoticons.parse(content)});
         }
     }
@@ -289,6 +291,8 @@ class PostNotePage extends Component {
     _statContentCount(content) {
         const length = emoticons.stringify(content).length;
         if (!content || length <= this.state.contentMax) {
+            this.setState({contentLength: this.state.contentMax - length});
+
             this.setState({content: content});
             return true;
         }
@@ -386,6 +390,8 @@ class PostNotePage extends Component {
         if (this.state.focus === 'content') {
             if (emoticons.stringify(this.state.content + val.code).length <= this.state.contentMax) {
                 this.setState({content: _.join(commentLeft, '') + val.code + _.join(commentRight, '')});
+                this.setState({contentLength: this.state.contentMax - emoticons.stringify(this.state.content).length - emoticons.stringify(val.code).length});
+
             }
         }
     }
@@ -448,7 +454,7 @@ class PostNotePage extends Component {
                                        style={[styles.textInputS, {flex: 1}]}/>
                             <Text>{this.state.titleLength}</Text>
                         </View>
-                        <View style={{flexDirection: 'row', paddingVertical: 10, marginHorizontal: 15, height: 150}}>
+                        <View style={{flexDirection: 'row', paddingVertical: 10, marginHorizontal: 15, height: 250}}>
                             <TextInput ref='contentInput' placeholder='说点你的心得吧' value={this.state.content}
                                        clearButtonMode='while-editing' underlineColorAndroid='transparent'
                                        returnKeyType="done" multiline={true} numberOfLines={8}
@@ -457,6 +463,9 @@ class PostNotePage extends Component {
                                        maxLength={this.state.contentMax}
                                        onSelectionChange={(event) => this._getSelection(event)}
                                        onChangeText={(value) => this._inputContent(value)}/>
+                            <View style={{justifyContent: 'flex-end'}}>
+                                <Text >{this.state.contentLength}</Text>
+                            </View>
                         </View>
                         <View
                             style={[{
