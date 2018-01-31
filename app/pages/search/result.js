@@ -14,7 +14,8 @@ import {
     AsyncStorage,
     NativeEventEmitter,
     Vibration,
-    Clipboard
+    Clipboard,
+    WebView
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -46,6 +47,8 @@ class SearchResult extends React.Component {
         this._onPressCross = this._onPressCross.bind(this);
         this.state = {
             searching: false,
+            xiaohongshuSearching: true,
+            toutiaoSearching: true,
             showTip: false,
             redPacket: 10,
             itemId: null,
@@ -66,7 +69,11 @@ class SearchResult extends React.Component {
     componentDidMount() {
         const { dispatch, route } = this.props;
         let the = this;
-        this.setState({searching: true});
+        this.setState({
+            searching: true,
+            xiaohongshuSearching: true,
+            toutiaoSearching: true,
+        });
         const params = {
             text: route.text,
             loadingMore: false,
@@ -313,7 +320,7 @@ class SearchResult extends React.Component {
                                 {
                                     this.state.searching ?
                                         <View style={[styles.center,{marginTop: 40}]}>
-                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                         </View> :
                                         <Flow tabForRefresh={this.state.tabForRefresh}
@@ -323,6 +330,56 @@ class SearchResult extends React.Component {
                                               hasnoBottomTab={true}
                                               searchText={this.props.route.text}
                                         />
+                                }
+                            </View>:null
+                    }
+                    {
+                        this.props.route.from !== 'editNote'?
+                            <View
+                                key='xiaohongshu'
+                                tabLabel='小红书'
+                                style={{ flex: 1 }}
+                            >
+                                {
+                                    this.state.xiaohongshuSearching ?
+                                        <View style={[styles.center,{marginTop: 40}]}>
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
+                                                   source={require('../../assets/gif/loading.gif')}/>
+                                            <WebView
+                                                style={{width: 0,height: 0, position: 'absolute'}}
+                                                onLoadStart={()=>{this.setState({xiaohongshuSearching: true})}}
+                                                onLoadEnd={()=>{this.setState({xiaohongshuSearching: false})}}
+                                                ref="xiaohongshu"
+                                                source={{uri: "http://www.xiaohongshu.com/search_result/"+this.props.route.text}}/>
+                                        </View> :
+                                        <WebView
+                                            ref="xiaohongshu"
+                                            source={{uri: "http://www.xiaohongshu.com/search_result/"+this.props.route.text}}/>
+                                }
+                            </View>:null
+                    }
+                    {
+                        this.props.route.from !== 'editNote'?
+                            <View
+                                key='today'
+                                tabLabel='今日头条'
+                                style={{ flex: 1 }}
+                            >
+                                {
+                                    this.state.toutiaoSearching ?
+                                        <View style={[styles.center,{marginTop: 40}]}>
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                                   source={require('../../assets/gif/loading.gif')}/>
+                                            <WebView
+                                                style={{width: 0,height: 0, position: 'absolute'}}
+                                                onLoadStart={()=>{this.setState({toutiaoSearching: true})}}
+                                                onLoadEnd={()=>{this.setState({toutiaoSearching: false})}}
+                                                ref="today"
+                                                source={{uri: "https://m.toutiao.com/search/?keyword="+this.props.route.text}}/>
+                                        </View> :
+                                        <WebView
+                                            ref="today"
+                                            source={{uri: "https://m.toutiao.com/search/?keyword="+this.props.route.text}}/>
                                 }
                             </View>:null
                     }
