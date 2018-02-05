@@ -4,7 +4,8 @@ import {
     Text,
     TouchableHighlight,
     Alert,
-    Platform
+    Platform,
+    Linking
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -15,6 +16,7 @@ import AboutUsPage from './aboutUs';
 import {request, Token, toast, removeAllStorage, isIphoneX} from '../../utils/common';
 import Home from '../home';
 import About from '../about';
+import configs from '../../constants/configs';
 
 //import * as CacheManager from 'react-native-http-cache';
 
@@ -89,11 +91,17 @@ class SettingPage extends React.Component {
 
     _clearCache() {
         Alert.alert(
-            '缓存',
+            '',
             '确定要清除缓存吗？',
             [
                 {text: '取消', onPress: () => console.log('still sign in')},
-                {text: '确定', onPress: () =>{}
+                {text: '确定', onPress: () =>{
+                        //fake clear
+                        setTimeout(()=>{
+                            toast('清除成功')
+                        },2000)
+
+                    }
                     //CacheManager.clearCache()
                     //    .then(()=>{
                     //        toast('清除成功');
@@ -118,7 +126,14 @@ class SettingPage extends React.Component {
     }
 
     _gotoMarket() {
-
+        const url = configs.appStoreLink + "?action=write-review";
+        Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url);
+            } else {
+                console.log('无法打开该URI: ' + url);
+            }
+        })
     }
 
     render() {
