@@ -810,6 +810,14 @@ class RedPacket extends React.Component {
                                         <Text
                                             style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步订单</Text>
                                     </TouchableOpacity>
+                                    <TouchableOpacity style={[styles.what,{marginTop: 6}]}
+                                                      onPress={() => this._showTip()}>
+                                        <Icon
+                                            name='md-help-circle'
+                                            size={22}
+                                            color={'#666'}
+                                        />
+                                    </TouchableOpacity>
                                 </View> : null
                         }
 
