@@ -263,7 +263,7 @@ class Order extends React.Component {
                     estimate: 0,
                     real: 0,
                     price: 0,
-                    time: v.creationDate || (new Date()).getTime()
+                    time: v.createdDateTime || v.creationDate || (new Date()).getTime()
                 };
                 if(v.orderItemState === 'NEW'){
                     item.title = '订单正在同步，5分钟内完成...';
