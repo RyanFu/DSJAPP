@@ -258,7 +258,7 @@ export default class MyContent extends Component {
             detail: {
                 title: rowData.title,
                 createTime: timeFormat(rowData.publishedTime, 'yyyy年MM月dd日 hh:mm:ss'),
-                image: (rowData.image ? rowData.image : images.DEFAULT_IMAGE),
+                image: (rowData.image ? rowData.image : images.DEFAULT_PORTRAIT),
                 noteId: rowData.noteId,
                 imageHeight: rowData.imageHeight,
                 imageWidth: rowData.imageWidth
@@ -465,7 +465,7 @@ export default class MyContent extends Component {
                             (<View style={styles.my}>
                                     <View style={styles.user}>
                                         <TouchableHighlight onPress={() => this._updatePortrait(this.user)} style={styles.portrait}>
-                                            <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 50, height: 50}}/>
+                                            <Image style={[styles.portraitImg,{borderRadius: 25}]} source={{uri: this.user.thumbUri, width: 50, height: 50}}/>
                                         </TouchableHighlight>
                                         <View style={{flexDirection:'row',alignItems:'flex-end'}}>
                                             <Text style={styles.myNameText} lineBreakMode={'tail'} numberOfLines={1}>{this.user.name}</Text>
@@ -501,7 +501,7 @@ export default class MyContent extends Component {
                                 ) :
                             <View style={styles.user}>
                                 <TouchableHighlight onPress={() => this._updatePortrait(this.user)} style={styles.portrait}>
-                                    <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}}/>
+                                    <Image style={styles.portraitImg} source={{uri: this.user.thumbUri, width: 45, height: 45}} />
                                 </TouchableHighlight>
                                 <View style={{flexDirection:'row',alignItems:'flex-end'}}>
                                     <Text style={styles.myNameText} lineBreakMode={'tail'} numberOfLines={1}>{this.user.name}</Text>

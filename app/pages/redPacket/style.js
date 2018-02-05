@@ -269,9 +269,10 @@ const styles = StyleSheet.create({
         width: width,
         height: 44,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         backgroundColor: '#f1f1f1',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingRight: 10
     },
     syncS:{
         paddingVertical: 6,

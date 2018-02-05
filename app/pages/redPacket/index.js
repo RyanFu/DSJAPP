@@ -815,7 +815,7 @@ class RedPacket extends React.Component {
                                         <Icon
                                             name='md-help-circle'
                                             size={22}
-                                            color={'#666'}
+                                            color={'#aaa'}
                                         />
                                     </TouchableOpacity>
                                 </View> : null
@@ -846,7 +846,7 @@ class RedPacket extends React.Component {
                                                             <Icon
                                                                 name='md-help-circle'
                                                                 size={22}
-                                                                color={'#666'}
+                                                                color={'#aaa'}
                                                             />
                                                         </TouchableOpacity>
 
