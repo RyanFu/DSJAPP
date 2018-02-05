@@ -118,7 +118,7 @@ class UpdatePortrait extends Component {
                 };
                 Token.getToken(navigator).then((token) => {
                     if (token) {
-                        fetch(configs.imageServiceUrl + 'user/settings/personal-information/portrait', {
+                        fetch(configs.serviceUrl + 'user/settings/personal-information/portrait', {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',
@@ -136,10 +136,10 @@ class UpdatePortrait extends Component {
                                 toast('修改头像失败');
                             }
                             navigator.popToTop();
-                            the.setState({loading: true});
+                            the.setState({loading: false});
                         }).catch((error) => {
                             console.error(error);
-                            the.setState({loading: true});
+                            the.setState({loading: false});
                         });
                     }
                 });
