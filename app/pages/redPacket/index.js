@@ -720,9 +720,13 @@ class RedPacket extends React.Component {
                 this.setState({refreshing: false});
             });
         this._topSearch();
+        Token.getToken().then((token) => {
+
+            this.setState({token: token||''})
+        });
         setTimeout(() => {
             this.setState({refreshing: false});
-        }, 3000)
+        }, 3000);
     }
 
     _showTip() {
