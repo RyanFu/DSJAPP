@@ -1,6 +1,6 @@
 'use strict';
 
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -18,12 +18,13 @@ import styles from './style';
 import Toolbar from '../../components/toolbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImageButton from '../../components/toolbar/ImageButton.js';
-import {Token,request,toast,decimals} from '../../utils/common';
-import { connect } from 'react-redux';
-var backImg = require('../../assets/upload/rg_left.png');
+import {Token, request, toast, decimals} from '../../utils/common';
+import {connect} from 'react-redux';
+
 import Taobao from 'react-native-taobao-baichuan-api';
-import { fetchItemSearchList } from '../../actions/search';
-import { addRecentView } from '../../actions/recent';
+import {fetchItemSearchList} from '../../actions/search';
+import {addRecentView} from '../../actions/recent';
+import _ from 'lodash';
 
 class SearchItem extends React.Component {
     constructor(props) {
@@ -37,49 +38,56 @@ class SearchItem extends React.Component {
         this.state = {
             dataSource: this.ds.cloneWithRows(this.props.search.itemList),
             showTip: false,
-            ratio: this.props.ratio? this.props.ratio: 0.7
+            ratio: this.props.ratio ? this.props.ratio : 0.7
         };
     }
-    componentDidMount(){
+
+    componentDidMount() {
     }
-    _renderRow(rowData:string, sectionID:number, rowID:number) {
+
+    _renderRow(rowData: string, sectionID: number, rowID: number) {
         return (
             <TouchableOpacity underlayColor="transparent" activeOpacity={0.5}
-                              onPress={() => this._tip(rowData.itemId.toString(),rowData)}>
+                              onPress={() => this._tip(rowData.itemId.toString(), rowData)}>
                 <View style={styles.itemRow}>
                     <Image style={styles.pic}
-                           source={{uri: (rowData.itemPicUrl ? rowData.itemPicUrl : images.DEFAULT_PORTRAIT), width: 100, height: 100}}/>
+                           source={{
+                               uri: (rowData.itemPicUrl ? rowData.itemPicUrl : images.DEFAULT_PORTRAIT),
+                               width: 100,
+                               height: 100
+                           }}/>
                     <View style={styles.itemContent}>
 
                         <View>
-                            <Text style={[styles.baseText,styles.title]}>
+                            <Text style={[styles.baseText, styles.title]}>
                                 {rowData.itemTitle}
                             </Text>
                         </View>
 
                         <View style={styles.itemDigit}>
                             <View style={styles.itemDigitP}>
-                                <View style={{flexDirection: 'row',alignItems: 'center'}}>
-                                    <Text style={[styles.baseText,styles.price]}>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text style={[styles.baseText, styles.price]}>
                                         ￥{rowData.itemPrice}
                                     </Text>
                                     <Image
-                                        style={{width: 16,height: 16,marginLeft:8}}
+                                        style={{width: 16, height: 16, marginLeft: 8}}
                                         resizeMode={'contain'}
                                         source={require('../../assets/footer/red.png')}
-                                        />
-                                    <Text style={[styles.baseText,styles.dimText,{marginLeft:2,color: '#fc7d30',}]}>
-                                        ￥{decimals(rowData.tkCommFee*this.state.ratio, 2)}
+                                    />
+                                    <Text style={[styles.baseText, styles.dimText, {marginLeft: 2, color: '#fc7d30',}]}>
+                                        ￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}
                                     </Text>
                                 </View>
-                                <View style={{flexDirection: 'row',alignItems: 'center'}}>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
                                     <Image
-                                        style={{width:12,height: 12,opacity:0.5,marginLeft:4}}
+                                        style={{width: 12, height: 12, opacity: 0.5, marginLeft: 4}}
                                         resizeMode={'cover'}
                                         source={require('../../assets/search/shop.png')}
-                                        />
-                                    <Text style={[styles.baseText,styles.dimText,styles.shopTitle,{marginLeft:4}]} lineBreakMode={'tail'} numberOfLines={1}>
+                                    />
+                                    <Text style={[styles.baseText, styles.dimText, styles.shopTitle, {marginLeft: 4}]}
+                                          lineBreakMode={'tail'} numberOfLines={1}>
                                         {rowData.shopTitle}
                                     </Text>
                                 </View>
@@ -89,10 +97,15 @@ class SearchItem extends React.Component {
                                 {
                                     rowData.userType == 1 ?
                                         <View style={styles.tmallIcon}>
-                                            <Text style={[styles.baseText,{color:'#fff',fontSize:10,lineHeight:12,textAlign: 'center'}]}>天猫</Text>
+                                            <Text style={[styles.baseText, {
+                                                color: '#fff',
+                                                fontSize: 10,
+                                                lineHeight: 12,
+                                                textAlign: 'center'
+                                            }]}>天猫</Text>
                                         </View> : null
                                 }
-                                <Text style={[styles.baseText,styles.dimText]}>
+                                <Text style={[styles.baseText, styles.dimText]}>
                                     月销：{rowData.biz30day}
                                 </Text>
                             </View>
@@ -109,7 +122,7 @@ class SearchItem extends React.Component {
         data = JSON.stringify(data);
         Token.getToken(navigator).then((token) => {
             if (token) {
-                request('user/order','POST',data,token)
+                request('user/order', 'POST', data, token)
                     .then((res) => {
                         if (res.resultCode === 0) {
                             toast('购买成功');
@@ -126,13 +139,13 @@ class SearchItem extends React.Component {
         });
     }
 
-    _jumpToTaobaoPage(itemId,data) {
+    _jumpToTaobaoPage(itemId, data) {
 
         //data.orderId = '33351509422362798';
         //this._insertOrder(data);
         //return;
-        const type = data.userType === 1? 'tmall' : 'taobao';
-        const { navigator,dispatch } = this.props;
+        const type = data.userType === 1 ? 'tmall' : 'taobao';
+        const {navigator, dispatch} = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
                 Taobao.jump(itemId, '', type, (error, res) => {
@@ -158,23 +171,24 @@ class SearchItem extends React.Component {
     }
 
     _tip(itemId, data) {
-        if(this.props.from === 'editNote'){
-            this._getForTag(data);
+        const cloneData = _.cloneDeep(data);
+        if (this.props.from === 'editNote') {
+            this._getForTag(cloneData);
         } else {
             this.props.tipShow();
-            data.tkCommFee = decimals(data.tkCommFee*this.state.ratio, 2);
-            this.props.itemData(itemId, data, this._jumpToTaobaoPage);
+            cloneData.tkCommFee = decimals(cloneData.tkCommFee * this.state.ratio, 2);
+            this.props.itemData(itemId, cloneData, this._jumpToTaobaoPage);
         }
     }
 
     _getForTag(data) {
-        const addTag = (data)=>{
+        const addTag = (data) => {
             let tag = {};
             tag.title = data.itemTitle;
             tag.imageUrl = data.itemPicUrl;
             tag.url = '';
             tag.itemId = data.itemId;
-            tag.redPacket = decimals(data.tkCommFee*this.state.ratio, 2);
+            tag.redPacket = decimals(data.tkCommFee * this.state.ratio, 2);
             tag.urlCategory = 'taobao';
             tag.price = data.itemPrice;
             DeviceEventEmitter.emit('newTag', tag);
@@ -185,8 +199,8 @@ class SearchItem extends React.Component {
             '这是您要找的商品吗？',
             [
                 {text: '不是', onPress: () => console.log('')},
-                    {
-                        text: '是', onPress: () => {
+                {
+                    text: '是', onPress: () => {
                         addTag(data);
                     }
                 }
@@ -196,7 +210,7 @@ class SearchItem extends React.Component {
 
     _onScroll(event) {
         let the = this;
-        const { dispatch, search } = this.props;
+        const {dispatch, search} = this.props;
         let maxOffset = event.nativeEvent.contentSize.height - event.nativeEvent.layoutMeasurement.height;
         let offset = event.nativeEvent.contentOffset.y;
         let params = {};
@@ -213,14 +227,14 @@ class SearchItem extends React.Component {
 
     _onEndReached() {
         let the = this;
-        const { dispatch, search } = this.props;
+        const {dispatch, search} = this.props;
         let params = {};
         if (!search.loadingMore) {
 
             params.loadingMore = true;
             params.currentPage = search.currentPage + 1;
             params.text = this.props.text;
-            dispatch(fetchItemSearchList(params)).then(()=> {
+            dispatch(fetchItemSearchList(params)).then(() => {
                 the.setState({
                     dataSource: this.ds.cloneWithRows(this.props.search.itemList)
                 });
@@ -255,7 +269,7 @@ class SearchItem extends React.Component {
                     onEndReachedThreshold={10}
                     scrollEventThrottle={200}
                     renderFooter={this._renderFooter}
-                    />
+                />
 
             </View>
         )
@@ -264,7 +278,7 @@ class SearchItem extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { search } = state;
+    const {search} = state;
     return {
         search
     };
