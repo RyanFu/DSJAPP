@@ -577,7 +577,7 @@ export default class MyContent extends Component {
                 }
 
                 {
-                    !this.props.userInfo && this.props.user.myNotes.length === 0 ?<View style={styles.emptyTip}>
+                    !this.state.loading && !this.props.userInfo && this.props.user.myNotes.length === 0 ?<View style={styles.emptyTip}>
                         <Text style={[styles.text,styles.emptyTipText]}>快来点击下面的相机图标，发表你的第一篇购物笔记吧！</Text>
                     </View>: null
                 }
