@@ -200,5 +200,15 @@ export default styles = StyleSheet.create({
         fontSize: 14,
         color: '#9b9b9b',
         paddingLeft: 6
+    },
+    emptyTip: {
+        width: '70%',
+        alignSelf: 'center',
+        alignItems: 'center',
+
+    },
+    emptyTipText: {
+        textAlign: 'center',
+        lineHeight: 20
     }
 });
