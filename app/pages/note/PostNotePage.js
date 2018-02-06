@@ -16,7 +16,9 @@ import {
     DeviceEventEmitter,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Keyboard, Alert
+    Keyboard,
+    Alert,
+    ScrollView
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Geolocation from 'react-native/Libraries/Geolocation/Geolocation';
@@ -423,98 +425,117 @@ class PostNotePage extends Component {
         return (
             <TouchableWithoutFeedback style={{flex: 1}} onPress={dismissKeyboard}>
 
-                <View
-                    style={[styles.pushContainer, {minHeight: height}, Platform.OS === 'android' ? null : (isIphoneX() ? {marginTop: 41} : {marginTop: 21})]}>
-                    <Toolbar
-                        title="发布笔记"
-                        navigator={this.props.navigator}
-                        hideDrop={true}
-                        rightText='取消'
-                        onRightIconClicked={this._onCancel.bind(this)}
-                    />
-                    <AddressModel visible={this.state.addressModelVisible} dataSource={this.state.addressDataSource}
-                                  onSelect={this._onAddressSelected.bind(this)}/>
-                    <View style={styles.main}>
-                        <View
-                            style={{
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#ccc',
-                                flexDirection: 'row',
-                                paddingVertical: 8,
-                                height: 38,
-                                margin: 5,
-                                marginHorizontal: 15
-                            }}>
-                            <TextInput ref='titleInput' placeholder='添加标题' value={this.state.title}
-                                       clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                                       onChangeText={(value) => this._inputTitle(value)}
-                                       onFocus={() => this._Focus('title')}
-                                       onSelectionChange={(event) => this._getSelection(event)}
-                                       returnKeyType="next" maxLength={this.state.titleMax}
-                                       style={[styles.textInputS, {flex: 1}]}/>
-                            <Text>{this.state.titleLength}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingVertical: 10, marginHorizontal: 15, height: 250}}>
-                            <TextInput ref='contentInput' placeholder='说点你的心得吧' value={this.state.content}
-                                       clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                                       returnKeyType="done" multiline={true} numberOfLines={8}
-                                       style={[styles.textInputS, {flex: 1}]}
-                                       onFocus={() => this._Focus('content')}
-                                       maxLength={this.state.contentMax}
-                                       onSelectionChange={(event) => this._getSelection(event)}
-                                       onChangeText={(value) => this._inputContent(value)}/>
-                            <View style={{justifyContent: 'flex-end'}}>
-                                <Text >{this.state.contentLength}</Text>
+                <View>
+                    <View
+                        style={[styles.pushContainer, {minHeight: height}, Platform.OS === 'android' ? null : (isIphoneX() ? {marginTop: 41} : {marginTop: 21})]}>
+                        <Toolbar
+                            title="发布笔记"
+                            navigator={this.props.navigator}
+                            hideDrop={true}
+                            rightText='取消'
+                            onRightIconClicked={this._onCancel.bind(this)}
+                        />
+                        <AddressModel visible={this.state.addressModelVisible} dataSource={this.state.addressDataSource}
+                                      onSelect={this._onAddressSelected.bind(this)}/>
+                        <ScrollView style={{height: height - 250, width: width, bottom: 50,marginTop:50}}>
+                            <View style={[styles.main]}>
+                                <View
+                                    style={{
+                                        borderBottomWidth: 1,
+                                        borderBottomColor: '#ccc',
+                                        flexDirection: 'row',
+                                        paddingVertical: 8,
+                                        height: 38,
+                                        margin: 5,
+                                        marginHorizontal: 15
+                                    }}>
+                                    <TextInput ref='titleInput' placeholder='添加标题' value={this.state.title}
+                                               clearButtonMode='while-editing' underlineColorAndroid='transparent'
+                                               onChangeText={(value) => this._inputTitle(value)}
+                                               onFocus={() => this._Focus('title')}
+                                               onSelectionChange={(event) => this._getSelection(event)}
+                                               returnKeyType="next" maxLength={this.state.titleMax}
+                                               style={[styles.textInputS, {flex: 1}]}/>
+                                    <Text>{this.state.titleLength}</Text>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        paddingVertical: 10,
+                                        marginHorizontal: 15,
+                                        height: 250
+                                    }}>
+                                    <TextInput ref='contentInput' placeholder='说点你的心得吧' value={this.state.content}
+                                               clearButtonMode='while-editing' underlineColorAndroid='transparent'
+                                               returnKeyType="done" multiline={true} numberOfLines={8}
+                                               style={[styles.textInputS, {flex: 1}]}
+                                               onFocus={() => this._Focus('content')}
+                                               maxLength={this.state.contentMax}
+                                               onSelectionChange={(event) => this._getSelection(event)}
+                                               onChangeText={(value) => this._inputContent(value)}/>
+                                    <View style={{justifyContent: 'flex-end'}}>
+                                        <Text>{this.state.contentLength}</Text>
+                                    </View>
+                                </View>
+                                <View
+                                    style={[{
+                                        borderBottomWidth: 1,
+                                        borderBottomColor: '#ccc',
+                                        paddingVertical: 10,
+                                        marginHorizontal: 15
+                                    }]}>
+                                    {this._renderSelectedPhotos()}
+                                </View>
+
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        padding: 10,
+                                        marginHorizontal: 15
+                                    }}>
+                                    <Image source={locationImg} style={{marginRight: 10}}/>
+                                    <Text>发布于：</Text>
+                                    <Text lineBreakMode={'tail'} numberOfLines={1}
+                                          style={{color: colors.orange, maxWidth: width - 140}}
+                                          onPress={() => this.setState({addressModelVisible: this.state.addressDataSource.getRowCount() > 0})}>{this.state.address}</Text>
+                                </View>
+                                <View style={styles.shortcut}>
+                                    <TouchableOpacity
+                                        onPress={this._showEmoticons.bind(this)}
+                                        style={styles.emoticon}>
+                                        {faceIcon}
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
-                        <View
-                            style={[{
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#ccc',
-                                paddingVertical: 10,
-                                marginHorizontal: 15
-                            }]}>
-                            {this._renderSelectedPhotos()}
-                        </View>
+                        </ScrollView>
 
-                        <View style={{flexDirection: 'row', alignItems: 'center', padding: 10, marginHorizontal: 15}}>
-                            <Image source={locationImg} style={{marginRight: 10}}/>
-                            <Text>发布于：</Text>
-                            <Text lineBreakMode={'tail'} numberOfLines={1}
-                                  style={{color: colors.orange, maxWidth: width - 140}}
-                                  onPress={() => this.setState({addressModelVisible: this.state.addressDataSource.getRowCount() > 0})}>{this.state.address}</Text>
-                        </View>
-                        <View style={styles.shortcut}>
-                            <TouchableOpacity
-                                onPress={this._showEmoticons.bind(this)}
-                                style={styles.emoticon}>
-                                {faceIcon}
-                            </TouchableOpacity>
-                        </View>
                     </View>
+                    <View>
+                        <Emoticons
+                            onEmoticonPress={this._onEmoticonPress.bind(this)}
+                            show={this.state.showEmoticons}
+                            onBackspacePress={this._onBackspacePress.bind(this)}
+                            concise={true}
+                            showPlusBar={false}
+                            style={{zIndex: 1000}}
+                        />
 
-                    <Emoticons
-                        onEmoticonPress={this._onEmoticonPress.bind(this)}
-                        show={this.state.showEmoticons}
-                        onBackspacePress={this._onBackspacePress.bind(this)}
-                        concise={true}
-                        showPlusBar={false}
-                        style={{zIndex: 1000}}
-                    />
-
-                    <TouchableOpacity onPress={this._sendNote.bind(this)}
-                                      style={{
-                                          padding: 15,
-                                          justifyContent: 'center',
-                                          backgroundColor: colors.orange,
-                                          flexDirection: 'row',
-                                          position: 'absolute',
-                                          bottom: 0,
-                                          left: 0,
-                                          right: 0
-                                      }}>
-                        <Text style={{color: '#fff', fontSize: 18}}>发布</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={this._sendNote.bind(this)}
+                                          style={{
+                                              padding: 15,
+                                              justifyContent: 'center',
+                                              backgroundColor: colors.orange,
+                                              flexDirection: 'row',
+                                              position: 'absolute',
+                                              bottom: 0,
+                                              left: 0,
+                                              right: 0,
+                                              zIndex: 100
+                                          }}>
+                            <Text style={{color: '#fff', fontSize: 18}}>发布</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         );
