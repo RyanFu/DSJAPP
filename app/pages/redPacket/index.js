@@ -839,7 +839,7 @@ class RedPacket extends React.Component {
                                 <View
                                     style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>
                                     {
-                                        this.props.recent.recentBuy.length >= 0 ?
+                                        this.state.token && this.props.recent.recentBuy.length >= 0 ?
                                             <View style={{marginBottom: 10}}>
                                                 <View style={styles.blockTitle}>
                                                     <View style={styles.delete}>
