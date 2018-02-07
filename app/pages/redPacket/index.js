@@ -810,7 +810,7 @@ class RedPacket extends React.Component {
                             {this._historyFrame()}
                         </View>
                         {
-                            this.props.recent.recentBuy.length === 0 && this.state.token ?
+                            this.props.recent.recentBuy.length < 0 && this.state.token ?
                                 <View style={[styles.syncBlock]}>
                                     <TouchableOpacity style={[styles.sync, styles.syncS]}
                                                       onPress={() => this._jumpToOrderPage()}>
@@ -834,12 +834,12 @@ class RedPacket extends React.Component {
                         }
 
                         {
-                            this.props.recent.recentBuy.length > 0 || this.props.recent.recentView.length > 0 ?
+                            this.props.recent.recentBuy.length >= 0 || this.props.recent.recentView.length > 0 ?
 
                                 <View
                                     style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>
                                     {
-                                        this.props.recent.recentBuy.length > 0 ?
+                                        this.props.recent.recentBuy.length >= 0 ?
                                             <View style={{marginBottom: 10}}>
                                                 <View style={styles.blockTitle}>
                                                     <View style={styles.delete}>
@@ -867,6 +867,7 @@ class RedPacket extends React.Component {
                                                 </View>
                                                 <View style={styles.recentBuy}>
                                                     {this._recentList('buy')}
+
                                                 </View>
                                             </View> :
                                             null
