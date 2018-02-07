@@ -211,12 +211,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     syncShadowCircle: {
-        width: width/5,
-        height: width/5,
-        borderRadius: width/10,
-        backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
     },
     syncShadowText: {
         color: '#fc7d30',

@@ -368,7 +368,7 @@ class SearchResult extends React.Component {
                                 {
                                     this.state.toutiaoSearching ?
                                         <View style={[styles.center,{marginTop: 40}]}>
-                                            <Image resizeMode={Image.resizeMode.contain} style={{width:200}}
+                                            <Image resizeMode={Image.resizeMode.contain} style={{width:150}}
                                                    source={require('../../assets/gif/loading.gif')}/>
                                             <WebView
                                                 style={{width: 0,height: 0, position: 'absolute'}}

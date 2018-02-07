@@ -45,6 +45,7 @@ import SearchPage from '../search';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import OrdersPage from '../../pages/order';
+import images from "../../constants/images";
 
 const Navigator = deprecatedComponents.Navigator;
 const moreIcon = <Icon style={[styles.moreIcon]} size={20} name="ios-arrow-dropright"/>;
@@ -545,6 +546,13 @@ class RedPacket extends React.Component {
                             !rowData.price) && rowData.orderId ? <View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
+                                    <PrefetchImage
+                                        imageUri={images.DEFAULT_IMAGE}
+                                        imageStyle={{width: 70,height: 70}}
+                                        resizeMode="contain"
+                                        width={70}
+                                        height={70}
+                                    />
                                     <Text style={styles.syncShadowText}>订单同步中,大约需5分钟</Text>
                                 </View>
                             </View>
