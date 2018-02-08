@@ -412,6 +412,11 @@ class PhotoEditPage extends Component {
                     //this.setState({sImageBase64Data: message.data});
                     break;
                 case "continue":
+                    if(!message.imageData || !message.ImgSize || !message.ImgSize.height){
+                        this.setState({next: false});
+                        return;
+                    }
+
                     dispatch({
                         type: StoreActions.ADD_NOTE_PHOTO_DATA,
                         imageData: message.imageData,
