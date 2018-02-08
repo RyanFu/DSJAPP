@@ -41,6 +41,8 @@ import DetailPage from '../../pages/detail';
 import OrdersPage from '../../pages/order';
 import WithdrawPage from '../../pages/order/withdraw';
 import * as Emoticons from '../../components/emoticons';
+import Icons from 'react-native-vector-icons/Ionicons';
+import Popup from '../../components/popup';
 
 const Navigator = deprecatedComponents.Navigator;
 
@@ -80,7 +82,8 @@ export default class MyContent extends Component {
             dataSource: this.ds.cloneWithRows([]),
             loading: true,
             modalVisible: false,
-            selectedNote: null
+            selectedNote: null,
+            showTip: false,
         };
     }
 
@@ -433,6 +436,13 @@ export default class MyContent extends Component {
         }
     }
 
+    _showTip() {
+        this.setState({showTip: true});
+    }
+    _onPressCross() {
+        this.setState({showTip: false});
+    }
+
     render() {
 
         this.user = this.state.user;
@@ -459,6 +469,18 @@ export default class MyContent extends Component {
         return (
             <View style={styles.container}>
 
+                {
+                    this.state.showTip ? <Popup
+                        onPressCross={this._onPressCross.bind(this)}
+                        show={true}
+                        title='提示'
+                        style={{height: 100,padding: 10,justifyContent: 'space-between',flexDirection: 'column',alignItems: 'flex-start'}}
+                    >
+                        <Text>总收益：所有已提现订单返红包总额</Text>
+                        <Text>预估：所有已付款订单返红包总额</Text>
+                        <Text>可提：所有已确认收货订单返红包总额</Text>
+                    </Popup>    : null
+                }
                 <View style={styles.userContainer}>
                     {
                         !this.props.userInfo ?
@@ -483,6 +505,14 @@ export default class MyContent extends Component {
                                         <View style={styles.incomeLine}>
                                             <Text style={{fontSize: 14,color: '#9b9b9b'}}>总收益:￥</Text>
                                             <Text style={{fontSize: 14, color: '#026734'}}>{this.user.income}</Text>
+                                            <TouchableOpacity style={styles.what}
+                                                              onPress={() => this._showTip()}>
+                                                <Icons
+                                                    name='md-help-circle'
+                                                    size={20}
+                                                    color={'#aaa'}
+                                                />
+                                            </TouchableOpacity>
                                         </View>
 
                                         <View style={styles.incomeLine}>

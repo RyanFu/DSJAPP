@@ -210,5 +210,9 @@ export default styles = StyleSheet.create({
     emptyTipText: {
         textAlign: 'center',
         lineHeight: 20
+    },
+
+    what: {
+        marginLeft: 5
     }
 });
