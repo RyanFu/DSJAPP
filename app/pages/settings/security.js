@@ -7,7 +7,8 @@ import {
     Alert,
     AsyncStorage,
     InteractionManager,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    Image
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -285,6 +286,7 @@ class SecurityPage extends React.Component {
 
                 <TouchableHighlight>
                     <View style={styles.row}>
+                        <Icon size={16} style={{color: '#4a8bfc', marginRight:4}} name="phone-square"/>
                         <Text style={styles.text}>手机号</Text>
                         <Text style={styles.phoneText}>{this.state.userId}</Text>
                         {chevronRightIcon}
@@ -294,6 +296,7 @@ class SecurityPage extends React.Component {
 
                 <TouchableHighlight onPress={() => this._op('WEIXIN')}>
                     <View style={styles.row}>
+                        <Icon size={16} style={{color: '#66a80f', marginRight:4}} name="weixin"/>
                         <Text style={styles.text}>微信</Text>
                         <Text
                             style={[styles.baseText, styles.dimText, (this.state.WEIXIN.isBound && styles.boundText)]}>{this.state.WEIXIN.isBound ? '已绑定' : '马上绑定'}</Text>
@@ -326,6 +329,7 @@ class SecurityPage extends React.Component {
 
                 <TouchableHighlight onPress={() => this._op('TAOBAO')}>
                     <View style={styles.row}>
+                        <Image style={{width:16,height: 16, marginRight:4}} source={require('../../assets/logo/taobao.png')}/>
                         <Text style={styles.text}>淘宝</Text>
                         <Text
                             style={[styles.baseText, styles.dimText, (this.state.TAOBAO.isBound && styles.boundText)]}>{this.state.TAOBAO.isBound ? '已绑定' : '马上绑定'}</Text>
@@ -336,6 +340,8 @@ class SecurityPage extends React.Component {
 
                 <TouchableHighlight onPress={() => this._op('ALIPAY')}>
                     <View style={styles.row}>
+                        <Image style={{width:16,height: 16, marginRight:4}} source={require('../../assets/logo/zhifubao.png')}/>
+
                         <Text style={styles.text}>支付宝</Text>
                         <Text
                             style={[styles.baseText, styles.dimText, (this.state.ALIPAY.isBound && styles.boundText)]}>{this.state.ALIPAY.isBound ? '已绑定' : '马上绑定'}</Text>
