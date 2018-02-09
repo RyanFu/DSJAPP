@@ -437,8 +437,10 @@ class PostNotePage extends Component {
                         />
                         <AddressModel visible={this.state.addressModelVisible} dataSource={this.state.addressDataSource}
                                       onSelect={this._onAddressSelected.bind(this)}/>
-                        <ScrollView style={{height: height - 250, width: width, bottom: 50,marginTop:50}}>
-                            <View style={[styles.main]}>
+                        <ScrollView style={{height: height - 250, width: width, bottom: 50,marginTop:50,flex: 1}}
+                                    keyboardDismissMode='on-drag'>
+                            <TouchableWithoutFeedback style={[styles.main]}>
+                                <View style={[styles.main]}>
                                 <View
                                     style={{
                                         borderBottomWidth: 1,
@@ -507,7 +509,8 @@ class PostNotePage extends Component {
                                         {faceIcon}
                                     </TouchableOpacity>
                                 </View>
-                            </View>
+                                </View>
+                            </TouchableWithoutFeedback>
                         </ScrollView>
 
                     </View>
