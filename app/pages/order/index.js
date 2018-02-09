@@ -266,7 +266,7 @@ class Order extends React.Component {
                     time: v.createdDateTime || v.creationDate || (new Date()).getTime()
                 };
                 if(v.orderItemState === 'NEW'){
-                    item.title = '订单正在同步，5分钟内完成...';
+                    item.title = '订单正在同步中，5分钟内完成...';
                 }
                 source.push(item);
             }
