@@ -15,7 +15,7 @@
 	<key>CFBundleIcons~ipad</key>
 	<dict/>
 	<key>CFBundleIdentifier</key>
-	<string>org.reactjs.native.duoshouji.AppReact</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
@@ -27,7 +27,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -81,6 +81,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>weixin</string>
@@ -96,7 +98,16 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>share68.com</key>
+			<key>alimama.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>dsj-search-service.herokuapp.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
@@ -107,40 +118,31 @@
 			</dict>
 			<key>reactnative.cn</key>
 			<dict>
-            	<key>NSExceptionAllowsInsecureHTTPLoads</key>
-            	<true/>
-            	<key>NSExceptionRequiresForwardSecrecy</key>
-            	<false/>
-            	<key>NSIncludesSubdomains</key>
-            	<true/>
-            </dict>
-            <key>alimama.com</key>
-            <dict>
-                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                 <true/>
-                 <key>NSExceptionRequiresForwardSecrecy</key>
-                 <false/>
-                 <key>NSIncludesSubdomains</key>
-                 <true/>
-                 </dict>
-            <key>taobao.com</key>
-            <dict>
-                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                 <true/>
-                 <key>NSExceptionRequiresForwardSecrecy</key>
-                 <false/>
-                 <key>NSIncludesSubdomains</key>
-                 <true/>
-                 </dict>
-            <key>dsj-search-service.herokuapp.com</key>
-            <dict>
-                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                 <true/>
-                 <key>NSExceptionRequiresForwardSecrecy</key>
-                 <false/>
-                 <key>NSIncludesSubdomains</key>
-                 <true/>
-            </dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>share68.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>taobao.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
