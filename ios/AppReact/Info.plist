@@ -150,7 +150,7 @@
 	<key>NSContactsUsageDescription</key>
 	<string>亲，此功能需要开启通讯录权限</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<true/>
+	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -165,11 +165,6 @@
 		<string>MaterialIcons.ttf</string>
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-		<string>remote-notification</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
