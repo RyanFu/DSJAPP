@@ -48,8 +48,20 @@ export default class LoginPage extends Component {
             region: 'China',
             modalVisible: true,
             sending: false,
-            sendSuccess: false
+            sendSuccess: false,
+            weixinInstalled: false
         };
+    }
+
+    componentDidMount() {
+        WechatAPI.isWXAppInstalled()
+            .then((res) => {
+                if (!res)
+                    this.setState({weixinInstalled: false});
+                else
+                    this.setState({weixinInstalled: true});
+            })
+
     }
 
     _onPressForgetLink() {
@@ -70,13 +82,17 @@ export default class LoginPage extends Component {
             .then((res) => {
                 if (!res)
                     toast('您还未安装微信');
+                    // return WechatAPI.login(config);
                 else
                     return WechatAPI.login(config);
             })
             .then((res) => {
                 if(res)
                     the._checkBinding(res);
-            })
+            }, (error) => {
+                    if(error)
+                        toast(error.message || '未登录成功');
+                })
     }
 
     _checkBinding(res) {
@@ -304,19 +320,25 @@ export default class LoginPage extends Component {
                             onPress={this._onPressLoginButton.bind(this)}>登录</Button>
                 </View>
 
-                <View style={{marginTop:60, flexDirection:'row'}}>
-                    <View
-                        style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginRight:5}}></View>
-                    <Text style={{color:'#989898'}}>或合作账号登录</Text>
-                    <View
-                        style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginLeft:5}}></View>
-                </View>
+                {
+                    this.state.weixinInstalled? <View style={{marginTop:60, flexDirection:'row'}}>
+                        <View
+                            style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginRight:5}}></View>
+                        <Text style={{color:'#989898'}}>或合作账号登录</Text>
+                        <View
+                            style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginLeft:5}}></View>
+                    </View>: null
+                }
 
-                <View style={{flexDirection:'row', justifyContent:'center', marginTop:20}}>
-                    <Icon.Button name="weixin" onPress={this._onPressWeixinIcon.bind(this)} size={26} color="#21b384"
-                                 backgroundColor="transparent" borderRadius={24} iconStyle={{marginRight:0}}
-                                 style={{borderWidth:1, borderColor:'#ccc',height:48, width:48}}/>
-                </View>
+
+                {
+                    this.state.weixinInstalled? <View style={{flexDirection:'row', justifyContent:'center', marginTop:20}}>
+                        <Icon.Button name="weixin" onPress={this._onPressWeixinIcon.bind(this)} size={26} color="#21b384"
+                                     backgroundColor="transparent" borderRadius={24} iconStyle={{marginRight:0}}
+                                     style={{borderWidth:1, borderColor:'#ccc',height:48, width:48}}/>
+                    </View>: null
+                }
+
             </View>
         );
     }
