@@ -15,7 +15,7 @@ import {
     CameraRoll
 } from 'react-native';
 import { connect } from 'react-redux';
-import {toast} from '../../utils/common';
+import {isIphoneX, toast} from '../../utils/common';
 import configs from '../../constants/configs';
 
 var {height, width} = Dimensions.get('window');
@@ -64,7 +64,7 @@ class SaveImage extends React.Component {
     render() {
         return (
             <TouchableWithoutFeedback>
-                <View style={styles.saveImage}>
+                <View style={[styles.saveImage, isIphoneX()? {top: -41}: {top: -21}]}>
                     <Animated.View style={[styles.saveImageContent,{bottom: this.state.dropAnim}]}>
 
                         <TouchableOpacity style={styles.button} onPress={this._saveImage}>

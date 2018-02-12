@@ -16,7 +16,7 @@ import {
 import { connect } from 'react-redux';
 import * as WechatAPI from '../../../node_modules/react-native-wx';
 //import * as WeiboAPI from 'react-native-weibo';
-import {toast} from '../../utils/common';
+import {isIphoneX, toast} from '../../utils/common';
 import configs from '../../constants/configs';
 import * as Emoticons from '../../components/emoticons';
 
@@ -105,7 +105,7 @@ class Share extends React.Component {
     render() {
         return (
             <TouchableWithoutFeedback>
-                <View style={styles.share}>
+                <View style={[styles.share, isIphoneX()? {top: -41}: {top: -21}]}>
                     <Animated.View style={[styles.shareContent,{bottom: this.state.dropAnim}]}>
                         <View style={styles.list}>
                             <TouchableOpacity style={styles.shareItem} onPress={this._shareToWechat}>
