@@ -146,15 +146,15 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>此应用需要您的同意才能拍照</string>
+	<string>亲，此功能需要您的同意才能拍照上传，您是否允许打开相机? </string>
 	<key>NSContactsUsageDescription</key>
-	<string>亲，此功能需要开启通讯录权限</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<false/>
+	<string>亲，此功能需要开启通讯录权限才能查看好友，您是否允许读取通讯录?</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<true/>
+	<string>亲，记录您的发笔记位置，记住精彩瞬间，您是否允许读取定位?</string>
+
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>此应用需要您的同意才能读取媒体资料库</string>
+	<string>亲，剁手记需要读取您的相册才能够发布笔记并上传照片，您是否允许打开相机?</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
