@@ -82,50 +82,7 @@ class PostNotePage extends Component {
     }
 
     componentDidMount() {
-        let that = this;
-        var address = '定位失败';
-        Geolocation.getCurrentPosition(function (position) {
-            let {coords} = position;
-            let url = 'http://api.map.baidu.com/geoconv/v1/?from=1&to=5&ak=D8c7c1411571551ef8fe556f08c594bd&coords=' + coords.longitude + ',' + coords.latitude;
-            fetch(url, {method: 'GET'})
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    if (responseJson && responseJson.status == 0) {
-                        let coords = responseJson.result[0] || {};
-                        let url = 'http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=D8c7c1411571551ef8fe556f08c594bd&location=' + coords.y + ',' + coords.x;
-
-                        fetch(url, {method: 'GET'})
-                            .then((response) => response.json())
-                            .then((responseJson) => {
-                                let {formatted_address} = responseJson.result;
-                                let pois = [].concat([{addr: formatted_address}]).concat(responseJson.result.pois);
-                                that.setState({
-                                    addressDataSource: that.state.addressDataSource.cloneWithRows(pois),
-                                    address: responseJson.result.formatted_address,
-                                    latitude: coords.x,
-                                    longitude: coords.y
-                                });
-
-                            })
-                            .catch((error) => {
-                                console.log('Unable to get BD position:', JSON.stringify(error));
-                                that.setState({address: address});
-                            });
-
-                    }
-                }).catch((error) => {
-                console.log("Failed to transfer GPS position to BD position：" + JSON.stringify(error));
-                that.setState({address: address});
-            });
-
-        }, function (error) {
-            console.log("Failed to get geo location：" + error);
-            that.setState({address: '定位失败'});
-        }, {
-            timeout: 20000,
-            maximumAge: 1000,
-            enableHighAccuracy: true
-        });
+       this._getLocation();
 
         this.state.title = this.props.draftNote.noteTitleAndContent ? this.props.draftNote.noteTitleAndContent.title : '';
         this.state.content = this.props.draftNote.noteTitleAndContent ? this.props.draftNote.noteTitleAndContent.content : '';
@@ -418,6 +375,53 @@ class PostNotePage extends Component {
 
     }
 
+    _getLocation() {
+        let that = this;
+        var address = '定位失败';
+        Geolocation.getCurrentPosition(function (position) {
+            let {coords} = position;
+            let url = 'http://api.map.baidu.com/geoconv/v1/?from=1&to=5&ak=D8c7c1411571551ef8fe556f08c594bd&coords=' + coords.longitude + ',' + coords.latitude;
+            fetch(url, {method: 'GET'})
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson && responseJson.status == 0) {
+                        let coords = responseJson.result[0] || {};
+                        let url = 'http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=D8c7c1411571551ef8fe556f08c594bd&location=' + coords.y + ',' + coords.x;
+
+                        fetch(url, {method: 'GET'})
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                let {formatted_address} = responseJson.result;
+                                let pois = [].concat([{addr: formatted_address}]).concat(responseJson.result.pois);
+                                that.setState({
+                                    addressDataSource: that.state.addressDataSource.cloneWithRows(pois),
+                                    address: responseJson.result.formatted_address,
+                                    latitude: coords.x,
+                                    longitude: coords.y
+                                });
+
+                            })
+                            .catch((error) => {
+                                console.log('Unable to get BD position:', JSON.stringify(error));
+                                that.setState({address: address});
+                            });
+
+                    }
+                }).catch((error) => {
+                console.log("Failed to transfer GPS position to BD position：" + JSON.stringify(error));
+                that.setState({address: address});
+            });
+
+        }, function (error) {
+            console.log("Failed to get geo location：" + error);
+            that.setState({address: '定位失败'});
+        }, {
+            timeout: 20000,
+            maximumAge: 1000,
+            enableHighAccuracy: true
+        });
+    }
+
     render() {
         let {height, width} = Dimensions.get('window');
         height -= 21;
@@ -500,7 +504,7 @@ class PostNotePage extends Component {
                                     <Text>发布于：</Text>
                                     <Text lineBreakMode={'tail'} numberOfLines={1}
                                           style={{color: colors.orange, maxWidth: width - 140}}
-                                          onPress={() => this.setState({addressModelVisible: this.state.addressDataSource.getRowCount() > 0})}>{this.state.address}</Text>
+                                          onPress={() => this._getLocation()}>{this.state.address}</Text>
                                 </View>
                                 <View style={styles.shortcut}>
                                     <TouchableOpacity
