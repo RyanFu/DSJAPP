@@ -55,7 +55,10 @@ class SaveImage extends React.Component {
             .then(()=>{
                 toast('成功保存');
                 this.props.press();
-            });
+            },
+                ()=>{
+                toast('您未开启保存图片权限')
+                });
     }
 
     render() {
