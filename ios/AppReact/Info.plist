@@ -155,6 +155,10 @@
 
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>亲，剁手记需要读取您的相册才能够发布笔记并上传照片，您是否允许打开相机?</string>
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    <string>亲，开启添加到相册权限才能够保存图片，您是否允许开启?</string>
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
