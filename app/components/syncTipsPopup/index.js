@@ -12,7 +12,8 @@ import {
     Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {isIphoneX} from "../../utils/common";
+import {isIphoneX, Token} from "../../utils/common";
+import baiChuanApi from 'react-native-taobao-baichuan-api';
 
 var {height, width} = Dimensions.get('window');
 
@@ -47,6 +48,21 @@ class SyncTipsPopup extends React.Component {
             this.props.onPressCross(never);
     }
 
+    _jumpToOrderPage() {
+        const {navigator} = this.props;
+        const type = 'tmall';
+
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                baiChuanApi.jump('', '0', type, (error, res) => {
+                    if (error) {
+                        console.error(error);
+                    }
+                })
+            }
+        });
+        this.setState({openOrderPage: true});
+    }
 
     render() {
         if(!this.state.show)
@@ -62,12 +78,12 @@ class SyncTipsPopup extends React.Component {
                     <View style={styles.content}>
                         <View style={styles.row}>
                             <Text style={styles.baseText}>
-                                没有看到您的订单吗？请您手动跟单以便获得购物红包
+                                没有看到您的订单吗？请您复制单号以便获得购物红包
                             </Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.dimText}>
-                                1：在“最近购买”点击 <Text style={styles.important}>“手工同步”</Text>
+                                1：在“最近购买”点击 <Text style={styles.important}>“复制单号”</Text>
                             </Text>
                         </View>
                         <View style={styles.row}>
@@ -91,8 +107,11 @@ class SyncTipsPopup extends React.Component {
                             </Text>
                         </View>
                         <View style={[styles.row, styles.btnRow]}>
-                            <TouchableOpacity style={styles.Button} onPress={() => this._close(true)}>
-                                <Text style={styles.ButtonFont}>知道了，不再提示</Text>
+                            <TouchableOpacity style={styles.Button} onPress={() => this._jumpToOrderPage()}>
+                                <Text style={styles.ButtonFont}>复制单号</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.Button} onPress={() => this._close()}>
+                                <Text style={styles.ButtonFont}>还没下单，再逛逛</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -254,7 +273,8 @@ const styles = StyleSheet.create({
     btnRow: {
         flex: 1,
         alignItems: 'center',
-        width: 262
+        width: 262,
+        justifyContent: 'flex-start'
     }
 });
 

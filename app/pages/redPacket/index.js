@@ -820,7 +820,7 @@ class RedPacket extends React.Component {
                                             color={'#fff'}
                                         />
                                         <Text
-                                            style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步订单</Text>
+                                            style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>复制单号</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.what,{marginTop: 6}]}
                                                       onPress={() => this._showTip()}>
@@ -851,7 +851,7 @@ class RedPacket extends React.Component {
                                                                 color={'#fff'}
                                                             />
                                                             <Text
-                                                                style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>手工同步</Text>
+                                                                style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>复制单号</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={styles.what}
                                                                           onPress={() => this._showTip()}>
