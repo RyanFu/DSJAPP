@@ -144,7 +144,9 @@ class SearchItem extends React.Component {
         //data.orderId = '33351509422362798';
         //this._insertOrder(data);
         //return;
-        const type = data.userType === 1 ? 'tmall' : 'taobao';
+        // const type = data.userType === 1 ? 'tmall' : 'taobao';
+        const type = 'tmall';//统一跳到手淘
+
         const {navigator, dispatch} = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {

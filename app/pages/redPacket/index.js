@@ -595,7 +595,8 @@ class RedPacket extends React.Component {
 
     _jumpToTaobaoPage(itemId, data) {
         const {navigator} = this.props;
-        const type = data.userType === 1 ? 'tmall' : 'taobao';
+        // const type = data.userType === 1 ? 'tmall' : 'taobao';
+        const type = 'tmall';//统一跳到手淘
 
         Token.getToken(navigator).then((token) => {
             if (token) {
