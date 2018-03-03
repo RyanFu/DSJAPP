@@ -12,6 +12,7 @@ import {
     Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {isIphoneX} from "../../utils/common";
 
 var {height, width} = Dimensions.get('window');
 
@@ -51,7 +52,7 @@ class SyncTipsPopup extends React.Component {
         if(!this.state.show)
             return null;
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, isIphoneX()? {marginTop: -61}: {marginTop: -41}]}>
                 <View style={styles.rectangle}>
                     <View style={styles.title}>
                         <View style={styles.titleLine}/>

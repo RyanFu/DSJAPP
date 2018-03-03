@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Spinner from 'react-native-spinkit';
 import Button from '../../components/button/Button';
-import { toast } from '../../utils/common';
+import {isIphoneX, toast} from '../../utils/common';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 var {height, width} = Dimensions.get('window');
@@ -54,7 +54,7 @@ class Popup extends React.Component {
         if(!this.state.show)
             return null;
         return (
-            <View style={styles.container}>
+            <View  style={[styles.container, isIphoneX()? {marginTop: -61}: {marginTop: -41}]}>
                 <View style={styles.rectangle}>
                     <View style={styles.title}>
                         <View style={styles.titleLine}/>
