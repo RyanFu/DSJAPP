@@ -101,6 +101,9 @@ class TbPopup extends React.Component {
                         </View>
 
                     </View>
+                    <View style={styles.warn}>
+                        <Text style={styles.warnText}>(实际红包额可能随商品型号等原因略有不同)</Text>
+                    </View>
                     <View style={{ bottom:10, flexDirection:'column'}}>
                         <Button style={styles.button}
                                 containerStyle={{ justifyContent: 'center'}}
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     },
     rectangle: {
         width: 220,
-        height: 225,
+        height: 245,
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,1)',
@@ -175,6 +178,16 @@ const styles = StyleSheet.create({
         color: '#F37D30',
         fontSize: 10
     },
+    warnDown: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10
+    },
+    warnText: {
+        color: '#9b9b9b',
+        fontSize: 10
+    },
     title: {
         flexDirection: 'row',
         height: 30
@@ -193,7 +206,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flexDirection: 'column',
-        height: 120,
+        height: 100,
         alignItems: 'center',
     },
     content1: {
