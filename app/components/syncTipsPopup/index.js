@@ -110,7 +110,7 @@ class SyncTipsPopup extends React.Component {
                             <TouchableOpacity style={styles.Button} onPress={() => this._jumpToOrderPage()}>
                                 <Text style={styles.ButtonFont}>复制单号</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.Button} onPress={() => this._close()}>
+                            <TouchableOpacity style={[styles.Button, styles.greyBtn]} onPress={() => this._close()}>
                                 <Text style={styles.ButtonFont}>还没下单，再逛逛</Text>
                             </TouchableOpacity>
                         </View>
@@ -151,7 +151,8 @@ const styles = StyleSheet.create({
     },
     rectangle: {
         width: 290,
-        height: 330,
+        height: 375,
+        flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,1)',
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
         fontFamily: 'STHeitiSC-Medium',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F37D30',
+        backgroundColor: '#F37D30'
     },
     countDown: {
         flexDirection: 'row',
@@ -201,7 +202,6 @@ const styles = StyleSheet.create({
     },
     content: {
         flexDirection: 'column',
-        height: 80,
         alignItems: 'flex-start',
         paddingHorizontal: 14
     },
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
         color: '#F37D30'
     },
     row: {
-      marginTop: 8
+        marginTop: 8
     },
     Button: {
         height: 34,
@@ -263,12 +263,16 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        width: 120
+        width: 120,
+        marginBottom: 8
     },
     ButtonFont: {
         fontSize: 12,
         color: '#fff',
         backgroundColor: 'rgba(0,0,0,0)'
+    },
+    greyBtn: {
+      backgroundColor: '#ddd'
     },
     btnRow: {
         flex: 1,
