@@ -14,6 +14,7 @@ import {
     Image
 } from 'react-native';
 import Spinner from 'react-native-spinkit';
+import {isIphoneX} from "../../utils/common";
 
 var {height, width} = Dimensions.get('window');
 
@@ -32,7 +33,7 @@ class Loading extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, isIphoneX()? {marginTop: -41}: {marginTop: -21}]}>
                 <View style={styles.rectangle}>
                     <Spinner style={styles.spinner} isVisible size={45} type="FadingCircleAlt" color={'#ffffff'}/>
                 </View>
