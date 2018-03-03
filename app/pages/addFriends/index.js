@@ -51,7 +51,7 @@ class Friends extends React.Component {
             toLeft: {},
             height: {},
             permissionFailure: false,
-            downloadUrl: 'http://www.duoshouji.com'
+            downloadUrl: 'http://t.cn/RE5ZN0F'
         };
     }
 
