@@ -483,6 +483,13 @@ class PostNotePage extends Component {
                                         <Text>{this.state.contentLength}</Text>
                                     </View>
                                 </View>
+                                    <View style={styles.shortcut}>
+                                        <TouchableOpacity
+                                            onPress={this._showEmoticons.bind(this)}
+                                            style={styles.emoticon}>
+                                            {faceIcon}
+                                        </TouchableOpacity>
+                                    </View>
                                 <View
                                     style={[{
                                         borderBottomWidth: 1,
@@ -506,40 +513,37 @@ class PostNotePage extends Component {
                                           style={{color: colors.orange, maxWidth: width - 140}}
                                           onPress={() => this._getLocation()}>{this.state.address}</Text>
                                 </View>
-                                <View style={styles.shortcut}>
-                                    <TouchableOpacity
-                                        onPress={this._showEmoticons.bind(this)}
-                                        style={styles.emoticon}>
-                                        {faceIcon}
-                                    </TouchableOpacity>
-                                </View>
+
                                 </View>
                             </TouchableWithoutFeedback>
                         </ScrollView>
 
                     </View>
                     <View>
-                        <Emoticons
-                            onEmoticonPress={this._onEmoticonPress.bind(this)}
-                            show={this.state.showEmoticons}
-                            onBackspacePress={this._onBackspacePress.bind(this)}
-                            concise={true}
-                            showPlusBar={false}
-                            style={{zIndex: 1000}}
-                        />
+                        <View  style={[{zIndex: 1000}, isIphoneX()? {bottom: 20}: {bottom: 0}]}>
+                            <Emoticons
+                                onEmoticonPress={this._onEmoticonPress.bind(this)}
+                                show={this.state.showEmoticons}
+                                onBackspacePress={this._onBackspacePress.bind(this)}
+                                concise={true}
+                                showPlusBar={false}
+                                style={{zIndex: 1000}}
+                            />
+                        </View>
+
 
                         <TouchableOpacity onPress={this._sendNote.bind(this)}
-                                          style={{
+                                          style={[{
                                               padding: 15,
                                               justifyContent: 'center',
                                               backgroundColor: colors.orange,
                                               flexDirection: 'row',
                                               position: 'absolute',
-                                              bottom: 0,
+                                              bottom: 20,
                                               left: 0,
                                               right: 0,
                                               zIndex: 100
-                                          }}>
+                                          },isIphoneX()? {bottom: 20}: {marginTop: 0}]}>
                             <Text style={{color: '#fff', fontSize: 18}}>发布</Text>
                         </TouchableOpacity>
                     </View>
