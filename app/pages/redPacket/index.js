@@ -239,8 +239,8 @@ class RedPacket extends React.Component {
                 if (v.syncItems.length > 0) {
                     _.each(v.syncItems, (vv, kk) => {
                         const item = {
-                            estimate: vv.syncEstimateEffect,
-                            real: vv.syncRealRefund,
+                            estimate: vv.estimatedRebate,
+                            real: vv.availableRebate,
                             price: vv.syncItemPrice,
                             title: vv.syncItemName,
                             orderId: vv.syncOrderId,
@@ -530,7 +530,7 @@ class RedPacket extends React.Component {
                         <View style={styles.redPacketPrice}>
                             <Image style={styles.redIcon} source={require('../../assets/footer/red_.png')}/>
                             <Text
-                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{decimals((typeof rowData.tkCommFee != 'undefined' ? rowData.tkCommFee : rowData.estimate) * this.state.ratio, 2)}</Text>
+                                style={[styles.baseText, styles.recFlowText, styles.redPacketText]}>￥{typeof rowData.tkCommFee != 'undefined' ? rowData.tkCommFee : rowData.real || rowData.estimate }</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                             <Text style={[styles.baseText, {paddingBottom: 0, minHeight: 38}]} lineBreakMode={'tail'}

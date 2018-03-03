@@ -134,15 +134,15 @@ class Order extends React.Component {
                                         {
                                             rowData.status === 'PAID' ?
                                                 <Text
-                                                    style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>预估红包：￥ {decimals(rowData.estimate * this.state.ratio, 2)}</Text> : null
+                                                    style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>预估红包：￥ {rowData.estimate}</Text> : null
                                         }
                                         {
                                             rowData.status === 'SETTLED' ? <Text
-                                                style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>可提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
+                                                style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>可提现红包：￥ {rowData.real}</Text> : null
                                         }
                                         {
                                             rowData.status === 'WITHDRAWN' ? <Text
-                                                style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>已提现红包：￥ {decimals(rowData.real * this.state.ratio, 2)}</Text> : null
+                                                style={[styles.dimText, styles.sText, styles.pText, styles[this._textColor(rowData.status)]]}>已提现红包：￥ {rowData.real }</Text> : null
                                         }
 
                                         <View style={styles.shop}>
@@ -239,8 +239,8 @@ class Order extends React.Component {
                 _.each(v.syncItems, (vv, kk) => {
                     const item = {
                         id: vv.id,
-                        estimate: vv.syncEstimateEffect,
-                        real: vv.syncRealRefund,
+                        estimate: vv.estimatedRebate,
+                        real: vv.availableRebate,
                         price: vv.syncItemPrice,
                         title: vv.syncItemName,
                         orderId: vv.syncOrderId,
