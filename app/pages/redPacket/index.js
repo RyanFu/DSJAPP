@@ -241,7 +241,7 @@ class RedPacket extends React.Component {
                         const item = {
                             estimate: vv.estimatedRebate,
                             real: vv.availableRebate,
-                            price: vv.syncItemPrice,
+                            price: vv.syncPaidAmount,
                             title: vv.syncItemName,
                             orderId: vv.syncOrderId,
                             pic: vv.itemPicUrl,
