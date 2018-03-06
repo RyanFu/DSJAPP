@@ -140,6 +140,7 @@ export function request(request, method, body, token) {
         } else {
             uri = (request.host ? request.host : configs.serviceUrl) + request.route
         }
+        uri = encodeURI(uri);
         fetch(uri, options).then((response) => {
             if (response.status == 200) {
                 success = true;
