@@ -36,6 +36,7 @@ import TbPopup from '../../components/tbPopup';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
 import SyncTipsPopup from '../../components/syncTipsPopup';
 import {isIphoneX} from "../../utils/common";
+import StorageKeys from '../../constants/StorageKeys';
 
 class SearchResult extends React.Component {
     constructor(props) {
@@ -130,7 +131,7 @@ class SearchResult extends React.Component {
         naviGoBack(navigator);
     }
 
-    _onChangeTab() {
+    _onChangeTab(data) {
         const { dispatch, route } = this.props;
         let the = this;
         this.setState({searching: true});
@@ -143,6 +144,17 @@ class SearchResult extends React.Component {
         dispatch(fetchItemSearchList(params)).then(() => {
             the.setState({searching: false});
         })
+
+        if (data.i === 2) {
+            AsyncStorage.getItem(StorageKeys.FIST_USE_BIG_RED_PACKET).then((bFirstTime) => {
+                if (bFirstTime !== 'false') {
+                    Alert.alert('', '请知晓：红包大指的是返利的比率高，并不是数额高。',
+                        [{text: '知道了', onPress: () => {
+                            AsyncStorage.setItem(StorageKeys.FIST_USE_BIG_RED_PACKET, 'false');
+                    }}]);
+                }
+            });
+        }
     }
 
     _tipShow() {
