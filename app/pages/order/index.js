@@ -270,7 +270,7 @@ class Order extends React.Component {
                 };
                 if(v.orderItemState === 'NEW'){
                     if ((Date.now() - (v.createdDateTime || v.creationDate)) > 86400000) {
-                        item.title = '您的订单超过同步期限（24小时），可能是因为您的订单没有按照剁手记的正确操作流程，也可能是系统原因，请您联系微信客服';
+                        item.title = '您的订单超过同步期限（24小时），可能是因为您的订单没有按照剁手记的正确操作流程，也可能是系统原因，您可以关注微信公众号"剁手记服务号"，联系客服';
                     } else {
                         item.title = '订单正在同步中，5分钟内完成...';
                     }
