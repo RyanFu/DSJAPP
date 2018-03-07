@@ -78,22 +78,22 @@ class SyncTipsPopup extends React.Component {
                     <View style={styles.content}>
                         <View style={styles.row}>
                             <Text style={styles.baseText}>
-                                没有看到您的订单吗？请您复制单号以便获得购物红包
+                                下单后请“复制单号”才能获得红包
                             </Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.dimText}>
-                                1：在“最近购买”点击 <Text style={styles.important}>“复制单号”</Text>
+                                1：点击 <Text style={styles.important}>“复制单号”</Text>,跳到淘宝APP订单页
                             </Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.dimText}>
-                                2：在弹出的手淘“我的订单”找到您的订单并点击打开“订单详情”
+                                2：在“我的订单”中找到您刚才购买的订单，并点击打开“订单详情”
                             </Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.dimText}>
-                                3：在“订单详情”点击<Text style={styles.important}>“订单编号”</Text>旁边的<Text style={styles.important}>“复制”</Text>按钮
+                                3：在“订单详情”页点击<Text style={styles.important}>“订单编号”</Text>旁边的<Text style={styles.important}>“复制”</Text>按钮
                             </Text>
                         </View>
                         <View style={styles.row}>
