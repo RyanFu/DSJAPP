@@ -65,7 +65,8 @@ export function fetchItemSearchList(params) {
                             tkCommFee: v.tkCommFee,
                             tkRate: v.tkRate,
                             biz30day: v.biz30day,
-                            userType: v.userType
+                            userType: v.userType,
+                            couponAmount: v.couponAmount
                         };
                         items.push(item);
                     });

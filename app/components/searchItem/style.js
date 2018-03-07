@@ -34,9 +34,11 @@ const styles = StyleSheet.create({
         borderColor: '#f1f1f1',
         borderBottomWidth: 1,
         justifyContent: 'flex-start',
+        height: 120
     },
     pic: {
-        marginRight: 10
+        marginRight: 10,
+        height: 120
     },
     itemContent: {
         flexDirection: 'column',
@@ -75,6 +77,20 @@ const styles = StyleSheet.create({
     },
     shopTitle: {
         width: width - 100 - 120
+    },
+    coupon:{
+        backgroundColor: '#ff6b6b',
+        borderWidth: 1,
+        borderColor: '#ff5252',
+        paddingHorizontal: 4,
+        borderRadius: 4,
+        marginLeft: 2,
+        height: 20
+    },
+    couponText: {
+        color: '#fff',
+        fontSize: 10,
+        lineHeight: 17
     }
 });
 

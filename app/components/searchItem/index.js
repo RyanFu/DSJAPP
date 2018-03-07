@@ -51,6 +51,7 @@ class SearchItem extends React.Component {
                               onPress={() => this._tip(rowData.itemId.toString(), rowData)}>
                 <View style={styles.itemRow}>
                     <Image style={styles.pic}
+                           resizeMode={Image.resizeMode.contain}
                            source={{
                                uri: (rowData.itemPicUrl ? rowData.itemPicUrl : images.DEFAULT_PORTRAIT),
                                width: 100,
@@ -66,6 +67,15 @@ class SearchItem extends React.Component {
 
                         <View style={styles.itemDigit}>
                             <View style={styles.itemDigitP}>
+                                {
+                                    rowData.couponAmount?
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            <View style={styles.coupon}>
+                                                <Text style={[styles.baseText, styles.dimText, styles.couponText]}>{rowData.couponAmount}元券</Text>
+                                            </View>
+                                        </View>:
+                                        null
+                                }
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <Text style={[styles.baseText, styles.price]}>
                                         ￥{rowData.itemPrice}
@@ -79,6 +89,7 @@ class SearchItem extends React.Component {
                                         ￥{decimals(rowData.tkCommFee * this.state.ratio, 2)}
                                     </Text>
                                 </View>
+
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
                                     <Image
