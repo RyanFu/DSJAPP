@@ -285,7 +285,8 @@ export function removeAllStorage() {
     _.each(StorageKeys, function (v, k) {
         if (k === 'SEARCH_ITEM' ||
             k === 'SEARCH_NOTE' ||
-            k === 'SPLASH_SKIP') {
+            k === 'SPLASH_SKIP' ||
+            k === 'IS_FIRST_TIME') {
             return
         }
         try {

@@ -73,13 +73,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: '#bdbdbd'
     },
-    tmallIcon: {
-        width: 30,
-        height: 16,
-        backgroundColor: 'red',
-        alignItems: 'center',
-        borderRadius: 3
-    },
     shopTitle: {
         width: width - 100 - 120
     }

@@ -23,6 +23,8 @@ const StorageKeys = {
     SEARCH_NOTE: '@duoshouji:note',
 
     SPLASH_SKIP: '@duoshouji:splash',
+
+    IS_FIRST_TIME: '@duoshouji:firsttime'
 };
 
 module.exports = StorageKeys;

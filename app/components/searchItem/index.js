@@ -96,14 +96,17 @@ class SearchItem extends React.Component {
                             <View style={styles.itemDigitO}>
                                 {
                                     rowData.userType == 1 ?
-                                        <View style={styles.tmallIcon}>
-                                            <Text style={[styles.baseText, {
-                                                color: '#fff',
-                                                fontSize: 10,
-                                                lineHeight: 12,
-                                                textAlign: 'center'
-                                            }]}>天猫</Text>
-                                        </View> : null
+                                        <Image
+                                            style={{width: 20, height: 20, marginLeft: 8}}
+                                            resizeMode={'contain'}
+                                            source={require('../../assets/logo/tmall_40.png')}
+                                                />
+                                         :
+                                        <Image
+                                            style={{width: 20, height: 20, marginLeft: 8}}
+                                            resizeMode={'contain'}
+                                            source={require('../../assets/logo/taoicon.jpeg')}
+                                                />
                                 }
                                 <Text style={[styles.baseText, styles.dimText]}>
                                     月销：{rowData.biz30day}
