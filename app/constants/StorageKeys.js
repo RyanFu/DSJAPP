@@ -24,7 +24,9 @@ const StorageKeys = {
 
     SPLASH_SKIP: '@duoshouji:splash',
 
-    IS_FIRST_TIME: '@duoshouji:firsttime'
+    IS_FIRST_TIME: '@duoshouji:firsttime',
+
+    FIST_USE_BIG_RED_PACKET: '@duoshouji:firstuseredpacket'
 };
 
 module.exports = StorageKeys;

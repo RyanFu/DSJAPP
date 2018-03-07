@@ -25,6 +25,7 @@ import Taobao from 'react-native-taobao-baichuan-api';
 import {fetchItemSearchList} from '../../actions/search';
 import {addRecentView} from '../../actions/recent';
 import _ from 'lodash';
+import StorageKeys from '../../constants/StorageKeys';
 
 class SearchItem extends React.Component {
     constructor(props) {
@@ -43,6 +44,14 @@ class SearchItem extends React.Component {
     }
 
     componentDidMount() {
+        AsyncStorage.getItem(StorageKeys.FIST_USE_BIG_RED_PACKET).then((bFirstTime) => {
+            if (bFirstTime !== 'false') {
+                Alert.alert('', '请知晓：红包大指的是返利的比率高，并不是数额高。',
+                    [{text: '知道了', onPress: () => {
+                        AsyncStorage.setItem(StorageKeys.FIST_USE_BIG_RED_PACKET, 'false');
+                }}]);
+            }
+        });
     }
 
     _renderRow(rowData: string, sectionID: number, rowID: number) {

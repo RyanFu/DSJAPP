@@ -286,7 +286,8 @@ export function removeAllStorage() {
         if (k === 'SEARCH_ITEM' ||
             k === 'SEARCH_NOTE' ||
             k === 'SPLASH_SKIP' ||
-            k === 'IS_FIRST_TIME') {
+            k === 'IS_FIRST_TIME' ||
+            k === 'FIST_USE_BIG_RED_PACKET') {
             return
         }
         try {
