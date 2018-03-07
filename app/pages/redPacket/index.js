@@ -706,8 +706,8 @@ class RedPacket extends React.Component {
                 request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET', '', this.state.token)
                     .then((res) => {
                         if (res.resultCode === 0) {
-                            // the._onRefresh();
-                            this._getRecentBuy();
+                            the._onRefresh();
+                            // this._getRecentBuy();
                             the.setState({
                                 order: orderId,
                                 showTip: true,
