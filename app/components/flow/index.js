@@ -487,9 +487,9 @@ var styles = StyleSheet.create({
         overflow: 'hidden',
     },
     title: {
-        height: 32,
+        height: 36,
         margin: 6,
-        marginTop: 24,
+        marginTop: 18,
     },
     text: {
         flex: 1,
