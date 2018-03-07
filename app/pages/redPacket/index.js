@@ -254,6 +254,13 @@ class RedPacket extends React.Component {
                         orderId: v.orderId,
                         status: v.orderItemState
                     };
+                    if(v.orderItemState === 'NEW'){
+                        if ((Date.now() - (v.createdDateTime || v.creationDate)) > 86400000) {
+                            item.title = '订单异常，点击查看详情';
+                        } else {
+                            item.title = '订单同步中,大约需5分钟';
+                        }
+                    }
                     source.push(item);
                 }
             }
@@ -541,19 +548,21 @@ class RedPacket extends React.Component {
 
                     </View>
                     {
-                        (rowData.status == 'UNKNOWN' ||
+                        (rowData.status == 'NEW'||
+                            rowData.status == 'UNKNOWN' ||
                             !rowData.status ||
                             !rowData.price) && rowData.orderId ? <View style={styles.syncShadow}>
                             <View style={styles.syncShadowBG}>
                                 <View style={styles.syncShadowCircle}>
-                                    <PrefetchImage
-                                        imageUri={images.DEFAULT_IMAGE}
-                                        imageStyle={{width: 70,height: 70}}
-                                        resizeMode="contain"
-                                        width={70}
-                                        height={70}
-                                    />
-                                    <Text style={styles.syncShadowText}>订单同步中,大约需5分钟</Text>
+
+                                    <Image resizeMode={Image.resizeMode.contain} style={{width:70,height: 70}}
+                                           source={require('../../assets/gif/loading.gif')}/>
+                                    <Text style={styles.syncShadowText}>
+                                        {
+                                            rowData.title
+                                        }
+
+                                    </Text>
                                 </View>
                             </View>
                         </View> : null

@@ -116,17 +116,20 @@ class Order extends React.Component {
                                 style={[styles.dimText, styles.sText]}>下单时间： {timeFormat(rowData.time, 'yyyy年MM月dd日 hh:mm:ss')}</Text>
                         </View>
                         <View style={[styles.orderRowInner,{alignItems: rowData.pic? 'stretch': 'center'}]}>
-                            <PrefetchImage
-                                imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
-                                imageStyle={[styles.itemThumb, {marginTop: rowData.pic ? null : null}]}
-                                resizeMode="contain"
-                                width={rowData.pic ? 108 : 60}
-                                height={rowData.pic ? 108 : 60}
-                                key={rowData.id + rowData.orderType + '.'}
-                            />
+                            {rowData.pic ? <PrefetchImage
+                                    imageUri={rowData.pic ? rowData.pic : images.DEFAULT_IMAGE}
+                                    imageStyle={[styles.itemThumb, {marginTop: rowData.pic ? null : null}]}
+                                    resizeMode="contain"
+                                    width={rowData.pic ? 108 : 60}
+                                    height={rowData.pic ? 108 : 60}
+                                    key={rowData.id + rowData.orderType + '.'}
+                                />
+                                :< Image resizeMode = {Image.resizeMode.contain} style={{width:80,height: 80}}
+                                source={require('../../assets/gif/loading.gif')}/>
+                            }
                             <View style={styles.orderText}>
                                 <Text style={styles.baseText} lineBreakMode={'tail'}
-                                      numberOfLines={2}>{rowData.title}</Text>
+                                      numberOfLines={4}>{rowData.title}</Text>
                                 {rowData.status && rowData.status !== 'CANCELSYNC' && rowData.status !== 'NEW' ?
                                     <View style={styles.orderTextDetail}>
                                         <Text
