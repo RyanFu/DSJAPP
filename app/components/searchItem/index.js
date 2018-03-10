@@ -12,7 +12,7 @@ import {
     ListView,
     Image,
     ActivityIndicator,
-    AsyncStorage
+    AsyncStorage, Linking, Clipboard
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -25,6 +25,9 @@ import Taobao from 'react-native-taobao-baichuan-api';
 import {fetchItemSearchList} from '../../actions/search';
 import {addRecentView} from '../../actions/recent';
 import _ from 'lodash';
+import configs from "../../constants/configs";
+import H5Page from "../../pages/h5";
+import StorageKeys from "../../constants/StorageKeys";
 
 class SearchItem extends React.Component {
     constructor(props) {
@@ -34,6 +37,8 @@ class SearchItem extends React.Component {
         this._renderFooter = this._renderFooter.bind(this);
         this._jumpToTaobaoPage = this._jumpToTaobaoPage.bind(this);
         this._getForTag = this._getForTag.bind(this);
+        this._gotoH5Page = this._gotoH5Page.bind(this);
+        this._jumpToCouponPage = this._jumpToCouponPage.bind(this);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: this.ds.cloneWithRows(this.props.search.itemList),
@@ -187,6 +192,63 @@ class SearchItem extends React.Component {
         });
     }
 
+    _jumpToCouponPage(itemId, data) {
+        const the = this;
+        let userId = 17321057664;
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result) => {
+                    if (result) {
+                        result = JSON.parse(result);
+                        userId = result.userId || userId;
+                        request('highrebate/decode?userId=' + userId + '&itemId=' + itemId, 'GET', '', token)
+                            .then((res) => {
+                                if (res.resultCode === 0 && res.resultValues.status === 1) {
+                                    const data = JSON.parse(res.resultValues.data);
+
+                                    const couponLink = data.data.couponShortLinkUrl.replace('https://','');
+                                    const url = configs.taobaoLink + couponLink;
+                                    Linking.canOpenURL(url).then(supported => {
+                                        if (supported) {
+                                            Linking.openURL(url);
+                                        } else {
+                                            the._gotoH5Page('',data.data.couponShortLinkUrl);
+                                        }
+                                    })
+                                } else {
+                                    this._jumpToTaobaoPage(itemId, data);
+                                }
+
+
+                            }, function (error) {
+                                console.log(error);
+                            })
+                            .catch(() => {
+                                console.log('network error');
+                            });
+                    }
+                });
+
+
+            }
+        });
+
+
+
+    }
+
+    _gotoH5Page(title, uri) {
+        const {navigator} = this.props;
+        if (navigator) {
+            navigator.push({
+                name: 'H5Page',
+                component: H5Page,
+                uri: uri,
+                title: title||'优惠券详情'
+            })
+        }
+    }
+
     _tip(itemId, data) {
         const cloneData = _.cloneDeep(data);
         if (this.props.from === 'editNote') {
@@ -194,7 +256,8 @@ class SearchItem extends React.Component {
         } else {
             this.props.tipShow();
             cloneData.tkCommFee = decimals(cloneData.tkCommFee * this.state.ratio, 2);
-            this.props.itemData(itemId, cloneData, this._jumpToTaobaoPage);
+            this.props.itemData(itemId, cloneData, data.couponAmount?this._jumpToCouponPage:this._jumpToTaobaoPage);
+
         }
     }
 

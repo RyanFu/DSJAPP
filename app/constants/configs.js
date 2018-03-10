@@ -10,7 +10,8 @@ const configs = {
     jdSearch: 'https://m.jd.com/',
     baiduSearch: 'https://m.baidu.com/',
     elasticSearch: 'http://restapi.share68.com:8080/',
-    appStoreLink: 'itms-apps://itunes.apple.com/app/id1344724223'
+    appStoreLink: 'itms-apps://itunes.apple.com/app/id1344724223',
+    taobaoLink: 'taobao://'
 };
 
 export default configs;
