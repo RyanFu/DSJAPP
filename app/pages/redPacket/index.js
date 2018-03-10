@@ -860,7 +860,16 @@ class RedPacket extends React.Component {
                                                     <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
                                                 </View>
                                                 <View style={styles.recentBuy}>
-                                                    {this._recentList('buy')}
+                                                    {
+                                                        this.props.recent.recentBuy.length === 0?
+                                                            <View style={styles.noOrder}>
+                                                                <Text style={[styles.baseText,styles.noOrderText]}>不知道买啥？到"笔记"里看看别人都买了什么！</Text>
+
+
+                                                            </View>
+                                                         :
+                                                        this._recentList('buy')
+                                                    }
 
                                                 </View>
                                             </View> :
