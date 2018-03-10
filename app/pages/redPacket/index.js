@@ -163,7 +163,8 @@ class RedPacket extends React.Component {
         });
 
         DeviceEventEmitter.addListener('newBuy', () => {
-            the._getRecentBuy();
+            // the._getRecentBuy();
+            the._onRefresh();
         });
 
         Token.getToken().then((token) => {
