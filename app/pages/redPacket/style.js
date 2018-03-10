@@ -317,6 +317,25 @@ const styles = StyleSheet.create({
     },
     suspendWhatIcon: {
         backgroundColor: 'rgba(255,255,255,0)',
+    },
+    noOrder: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    noOrderText: {
+        color: '#9b9b9b',
+    },
+    noOrderGo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    noOrderGoText: {
+        color: '#fc7d30',
+        fontWeight: '500',
+        fontSize: 16,
+        marginRight: 4
     }
 });
 
