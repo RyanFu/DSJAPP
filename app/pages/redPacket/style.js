@@ -277,6 +277,46 @@ const styles = StyleSheet.create({
     },
     what: {
         marginLeft: 4
+    },
+    suspend: {
+        width: 50,
+        height: 50,
+        position: 'absolute',
+        bottom: 200,
+        right: 28,
+        backgroundColor: 'rgba(252, 125, 48, 1)',
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#ccc',
+        shadowOffset: { width: 0, height: 4},
+        shadowOpacity: 0.8,
+        shadowRadius: 6,
+    },
+    suspendText: {
+        color: '#fff',
+        fontWeight: '900',
+        backgroundColor: 'rgba(255,255,255,0)',
+        fontSize: 10
+    },
+    suspendIcon: {
+        position: 'absolute',
+        lineHeight: 50,
+        backgroundColor: 'rgba(255,255,255,0)',
+    },
+    whatSuspend: {
+        position: 'absolute',
+        bottom: 215,
+        right: 5,
+        width: 18,
+        height: 18,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#aaa',
+    },
+    suspendWhatIcon: {
+        backgroundColor: 'rgba(255,255,255,0)',
     }
 });
 

@@ -674,17 +674,18 @@ class RedPacket extends React.Component {
     _jumpToOrderPage() {
         const {navigator} = this.props;
         const type = 'tmall';
-
+        const the = this;
         Token.getToken(navigator).then((token) => {
             if (token) {
                 baiChuanApi.jump('', '0', type, (error, res) => {
                     if (error) {
                         console.error(error);
                     }
-                })
+                });
+                the.setState({openOrderPage: true});
             }
         });
-        this.setState({openOrderPage: true});
+
     }
 
     _onPressCross() {
@@ -823,7 +824,7 @@ class RedPacket extends React.Component {
                             {this._historyFrame()}
                         </View>
                         {
-                            this.props.recent.recentBuy.length < 0 && this.state.token ?
+                            this.props.recent.recentBuy.length < 0 && this.state.token && 1 == 2?
                                 <View style={[styles.syncBlock]}>
                                     <TouchableOpacity style={[styles.sync, styles.syncS]}
                                                       onPress={() => this._jumpToOrderPage()}>
@@ -855,27 +856,7 @@ class RedPacket extends React.Component {
                                         this.state.token && this.props.recent.recentBuy.length >= 0 ?
                                             <View style={{marginBottom: 10}}>
                                                 <View style={styles.blockTitle}>
-                                                    <View style={styles.delete}>
-                                                        <TouchableOpacity style={styles.sync}
-                                                                          onPress={() => this._jumpToOrderPage()}>
-                                                            <Icon
-                                                                name='md-sync'
-                                                                size={16}
-                                                                color={'#fff'}
-                                                            />
-                                                            <Text
-                                                                style={[styles.historyTitle, styles.baseText, styles.syncTitle]}>复制单号</Text>
-                                                        </TouchableOpacity>
-                                                        <TouchableOpacity style={styles.what}
-                                                                          onPress={() => this._showTip()}>
-                                                            <Icon
-                                                                name='md-help-circle'
-                                                                size={22}
-                                                                color={'#aaa'}
-                                                            />
-                                                        </TouchableOpacity>
 
-                                                    </View>
                                                     <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
                                                 </View>
                                                 <View style={styles.recentBuy}>
@@ -912,6 +893,31 @@ class RedPacket extends React.Component {
                                 null}
                     </ScrollView>
                 }
+
+                <View>
+                    <TouchableOpacity onPress={() => this._jumpToOrderPage()}>
+                        <View style={styles.suspend}>
+                            <Icon
+                                name='ios-copy-outline'
+                                size={30}
+                                color={'rgba(255,255,255,.25)'}
+                                style={styles.suspendIcon}
+                            />
+                            <Text style={[styles.baseText,styles.suspendText]}>
+                                复制单号
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.whatSuspend]}
+                                      onPress={() => this._showTip()}>
+                        <Icon
+                            name='ios-help-outline'
+                            size={22}
+                            color={'#fff'}
+                            style={styles.suspendWhatIcon}
+                        />
+                    </TouchableOpacity>
+                </View>
 
             </View>
         )
