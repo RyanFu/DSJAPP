@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         borderLeftWidth: 0,
         borderRightWidth: 0,
         borderTopColor: 'rgba(178,178,178,0.1)',
-        backgroundColor: 'rgba(255,255,255,0.9)',
+        backgroundColor: 'rgba(255,255,255,1)',
     },
     tabTitle: {
         fontSize: 10,
