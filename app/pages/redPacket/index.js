@@ -322,7 +322,8 @@ class RedPacket extends React.Component {
                 rows.push(
                     <TouchableOpacity style={styles.historyItem} key={k} onPress={() => this._search(v)}>
                         <View>
-                            <Text style={[styles.historyItemFont, styles.baseText]}>{v}</Text>
+                            <Text style={[styles.historyItemFont, styles.baseText]} lineBreakMode={'tail'}
+                                  numberOfLines={1}>{v}</Text>
                         </View>
                     </TouchableOpacity>
                 );
