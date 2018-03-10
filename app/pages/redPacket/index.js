@@ -164,7 +164,7 @@ class RedPacket extends React.Component {
 
         DeviceEventEmitter.addListener('newBuy', () => {
             // the._getRecentBuy();
-            the._onRefresh();
+            the._onRefresh(false);
         });
 
         Token.getToken().then((token) => {
@@ -707,7 +707,7 @@ class RedPacket extends React.Component {
                 request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET', '', this.state.token)
                     .then((res) => {
                         if (res.resultCode === 0) {
-                            the._onRefresh();
+                            the._onRefresh(false);
                             // this._getRecentBuy();
                             the.setState({
                                 order: orderId,
@@ -731,9 +731,10 @@ class RedPacket extends React.Component {
         });
     }
 
-    _onRefresh() {
+    _onRefresh(manual) {
         let the = this;
-        this.setState({refreshing: true});
+        if(manual)
+            this.setState({refreshing: true});
         this._getRecentBuy()
             .then((res) => {
                 this.setState({refreshing: false});
@@ -743,9 +744,10 @@ class RedPacket extends React.Component {
 
             this.setState({token: token||''})
         });
-        setTimeout(() => {
-            this.setState({refreshing: false});
-        }, 3000);
+        if(manual)
+            setTimeout(() => {
+                this.setState({refreshing: false});
+            }, 3000);
     }
 
     _showTip() {
