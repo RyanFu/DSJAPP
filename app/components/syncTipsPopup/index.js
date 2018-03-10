@@ -77,7 +77,7 @@ class SyncTipsPopup extends React.Component {
                     </View>
                     <View style={styles.content}>
                         <View style={styles.row}>
-                            <Text style={styles.baseText}>
+                            <Text style={[styles.baseText,styles.firstLineText]}>
                                 下单后请“复制单号”才能获得红包
                             </Text>
                         </View>
@@ -279,6 +279,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 262,
         justifyContent: 'flex-start'
+    },
+    firstLineText: {
+        textAlign: "center",
+        width: 262,
+        fontSize: 16
     }
 });
 
