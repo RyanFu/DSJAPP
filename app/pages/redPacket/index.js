@@ -218,8 +218,8 @@ class RedPacket extends React.Component {
             (res) => {
                 Clipboard.getString().then((data) => {
                     if (data
-                        && /^[0-9]*$/.test(data)
-                        && the.state.openOrderPage) {
+                        && /^[0-9]*$/.test(data)) {
+                       // && the.state.openOrderPage) {
                         the._syncOrder(data);
 
                     }
