@@ -203,7 +203,7 @@ class SearchItem extends React.Component {
                         userId = result.userId || userId;
                         request('highrebate/decode?userId=' + userId + '&itemId=' + itemId, 'GET', '', token)
                             .then((res) => {
-                                if (res.resultCode === 0 && res.resultValues.status === 1) {
+                                if (res.resultCode === 0 && res.resultValues.status === 0) {
                                     const data = JSON.parse(res.resultValues.data);
 
                                     const couponLink = data.data.couponShortLinkUrl.replace('https://','');
