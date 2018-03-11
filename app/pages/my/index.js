@@ -84,9 +84,10 @@ class MyHomePage extends Component {
         });
     }
 
-    _onRefresh(){
+    _onRefresh(manual){
         const { dispatch } = this.props;
-        this.setState({refreshing: true});
+        if(manual)
+            this.setState({refreshing: true});
         Token.getToken(navigator).then((token) => {
             let params = {
                 token: token
@@ -117,7 +118,7 @@ class MyHomePage extends Component {
                     refreshControl={
                           <RefreshControl
                             refreshing={this.state.refreshing}
-                            onRefresh={() => this._onRefresh()}
+                            onRefresh={() => this._onRefresh(true)}
                             colors={['#fc7d30']}
                             tintColor={['#fc7d30']}
                           />
