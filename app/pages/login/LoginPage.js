@@ -17,7 +17,8 @@ import {
     ActivityIndicatorIOS,
     KeyboardAvoidingView,
     AsyncStorage,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import Home from '../home';
@@ -36,6 +37,7 @@ import {
 import StorageKeys from '../../constants/StorageKeys';
 import {fetchUserInfo} from '../../actions/user';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
+const dismissKeyboard = require('dismissKeyboard');
 const Navigator = deprecatedComponents.Navigator;
 
 const myIcon = (<Icon name="rocket" size={30} color="#900"/>)
@@ -273,73 +275,76 @@ export default class LoginPage extends Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
+            <TouchableWithoutFeedback style={{flex: 1}} onPress={dismissKeyboard}>
+                <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
 
 
-                <View style={styles.navigator}>
-                    <Text style={{fontSize:24, flex:1, color:'#4a4a4a'}}>登录</Text>
-                    <TouchableOpacity onPress={this._onPressCancel.bind(this)}>
-                        <Image style={styles.close} source={require('../../assets/signin/close.png')}/>
-                    </TouchableOpacity>
+                    <View style={styles.navigator}>
+                        <Text style={{fontSize:24, flex:1, color:'#4a4a4a'}}>登录</Text>
+                        <TouchableOpacity onPress={this._onPressCancel.bind(this)}>
+                            <Image style={styles.close} source={require('../../assets/signin/close.png')}/>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View
+                        style={[styles.fieldContainer,{marginTop:60}, this.state.focus == 'phone' ? styles.activeFieldContainer : {}]}>
+                        <TextInput placeholder="请输入手机号码" maxLength={13}
+                                   clearButtonMode='while-editing' underlineColorAndroid='transparent'
+                                   style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
+                                   onChangeText={(text) => {this.state.phone=text, this.validate()}}
+                                   value={this.state.text}  keyboardType="numeric"
+                                   onFocus={(e) => {this.setState({focus:'phone'})}}/>
+                        <Text style={{fontSize:20,color:'#696969',lineHeight:23,fontFamily:'ArialMT'}}>+86</Text>
+                    </View>
+
+                    <View
+                        style={[styles.fieldContainer,{marginTop:20}, this.state.focus == 'code' ? styles.activeFieldContainer : {}]}>
+                        <TextInput placeholder="请输入验证码" maxLength={6}
+                                   clearButtonMode='while-editing' underlineColorAndroid='transparent'
+                                   style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
+                                   keyboardType="numeric"
+                                   onChangeText={(text) => {this.state.code=text; this.validate();}}
+                                   value={this.state.text}
+                                   blurOnSubmit={true}
+                                   onFocus={(e) => this.setState({focus:'code'})}/>
+                        <PhoneCodeButton onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
+                    </View>
+
+                    <View style={{justifyContent:'space-between', flexDirection:'row'}}>
+                        <TouchableHighlight>
+                            <Text style={{ fontSize: 14, padding:3, color:'#888',lineHeight:23,fontFamily:'ArialMT'}}
+                                  onPress={this._onPressForgetLink.bind(this)}>快速注册</Text>
+                        </TouchableHighlight>
+                    </View>
+
+                    <View style={{marginTop:40, flexDirection:'row'}}>
+                        <Button style={[styles.button, this.state.validForm ? styles.activeButton : null]}
+                                containerStyle={{flex:1, justifyContent: 'center', backgroundColor:'red'}}
+                                onPress={this._onPressLoginButton.bind(this)}>登录</Button>
+                    </View>
+
+                    {
+                        this.state.weixinInstalled? <View style={{marginTop:60, flexDirection:'row'}}>
+                            <View
+                                style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginRight:5}}></View>
+                            <Text style={{color:'#989898'}}>或合作账号登录</Text>
+                            <View
+                                style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginLeft:5}}></View>
+                        </View>: null
+                    }
+
+
+                    {
+                        this.state.weixinInstalled? <View style={{flexDirection:'row', justifyContent:'center', marginTop:20}}>
+                            <Icon.Button name="weixin" onPress={this._onPressWeixinIcon.bind(this)} size={26} color="#21b384"
+                                         backgroundColor="transparent" borderRadius={24} iconStyle={{marginRight:0}}
+                                         style={{borderWidth:1, borderColor:'#ccc',height:48, width:48}}/>
+                        </View>: null
+                    }
+
                 </View>
+            </TouchableWithoutFeedback>
 
-                <View
-                    style={[styles.fieldContainer,{marginTop:60}, this.state.focus == 'phone' ? styles.activeFieldContainer : {}]}>
-                    <TextInput placeholder="请输入手机号码" maxLength={13}
-                               clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                               style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
-                               onChangeText={(text) => {this.state.phone=text, this.validate()}}
-                               value={this.state.text}  keyboardType="numeric"
-                               onFocus={(e) => {this.setState({focus:'phone'})}}/>
-                    <Text style={{fontSize:20,color:'#696969',lineHeight:23,fontFamily:'ArialMT'}}>+86</Text>
-                </View>
-
-                <View
-                    style={[styles.fieldContainer,{marginTop:20}, this.state.focus == 'code' ? styles.activeFieldContainer : {}]}>
-                    <TextInput placeholder="请输入验证码" maxLength={6}
-                               clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                               style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
-                               keyboardType="numeric"
-                               onChangeText={(text) => {this.state.code=text; this.validate();}}
-                               value={this.state.text}
-                               blurOnSubmit={true}
-                               onFocus={(e) => this.setState({focus:'code'})}/>
-                    <PhoneCodeButton onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
-                </View>
-
-                <View style={{justifyContent:'space-between', flexDirection:'row'}}>
-                    <TouchableHighlight>
-                        <Text style={{ fontSize: 14, padding:3, color:'#888',lineHeight:23,fontFamily:'ArialMT'}}
-                              onPress={this._onPressForgetLink.bind(this)}>快速注册</Text>
-                    </TouchableHighlight>
-                </View>
-
-                <View style={{marginTop:40, flexDirection:'row'}}>
-                    <Button style={[styles.button, this.state.validForm ? styles.activeButton : null]}
-                            containerStyle={{flex:1, justifyContent: 'center', backgroundColor:'red'}}
-                            onPress={this._onPressLoginButton.bind(this)}>登录</Button>
-                </View>
-
-                {
-                    this.state.weixinInstalled? <View style={{marginTop:60, flexDirection:'row'}}>
-                        <View
-                            style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginRight:5}}></View>
-                        <Text style={{color:'#989898'}}>或合作账号登录</Text>
-                        <View
-                            style={{borderBottomColor:'#989898', borderBottomWidth:1, flex:1, height:8, marginLeft:5}}></View>
-                    </View>: null
-                }
-
-
-                {
-                    this.state.weixinInstalled? <View style={{flexDirection:'row', justifyContent:'center', marginTop:20}}>
-                        <Icon.Button name="weixin" onPress={this._onPressWeixinIcon.bind(this)} size={26} color="#21b384"
-                                     backgroundColor="transparent" borderRadius={24} iconStyle={{marginRight:0}}
-                                     style={{borderWidth:1, borderColor:'#ccc',height:48, width:48}}/>
-                    </View>: null
-                }
-
-            </View>
         );
     }
 }
