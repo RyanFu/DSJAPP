@@ -261,6 +261,9 @@ class Home extends React.Component {
             //     }
             // });
         }
+        if (data.i == 4) {
+            DeviceEventEmitter.emit('portraitUpdated', true);
+        }
 
     }
 
