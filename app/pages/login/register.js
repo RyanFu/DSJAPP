@@ -17,7 +17,8 @@ import {
     ActivityIndicatorIOS,
     InteractionManager,
     AsyncStorage,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import Home from '../home';
@@ -33,7 +34,7 @@ import LoginPage from './LoginPage';
 import configs from '../../constants/configs';
 import StorageKeys from '../../constants/StorageKeys';
 import {fetchUserInfo} from '../../actions/user';
-
+const dismissKeyboard = require('dismissKeyboard');
 const myIcon = (<Icon name="rocket" size={30} color="#900" />)
 
 export default class ForgetPasswordPage extends Component {
@@ -166,41 +167,44 @@ export default class ForgetPasswordPage extends Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
+            <TouchableWithoutFeedback style={{flex: 1}} onPress={dismissKeyboard}>
+                <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]}>
 
-                <View style={styles.navigator}>
-                    <Icon.Button name="angle-left" size={32} color="#4a4a4a" backgroundColor="transparent" onPress={this._onPasswordLoginLink.bind(this)}>
-                        <Text style={{fontSize:24, color:'#4a4a4a'}}>返回登录</Text>
-                    </Icon.Button>
+                    <View style={styles.navigator}>
+                        <Icon.Button name="angle-left" size={32} color="#4a4a4a" backgroundColor="transparent" onPress={this._onPasswordLoginLink.bind(this)}>
+                            <Text style={{fontSize:24, color:'#4a4a4a'}}>返回登录</Text>
+                        </Icon.Button>
+                    </View>
+
+                    <View style={[styles.fieldContainer,{marginTop:60}, this.state.focus == 'phone' ? styles.activeFieldContainer : {}]}>
+                        <TextInput placeholder="请输入手机号码" maxLength={13}
+                                   clearButtonMode='while-editing' underlineColorAndroid='transparent'
+                                   style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
+                                   onChangeText={(text) => {this.state.phone=text, this.validate()}}
+                                   value={this.state.text} autoFocus={true} keyboardType="numeric"
+                                   onFocus={(e) => {this.setState({focus:'phone'})}}/>
+                        <Text style={{fontSize:20,color:'#696969',lineHeight:23,fontFamily:'ArialMT'}}>+86</Text>
+                    </View>
+
+                    <View style={[styles.fieldContainer,{marginTop:20}, this.state.focus == 'code' ? styles.activeFieldContainer : {}]}>
+                        <TextInput placeholder="请输入验证码" maxLength={6}
+                                   clearButtonMode='while-editing' underlineColorAndroid='transparent'
+                                   style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
+                                   keyboardType="numeric"
+                                   onChangeText={(text) => {this.state.code=text; this.validate();}}
+                                   value={this.state.text}
+                                   onFocus={(e) => this.setState({focus:'code'})}/>
+                        <PhoneCodeButton onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
+                    </View>
+
+                    <View style={{marginTop:40, flexDirection:'row'}}>
+                        <Button style={[styles.button, this.state.validForm ? styles.activeButton : null]} containerStyle={{flex:1}}
+                                onPress={this._onPressLoginButton.bind(this)}>注册</Button>
+                    </View>
+
                 </View>
+            </TouchableWithoutFeedback>
 
-                <View style={[styles.fieldContainer,{marginTop:60}, this.state.focus == 'phone' ? styles.activeFieldContainer : {}]}>
-                    <TextInput placeholder="请输入手机号码" maxLength={13}
-                               clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                               style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
-                               onChangeText={(text) => {this.state.phone=text, this.validate()}}
-                               value={this.state.text} autoFocus={true} keyboardType="numeric"
-                               onFocus={(e) => {this.setState({focus:'phone'})}}/>
-                    <Text style={{fontSize:20,color:'#696969',lineHeight:23,fontFamily:'ArialMT'}}>+86</Text>
-                </View>
-
-                <View style={[styles.fieldContainer,{marginTop:20}, this.state.focus == 'code' ? styles.activeFieldContainer : {}]}>
-                    <TextInput placeholder="请输入验证码" maxLength={6}
-                               clearButtonMode='while-editing' underlineColorAndroid='transparent'
-                               style={[styles.textInput, Platform.OS === 'android' ? null : {height: 26}]}
-                               keyboardType="numeric"
-                               onChangeText={(text) => {this.state.code=text; this.validate();}}
-                               value={this.state.text}
-                               onFocus={(e) => this.setState({focus:'code'})}/>
-                    <PhoneCodeButton onPress={this._sendCode.bind(this)} sendSuccess={this.state.sendSuccess}>发送验证码</PhoneCodeButton>
-                </View>
-
-                <View style={{marginTop:40, flexDirection:'row'}}>
-                    <Button style={[styles.button, this.state.validForm ? styles.activeButton : null]} containerStyle={{flex:1}}
-                            onPress={this._onPressLoginButton.bind(this)}>注册</Button>
-                </View>
-
-            </View>
         );
     }
 }
