@@ -180,34 +180,35 @@ class Home extends React.Component {
 
     _tklParse(text) {
         const the = this;
-        let userId = 17321057664;
+        let userId = '';
         AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result) => {
             if (result) {
                 result = JSON.parse(result);
                 userId = result.userId || userId;
-                let body = {
-                    token: text
-                };
-                body = JSON.stringify(body);
-                request('/taokouling/decode?userId=' + userId , 'POST', body)
-                    .then((res) => {
-                        if (res.resultCode === 0 && res.resultValues.status === 0) {
-                            let data = JSON.parse(res.resultValues.data);
-                            data =  data.data;
-                            this._showItemDetailPopup(data);
-                        } else {
-                        }
-
-                        const data= JSON.parse("{\"tkSpecialCampaignIdRateMap\":{\"34098653\":\"15.50\",\"21145035\":\"7.50\"},\"eventCreatorId\":0,\"rootCatId\":16,\"leafCatId\":50008898,\"debugInfo\":null,\"rootCatScore\":0,\"nick\":\"初语旗舰店\",\"userType\":1,\"title\":\"初语2018春装新款 假两件卫衣女中长款宽松连帽ulzzang长袖上衣\",\"sellerId\":761679524,\"shopTitle\":\"初语旗舰店\",\"pictUrl\":\"//img.alicdn.com/bao/uploaded/i2/761679524/TB1AxvganZRMeJjSsppXXXrEpXa_!!0-item_pic.jpg\",\"couponLink\":\"\",\"couponLinkTaoToken\":\"\",\"couponActivityId\":null,\"couponAmount\":0,\"couponStartFee\":0,\"couponTotalCount\":0,\"couponEffectiveStartTime\":\"\",\"couponEffectiveEndTime\":\"\",\"tkRate\":5.50,\"dayLeft\":-17600,\"tk3rdRate\":null,\"auctionUrl\":\"http://item.taobao.com/item.htm?id=542978443607\",\"biz30day\":2335,\"auctionId\":542978443607,\"tkMktStatus\":null,\"includeDxjh\":1,\"reservePrice\":249.00,\"tkCommFee\":10.95,\"totalFee\":2391.98,\"totalNum\":227,\"zkPrice\":199.00,\"auctionTag\":\"4 385 587 907 1163 1478 1483 2049 2059 3851 3915 3974 4166 4491 4550 4555 4801 5895 6603 7105 7495 8326 11083 11339 11531 12491 13707 13771 13953 15297 15563 16321 16395 16577 17739 17803 20609 21442 21697 23105 25282 28353 28802 30337 30401 30593 30657 30849 30977 31489 34433 35713 36033 36161 36929 37569 37633 39233 40897 46849 49218 49282 51585 51841 51969 60418 62082 63105 64129 65281 67521 70465 72386 73089 73601 74369 74561 74689 74753 79489 81793 82306 82498 82625 84801 84865 85697 86081 91201 101762 107842 112386 116546 119234 119298 119426 120962 143746 151362 166402 175490 189250 194626 202370 202434 208770 212546 213378 218434 218562 218626 232898 233026 237698 243906 244994 245058 246978 248898 248962 249090 249858 249922 251138 253570\",\"couponLeftCount\":0,\"tkCommonRate\":5.50,\"tkCommonFee\":10.95,\"rlRate\":20.08,\"sameItemPid\":\"-352184043\",\"hasRecommended\":null,\"hasSame\":null,\"hasUmpBonus\":null,\"umpBonus\":null,\"isBizActivity\":null,\"couponShortLink\":null,\"couponInfo\":\"无\",\"eventRate\":null,\"rootCategoryName\":null,\"couponOriLink\":null,\"userTypeName\":null,\"tkFinalRate\":null,\"tkFinalFee\":null}");
-                        this._showItemDetailPopup(data);
-
-                    }, function (error) {
-                        console.log(error);
-                    })
-                    .catch(() => {
-                        console.log('network error');
-                    });
             }
+            let body = {
+                token: text
+            };
+            body = JSON.stringify(body);
+            request('/taokouling/decode?userId=' + userId , 'POST', body)
+                .then((res) => {
+                    if (res.resultCode === 0 && res.resultValues.status === 0) {
+                        let data = JSON.parse(res.resultValues.data);
+                        data =  data.data;
+                        this._showItemDetailPopup(data);
+                        Clipboard.setString('');
+                    } else {
+                    }
+
+                    // const data= JSON.parse("{\"tkSpecialCampaignIdRateMap\":{\"34098653\":\"15.50\",\"21145035\":\"7.50\"},\"eventCreatorId\":0,\"rootCatId\":16,\"leafCatId\":50008898,\"debugInfo\":null,\"rootCatScore\":0,\"nick\":\"初语旗舰店\",\"userType\":1,\"title\":\"初语2018春装新款 假两件卫衣女中长款宽松连帽ulzzang长袖上衣\",\"sellerId\":761679524,\"shopTitle\":\"初语旗舰店\",\"pictUrl\":\"//img.alicdn.com/bao/uploaded/i2/761679524/TB1AxvganZRMeJjSsppXXXrEpXa_!!0-item_pic.jpg\",\"couponLink\":\"\",\"couponLinkTaoToken\":\"\",\"couponActivityId\":null,\"couponAmount\":0,\"couponStartFee\":0,\"couponTotalCount\":0,\"couponEffectiveStartTime\":\"\",\"couponEffectiveEndTime\":\"\",\"tkRate\":5.50,\"dayLeft\":-17600,\"tk3rdRate\":null,\"auctionUrl\":\"http://item.taobao.com/item.htm?id=542978443607\",\"biz30day\":2335,\"auctionId\":542978443607,\"tkMktStatus\":null,\"includeDxjh\":1,\"reservePrice\":249.00,\"tkCommFee\":10.95,\"totalFee\":2391.98,\"totalNum\":227,\"zkPrice\":199.00,\"auctionTag\":\"4 385 587 907 1163 1478 1483 2049 2059 3851 3915 3974 4166 4491 4550 4555 4801 5895 6603 7105 7495 8326 11083 11339 11531 12491 13707 13771 13953 15297 15563 16321 16395 16577 17739 17803 20609 21442 21697 23105 25282 28353 28802 30337 30401 30593 30657 30849 30977 31489 34433 35713 36033 36161 36929 37569 37633 39233 40897 46849 49218 49282 51585 51841 51969 60418 62082 63105 64129 65281 67521 70465 72386 73089 73601 74369 74561 74689 74753 79489 81793 82306 82498 82625 84801 84865 85697 86081 91201 101762 107842 112386 116546 119234 119298 119426 120962 143746 151362 166402 175490 189250 194626 202370 202434 208770 212546 213378 218434 218562 218626 232898 233026 237698 243906 244994 245058 246978 248898 248962 249090 249858 249922 251138 253570\",\"couponLeftCount\":0,\"tkCommonRate\":5.50,\"tkCommonFee\":10.95,\"rlRate\":20.08,\"sameItemPid\":\"-352184043\",\"hasRecommended\":null,\"hasSame\":null,\"hasUmpBonus\":null,\"umpBonus\":null,\"isBizActivity\":null,\"couponShortLink\":null,\"couponInfo\":\"无\",\"eventRate\":null,\"rootCategoryName\":null,\"couponOriLink\":null,\"userTypeName\":null,\"tkFinalRate\":null,\"tkFinalFee\":null}");
+                    // this._showItemDetailPopup(data);
+
+                }, function (error) {
+                    console.log(error);
+                })
+                .catch(() => {
+                    console.log('network error');
+                });
         });
     }
 
