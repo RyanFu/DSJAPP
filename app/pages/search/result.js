@@ -145,7 +145,7 @@ class SearchResult extends React.Component {
             the.setState({searching: false});
         })
 
-        if (data.i === 2) {
+        if (data && data.i && data.i === 2) {
             AsyncStorage.getItem(StorageKeys.FIST_USE_BIG_RED_PACKET).then((bFirstTime) => {
                 if (bFirstTime !== 'false') {
                     Alert.alert('', '请知晓：红包大指的是返利的比率高，并不是数额高。',
