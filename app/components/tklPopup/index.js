@@ -17,6 +17,8 @@ import baiChuanApi from 'react-native-taobao-baichuan-api';
 import images from "../../constants/images";
 import PrefetchImage from '../../components/prefetchImage';
 import {addRecentView} from "../../actions/recent";
+import StorageKeys from "../../constants/StorageKeys";
+import ResultPage from "../../pages/search/result";
 
 var {height, width} = Dimensions.get('window');
 
@@ -52,9 +54,21 @@ class TklPopup extends React.Component {
             this.props.onPressCross(never);
     }
 
+    _searchByTitle(data) {
+        const {navigator} = this.props;
+        navigator.push({
+            component: ResultPage,
+            name: 'ResultPage',
+            text: data.title
+        });
+    }
+
     _jumpToItemPage(data) {
-
-
+        this._close();
+        if(!data.tkCommFee){
+            this._searchByTitle(data);
+            return;
+        }
         if (data.couponLink) {
             Linking.canOpenURL(data.couponLink).then(supported => {
                 if (supported) {
@@ -149,7 +163,7 @@ class TklPopup extends React.Component {
                         <View style={[styles.row, styles.btnRow]}>
                             <TouchableOpacity style={styles.Button}
                                               onPress={() => this._jumpToItemPage(this.props.data)}>
-                                <Text style={styles.ButtonFont}>立刻购买</Text>
+                                <Text style={styles.ButtonFont}>{this.props.data.tkCommFee?'立刻购买':'找相似'}</Text>
                             </TouchableOpacity>
                         </View>
 
