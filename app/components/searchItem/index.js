@@ -192,9 +192,11 @@ class SearchItem extends React.Component {
         });
     }
 
-    _jumpToCouponPage(itemId, data) {
+    _jumpToCouponPage(itemId, searchData) {
+        const {navigator, dispatch} = this.props;
         const the = this;
         let userId = 17321057664;
+
         Token.getToken(navigator).then((token) => {
             if (token) {
                 AsyncStorage.getItem(StorageKeys.ME_STORAGE_KEY, (err, result) => {
@@ -215,8 +217,9 @@ class SearchItem extends React.Component {
                                             the._gotoH5Page('',data.data.couponShortLinkUrl);
                                         }
                                     })
+                                    dispatch(addRecentView(searchData));
                                 } else {
-                                    this._jumpToTaobaoPage(itemId, data);
+                                    this._jumpToTaobaoPage(itemId, searchData);
                                 }
 
 
