@@ -55,7 +55,7 @@ class SearchResult extends React.Component {
             itemId: null,
             itemData: null,
             callback: null,
-            ratio: 0.7,
+            ratio: 0.8,
             showbackTip: false,
         };
     }

@@ -9,7 +9,7 @@ import {
     StyleSheet,
     Dimensions,
     TouchableWithoutFeedback,
-    Image, Linking
+    Image, Linking, AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {decimals, isIphoneX, Token} from "../../utils/common";
@@ -36,6 +36,10 @@ class TklPopup extends React.Component {
         const the = this;
 
         this.setState({show: true});
+        AsyncStorage.getItem('ratio', (error, result) => {
+            the.setState({ratio: result});
+        });
+
     }
 
     componentWillReceiveProps() {
