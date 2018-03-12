@@ -99,6 +99,12 @@ class TbPopup extends React.Component {
                         <View style={{flexDirection: 'row'}}>
                             <Text style={styles.important}>*</Text><Text style={[styles.content2,styles.dimText,styles.important]}>下单后请“复制单号”才能获得红包</Text>
                         </View>
+                        {
+                            this.props.hasCoupon? <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.content3}>先领券再购物更划算哦</Text>
+                            </View>:null
+                        }
+
 
                     </View>
                     <View style={styles.warn}>

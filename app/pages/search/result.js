@@ -166,6 +166,7 @@ class SearchResult extends React.Component {
         this.setState({redPacket: data.tkCommFee});
         this.setState({itemId: itemId});
         this.setState({itemDate: data});
+        this.setState({coupon: data.couponAmount});
         this.setState({callback: callback})
     }
 
@@ -188,6 +189,7 @@ class SearchResult extends React.Component {
                         onPressCross={this._onPressCross}
                         redPacket={this.state.redPacket}
                         show={true}
+                        hasCoupon={this.state.coupon}
                         /> : null
                 }
                 {
