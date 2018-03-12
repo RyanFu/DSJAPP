@@ -27,7 +27,8 @@ const searchCondition = function (state = initialState, action = {}) {
                 startPrice: 0,
                 endPrice: 0,
                 location: 'all',
-                tmall: false
+                tmall: false,
+                coupon: false
             };
         case types.SEARCH_CONDITION_UPDATE:
             let ret;
@@ -41,7 +42,8 @@ const searchCondition = function (state = initialState, action = {}) {
                     startPrice: action.startPrice ,
                     endPrice: action.endPrice ,
                     location: action.location ,
-                    tmall: action.tmall
+                    tmall: action.tmall,
+                    coupon: action.coupon
                 });
             if (action.moods)
                 ret = Object.assign({}, state, {
@@ -53,7 +55,8 @@ const searchCondition = function (state = initialState, action = {}) {
                     startPrice: action.startPrice ,
                     endPrice: action.endPrice ,
                     location: action.location ,
-                    tmall: action.tmall
+                    tmall: action.tmall,
+                    coupon: action.coupon
                 });
             if (action.price)
                 ret = Object.assign({}, state, {
@@ -66,7 +69,8 @@ const searchCondition = function (state = initialState, action = {}) {
                     startPrice: action.startPrice ,
                     endPrice: action.endPrice ,
                     location: action.location ,
-                    tmall: action.tmall
+                    tmall: action.tmall,
+                    coupon: action.coupon
                 });
             if (action.redPacket)
                 ret = Object.assign({}, state, {
@@ -79,7 +83,8 @@ const searchCondition = function (state = initialState, action = {}) {
                     startPrice: action.startPrice ,
                     endPrice: action.endPrice ,
                     location: action.location ,
-                    tmall: action.tmall
+                    tmall: action.tmall,
+                    coupon: action.coupon
                 });
             return ret;
         default:

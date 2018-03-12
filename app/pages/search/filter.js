@@ -31,7 +31,8 @@ class Filter extends React.Component {
             startPrice: this.props.searchCondition.startPrice,
             endPrice: this.props.searchCondition.endPrice,
             tmall: this.props.searchCondition.tmall,
-            location: this.props.searchCondition.location
+            location: this.props.searchCondition.location,
+            coupon: this.props.searchCondition.coupon
         }
     }
 
@@ -85,10 +86,14 @@ class Filter extends React.Component {
             startPrice: 0,
             endPrice: 0,
             location: 'all',
-            tmall: false
+            tmall: false,
+            coupon: false
         };
         if (this.state.tmall) {
             action.tmall = true;
+        }
+        if (this.state.coupon) {
+            action.coupon = true;
         }
         _.each(this.refs, ((val, key)=> {
             if (this.refs[key].selected && key !== 'tmall') {
@@ -135,7 +140,9 @@ class Filter extends React.Component {
         const the = this;
         if (v === 'tmall') {
             the.setState({tmall: !this.state.tmall});
-        } else {
+        } else if(v === 'coupon'){
+            the.setState({coupon: !this.state.coupon});
+        }else {
             _.each(this.refs, ((val, key)=> {
                 if (key !== 'tmall')
                     the.refs[key].selected = false;
@@ -178,6 +185,25 @@ class Filter extends React.Component {
                                             <Text style={[styles.buttonGFont,
                                                             {color: this.state.tmall?'#fc7d30':'#000'}
                                                 ]}>天猫</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+                                <View style={[styles.block]}>
+                                    <View style={styles.title}>
+                                        <Text>优惠券</Text>
+                                    </View>
+                                    <View style={styles.content}>
+                                        <TouchableOpacity ref='tmall'
+                                                          style={[styles.buttonGrey,
+                                                              {borderColor: this.state.coupon?'rgba(252, 125, 48, 0.3)':'rgba(178,178,178,0.3)'},
+                                                              {backgroundColor: this.state.coupon?'rgba(252, 125, 48, 0.3)':'#fff'},
+
+                                                          ]}
+                                                          onPress={()=>{this._onButtonPress('coupon')}}>
+                                            <Text style={[styles.buttonGFont,
+                                                {color: this.state.coupon?'#fc7d30':'#000'}
+                                            ]}>仅搜含优惠券</Text>
                                         </TouchableOpacity>
                                     </View>
 

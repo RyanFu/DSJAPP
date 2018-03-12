@@ -26,7 +26,7 @@ export function fetchItemSearchList(params) {
             query = '&queryType=2';
         }
         if (params.searchCondition && params.searchCondition.redPacket) {
-            query = 'queryType=0&sortType=1';
+            query = '&queryType=0&sortType=1';
         }
 
         //filter
@@ -39,13 +39,18 @@ export function fetchItemSearchList(params) {
         if (params.searchCondition && params.searchCondition.location !== 'all') {
             query += '&loc=' + params.searchCondition.location;
         }
+        if (params.searchCondition && params.searchCondition.coupon) {
+            query += '&dpyhq=1&shopTag=dpyhq';
+        } else {
+            query += '&shopTag=';
+        }
         let url = {
             host: configs.itemSearchUrlFromAli,
             route: 'items/search.json?q=' + params.text
             + '&t=' + timeStamp
             + '&perPageSize=' + pageSize
             + '&toPage=' + (params.currentPage ? params.currentPage : 1)
-            + '&_t=1489972949888&auctionTag=&shopTag=&t=1489972949891&_tb_token_=&pvid=10_202.76.247.11_429_1489972855472'
+            + '&_t=1489972949888&auctionTag=&t=1489972949891&_tb_token_=&pvid=10_202.76.247.11_429_1489972855472'
             + query
         };
 
