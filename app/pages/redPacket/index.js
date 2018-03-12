@@ -735,6 +735,7 @@ class RedPacket extends React.Component {
 
     _onRefresh(manual) {
         let the = this;
+        const {dispatch} = this.props;
         if(manual)
             this.setState({refreshing: true});
         this._getRecentBuy()
@@ -745,6 +746,10 @@ class RedPacket extends React.Component {
         Token.getToken().then((token) => {
 
             this.setState({token: token||''})
+        });
+        dispatch(fetchRecentView()).then(() => {
+            const copy = _.cloneDeep(this.props.recent.recentView);
+            the.setState({viewSource: this.ds.cloneWithRows(_.reverse(copy))});
         });
         if(manual)
             setTimeout(() => {
@@ -852,10 +857,10 @@ class RedPacket extends React.Component {
                             this.props.recent.recentBuy.length >= 0 || this.props.recent.recentView.length > 0 ?
 
                                 <View
-                                    style={[styles.block, styles.recent, {height: this.props.recent.recentView.length > 0 && this.props.recent.recentBuy.length > 0 ? 490 : 245}]}>
+                                    style={[styles.block, styles.recent]}>
                                     {
                                         this.state.token && this.props.recent.recentBuy.length >= 0 ?
-                                            <View style={{marginBottom: 10}}>
+                                            <View style={{marginBottom: 5}}>
                                                 <View style={styles.blockTitle}>
 
                                                     <Text style={[styles.historyTitle, styles.baseText]}>最近购买：</Text>
@@ -878,7 +883,7 @@ class RedPacket extends React.Component {
                                     }
                                     {
                                         this.props.recent.recentView.length > 0 ?
-                                            <View>
+                                            <View style={{marginBottom: 5}}>
                                                 <View style={styles.blockTitle}>
                                                     <View style={styles.delete}>
                                                         <TouchableOpacity onPress={() => this._deleteViewHistory()}>

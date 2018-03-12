@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start'
     },
     recent: {
-        minHeight: 220
+        minHeight: 220,
+        marginBottom: 20
     },
     searchHeader: {
         height: 42,
@@ -187,11 +188,12 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     recentBuy: {
-        marginBottom: 20,
+        marginBottom: 10,
         marginTop: 10
     },
     recentView: {
-        marginTop: 10
+        marginTop: 10,
+        marginBottom: 10,
     },
     syncShadow: {
         marginTop: 2,
