@@ -101,7 +101,7 @@ class TbPopup extends React.Component {
                         </View>
                         {
                             this.props.hasCoupon? <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.content3}>先领券再购物更划算哦</Text>
+                            <Text style={[styles.content3,{color:'#ff6b6b'}]}>先领券再购物更划算哦</Text>
                             </View>:null
                         }
 
@@ -111,7 +111,7 @@ class TbPopup extends React.Component {
                         <Text style={styles.warnText}>(实际红包额可能随商品型号等原因略有不同)</Text>
                     </View>
                     <View style={{ bottom:10, flexDirection:'column'}}>
-                        <Button style={styles.button}
+                        <Button style={[styles.button,{backgroundColor: this.props.hasCoupon?'#ff6b6b':'#F37D30' }]}
                                 containerStyle={{ justifyContent: 'center'}}
                                 onPress={this._onPressButton.bind(this)}>知道了，继续购物</Button>
                         <TouchableOpacity style={styles.countDown}>
