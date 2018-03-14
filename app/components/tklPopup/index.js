@@ -19,6 +19,7 @@ import PrefetchImage from '../../components/prefetchImage';
 import {addRecentView} from "../../actions/recent";
 import StorageKeys from "../../constants/StorageKeys";
 import ResultPage from "../../pages/search/result";
+import configs from "../../constants/configs";
 
 var {height, width} = Dimensions.get('window');
 
@@ -63,7 +64,7 @@ class TklPopup extends React.Component {
         navigator.push({
             component: ResultPage,
             name: 'ResultPage',
-            text: data.title
+            text: data.name
         });
     }
 
@@ -84,9 +85,11 @@ class TklPopup extends React.Component {
         dispatch(addRecentView(patchData));
         DeviceEventEmitter.emit('newView', true);
         if (data.is2in1 && data.couponLink) {
-            Linking.canOpenURL(data.couponLink).then(supported => {
+            const couponLink = data.couponLink.replace('https://','');
+            const url = configs.taobaoLink + couponLink;
+            Linking.canOpenURL(url).then(supported => {
                 if (supported) {
-                    Linking.openURL(data.couponLink);
+                    Linking.openURL(url);
                 } else {
                     this._jumpToTaobaoPage(data);
                 }
@@ -120,7 +123,7 @@ class TklPopup extends React.Component {
                     <View style={styles.content}>
 
                         <View>
-                            <Image source={{uri: this.props.data.picUrl, width: 290, height: 180}}
+                            <Image source={{uri: this.props.data.picUrl.indexOf('http') == 0?this.props.data.picUrl:('http:'+this.props.data.picUrl), width: 290, height: 180}}
                                    resizeMode={'cover'}
                                    style={{borderTopLeftRadius: 4, borderTopRightRadius: 4}}/>
 

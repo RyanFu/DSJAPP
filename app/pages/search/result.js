@@ -46,6 +46,7 @@ class SearchResult extends React.Component {
         this._getItemData = this._getItemData.bind(this);
         this._onPressTipButton = this._onPressTipButton.bind(this);
         this._onPressCross = this._onPressCross.bind(this);
+        this._onPressCrossNe = this._onPressCrossNe.bind(this);
         this.state = {
             searching: false,
             xiaohongshuSearching: true,
@@ -119,7 +120,7 @@ class SearchResult extends React.Component {
         this.backFromTBEvent.remove();
     }
 
-    _onPressCross(never) {
+    _onPressCrossNe(never) {
         this.setState({showbackTip: false});
         if (never) {
             AsyncStorage.setItem('neverShowSyncTip', 'true');
@@ -194,7 +195,7 @@ class SearchResult extends React.Component {
                 }
                 {
                     this.state.showbackTip ? <SyncTipsPopup
-                        onPressCross={(never) => this._onPressCross(never)}
+                        onPressCross={(never) => this._onPressCrossNe(never)}
                         show={true}
                     /> : null
                 }
