@@ -69,16 +69,16 @@ class TklPopup extends React.Component {
 
     _jumpToItemPage(data) {
         this._close();
-        if(!data.tkCommFee){
+        if (!data.tkCommFee) {
             this._searchByTitle(data);
             return;
         }
-        if (data.couponLink) {
+        if (data.is2in1 && data.couponLink) {
             Linking.canOpenURL(data.couponLink).then(supported => {
                 if (supported) {
-                    Linking.openURL(url);
+                    Linking.openURL(data.couponLink);
                 } else {
-                    _jumpToTaobaoPage(data);
+                    this._jumpToTaobaoPage(data);
                 }
             });
             return;
@@ -92,7 +92,7 @@ class TklPopup extends React.Component {
         const {navigator, dispatch} = this.props;
         Token.getToken(navigator).then((token) => {
             if (token) {
-                baiChuanApi.jump(data.auctionId.toString(), '', type, (error, res) => {
+                baiChuanApi.jump(data.id.toString(), '', type, (error, res) => {
                     if (error) {
                         console.error(error);
                     }
@@ -110,7 +110,7 @@ class TklPopup extends React.Component {
                     <View style={styles.content}>
 
                         <View>
-                            <Image source={{uri: 'http:' + this.props.data.pictUrl, width: 290, height: 180}}
+                            <Image source={{uri: this.props.data.picUrl, width: 290, height: 180}}
                                    resizeMode={'cover'}
                                    style={{borderTopLeftRadius: 4, borderTopRightRadius: 4}}/>
 
@@ -119,29 +119,42 @@ class TklPopup extends React.Component {
                             <Text style={[styles.baseText, styles.dimText]}
                                   lineBreakMode={'tail'}
                                   numberOfLines={2}>
-                                {this.props.data.title}
+                                {this.props.data.name}
                             </Text>
                         </View>
                         <View style={styles.row}>
-                            <View style={styles.price}>
-                                <Text style={[styles.baseText, styles.dimText]}>
-                                    ￥
-                                </Text>
-                                <Text style={[styles.baseText, styles.priceNum]}>
-                                    {this.props.data.zkPrice}
-                                </Text>
-                            </View>
-
-                            <Image
-                                style={{width: 16, height: 16, marginLeft: 8}}
-                                resizeMode={'contain'}
-                                source={require('../../assets/footer/red.png')}
-                            />
-                            <Text style={[styles.baseText, styles.dimText, {marginLeft: 2, color: '#fc7d30',}]}>
-                                ￥{decimals(this.props.data.tkCommFee * this.state.ratio, 2)}
-                            </Text>
                             {
-                                this.props.data.couponAmount ?
+                                this.props.data.Price ?
+                                    <View style={styles.price}>
+                                        <Text style={[styles.baseText, styles.dimText]}>
+                                            ￥
+                                        </Text>
+                                        <Text style={[styles.baseText, styles.priceNum]}>
+                                            {this.props.data.Price}
+                                        </Text>
+                                    </View> : null
+                            }
+
+                            {
+                                this.props.data.tkCommFee ?
+                                    <Image
+                                        style={{width: 16, height: 16, marginLeft: 8}}
+                                        resizeMode={'contain'}
+                                        source={require('../../assets/footer/red.png')}
+                                    />
+                                    : null
+                            }
+
+                            {
+                                this.props.data.tkCommFee ?
+                                    <Text style={[styles.baseText, styles.dimText, {marginLeft: 2, color: '#fc7d30',}]}>
+                                        ￥{decimals(this.props.data.tkCommFee * this.state.ratio, 2)}
+                                    </Text> : null
+                            }
+
+
+                            {
+                                this.props.data.couponAmount && this.props.data.couponAmount != '0' ?
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         <View style={styles.coupon}>
                                             <Text
@@ -152,22 +165,27 @@ class TklPopup extends React.Component {
                             }
                         </View>
 
-                        <View style={styles.row}>
-                            <Image
-                                style={{width: 12, height: 12, opacity: 0.5, marginLeft: 4}}
-                                resizeMode={'cover'}
-                                source={require('../../assets/search/shop.png')}
-                            />
-                            <Text style={[styles.baseText, styles.dimText, styles.shopTitle, {marginLeft: 4}]}
-                                  lineBreakMode={'tail'} numberOfLines={1}>
-                                {this.props.data.shopTitle}
-                            </Text>
-                        </View>
+                        {
+                            this.props.data.store ?
+                                <View style={styles.row}>
+                                    <Image
+                                        style={{width: 12, height: 12, opacity: 0.5, marginLeft: 4}}
+                                        resizeMode={'cover'}
+                                        source={require('../../assets/search/shop.png')}
+                                    />
+                                    <Text style={[styles.baseText, styles.dimText, styles.shopTitle, {marginLeft: 4}]}
+                                          lineBreakMode={'tail'} numberOfLines={1}>
+                                        {this.props.data.store}
+                                    </Text>
+                                </View> : null
+                        }
+
 
                         <View style={[styles.row, styles.btnRow]}>
                             <TouchableOpacity style={styles.Button}
                                               onPress={() => this._jumpToItemPage(this.props.data)}>
-                                <Text style={styles.ButtonFont}>{this.props.data.tkCommFee?'立刻购买':'找相似'}</Text>
+                                <Text
+                                    style={styles.ButtonFont}>{this.props.data.tkCommFee ? (this.props.data.is2in1 ? '领券购买' : '立刻购买') : '找相似'}</Text>
                             </TouchableOpacity>
                         </View>
 
