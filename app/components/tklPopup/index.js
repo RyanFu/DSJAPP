@@ -9,7 +9,7 @@ import {
     StyleSheet,
     Dimensions,
     TouchableWithoutFeedback,
-    Image, Linking, AsyncStorage
+    Image, Linking, AsyncStorage,DeviceEventEmitter
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {decimals, isIphoneX, Token} from "../../utils/common";
@@ -68,11 +68,21 @@ class TklPopup extends React.Component {
     }
 
     _jumpToItemPage(data) {
+        const {dispatch} = this.props;
         this._close();
         if (!data.tkCommFee) {
             this._searchByTitle(data);
             return;
         }
+        const patchData = {
+            tkCommFee: data.tkCommFee || 0,
+            itemPrice: data.Price || 0,
+            itemTitle: data.name,
+            itemPicUrl: data.picUrl,
+            itemId: data.id
+        };
+        dispatch(addRecentView(patchData));
+        DeviceEventEmitter.emit('newView', true);
         if (data.is2in1 && data.couponLink) {
             Linking.canOpenURL(data.couponLink).then(supported => {
                 if (supported) {
