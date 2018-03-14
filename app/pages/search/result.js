@@ -120,7 +120,7 @@ class SearchResult extends React.Component {
     }
 
     _onPressCross(never) {
-        this.setState({showTip: false});
+        this.setState({showbackTip: false});
         if (never) {
             AsyncStorage.setItem('neverShowSyncTip', 'true');
         }
