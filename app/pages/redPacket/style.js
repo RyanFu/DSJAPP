@@ -338,6 +338,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 16,
         marginRight: 4
+    },
+    searchTitle: {
+        height: 20
     }
 });
 
