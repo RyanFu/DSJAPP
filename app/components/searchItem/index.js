@@ -341,18 +341,30 @@ class SearchItem extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ListView
-                    contentContainerStyle={styles.itemList}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                    horizontal={false}
-                    showsVerticalScrollIndicator={false}
-                    enableEmptySections={true}
-                    onEndReached={() => this._onEndReached()}
-                    onEndReachedThreshold={10}
-                    scrollEventThrottle={200}
-                    renderFooter={this._renderFooter}
-                />
+                {
+                    this.props.search.itemList.length > 0 ?
+                        <ListView
+                            contentContainerStyle={styles.itemList}
+                            dataSource={this.state.dataSource}
+                            renderRow={this._renderRow}
+                            horizontal={false}
+                            showsVerticalScrollIndicator={false}
+                            enableEmptySections={true}
+                            onEndReached={() => this._onEndReached()}
+                            onEndReachedThreshold={10}
+                            scrollEventThrottle={200}
+                            renderFooter={this._renderFooter}
+                        />:
+                        <View style={styles.noItems}>
+                            <Icon
+                                color={'#F37D30'}
+                                size={70}
+                                name={'logo-freebsd-devil'}
+                            />
+                            <Text style={styles.dimText}>缩短关键字再试试吧</Text>
+                        </View>
+                }
+
 
             </View>
         )
