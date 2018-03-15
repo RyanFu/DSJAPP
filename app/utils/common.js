@@ -154,7 +154,7 @@ export function request(request, method, body, token) {
                 AsyncStorage.setItem(StorageKeys.X_APP_TOKEN, xAppToken);
             }
             if (response.status == 407) {
-                toast('网络连接不可用，请检查您的网络！')
+                toast('服务器维护中，稍等');
             }
             if(response.status == 403 && token) {
                 if (request.navigator && response.status == 403 && token) {
@@ -180,7 +180,7 @@ export function request(request, method, body, token) {
             }
         }).catch((error) => {
             if (error.message.indexOf('"Network request failed"')) {
-                toast('网络连接不可用，请检查您的网络！');
+                toast('服务器维护中，请稍等!');
             }
 
             reject(error);

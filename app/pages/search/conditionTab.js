@@ -55,7 +55,8 @@ class TabBar extends React.Component {
             startPrice: this.props.searchCondition.startPrice,
             endPrice: this.props.searchCondition.endPrice,
             location: this.props.searchCondition.location,
-            tmall: this.props.searchCondition.tmall
+            tmall: this.props.searchCondition.tmall,
+            coupon: this.props.searchCondition.coupon
         };
         if (i === 0) {
             action.sv = true;
