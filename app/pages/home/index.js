@@ -197,6 +197,7 @@ class Home extends React.Component {
                         data = JSON.parse(res.resultValues.data);
                     if (res.resultCode === 0 && res.resultValues.status === 0 && data||
                         res.resultCode === 0 && res.resultValues.status === -1 && data.picUrl) {
+                        data.source = text;
                         this._showItemDetailPopup(data);
                     } else {
                     }
@@ -218,8 +219,13 @@ class Home extends React.Component {
         onPressCross={this._onPressCross}
         data={data}
         show={true}
+        tryAgain={this._tryAgain.bind(this)}
         {...this.props}
         />);
+    }
+
+    _tryAgain(text) {
+        this._tklParse(text);
     }
 
     _jumpToDetailPage(note) {
