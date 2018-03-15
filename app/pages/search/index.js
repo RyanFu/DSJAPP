@@ -41,7 +41,7 @@ class Search extends React.Component {
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         this.state = {
-            keyWord: '',
+            keyWord: this.props.route.text || '',
             searchItemHistory: [],
             searchNoteHistory: [],
             itemAuto: false,
