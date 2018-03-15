@@ -174,7 +174,9 @@ class Home extends React.Component {
                 && !/^[0-9]*$/.test(data)) {
                 this._tklParse(data);
             }
+
         });
+
         // this._showItemDetailPopup();
     }
 

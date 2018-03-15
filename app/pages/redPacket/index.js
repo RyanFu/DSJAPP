@@ -46,6 +46,7 @@ import baiChuanApi from 'react-native-taobao-baichuan-api';
 import deprecatedComponents from 'react-native-deprecated-custom-components';
 import OrdersPage from '../../pages/order';
 import images from "../../constants/images";
+import Home from "../home";
 
 const Navigator = deprecatedComponents.Navigator;
 const moreIcon = <Icon style={[styles.moreIcon]} size={20} name="ios-arrow-dropright"/>;
@@ -696,6 +697,7 @@ class RedPacket extends React.Component {
     _syncOrder(orderId) {
         let userId = 17321057664;
         let the = this;
+        const {navigator} = this.props;
 
         // let data = {};
         // data.orderId = orderId;
@@ -709,8 +711,16 @@ class RedPacket extends React.Component {
                 request('/mapuserorder/map?userId=' + userId + '&orderId=' + orderId, 'GET', '', this.state.token)
                     .then((res) => {
                         if (res.resultCode === 0) {
+                            const routesLength = navigator.getCurrentRoutes().length;
+                            if(routesLength > 1)
+                                navigator.resetTo({
+                                    component: Home,
+                                    name: 'Home'
+                                });
+
                             the._onRefresh(false);
                             // this._getRecentBuy();
+
                             the.setState({
                                 order: orderId,
                                 showTip: true,
