@@ -793,7 +793,10 @@ class RedPacket extends React.Component {
                     /> : null
                 }
                 <View style={[styles.block, styles.search]}>
-                    <Text style={[styles.baseText, {fontSize: 14, color: '#fc7d30'}]}>淘宝购物全场都有红包拿，还不快搜！</Text>
+                    <Image style={styles.searchTitle}
+                           resizeMode={Image.resizeMode.stretch}
+                           source={require('../../assets/search/title.png')}/>
+
                     <View style={styles.searchHeader}>
                         <TextInput
                             clearButtonMode='while-editing'
