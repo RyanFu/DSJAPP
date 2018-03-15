@@ -13,7 +13,8 @@ import {
     Alert,
     AsyncStorage,
     NetInfo,
-    Platform
+    Platform,
+    AppState
 } from 'react-native';
 import { toast } from './utils/common';
 import {
@@ -37,6 +38,9 @@ class App extends React.Component {
         super(props);
         this._checkUpdate = this._checkUpdate.bind(this);
         this._doUpdate = this._doUpdate.bind(this);
+        this.state = {
+            currentAppState: AppState.currentState
+        }
     }
 
     componentWillMount() {
@@ -58,11 +62,21 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     componentDidMount() {
         this._checkIfFirstTime();
         this._checkUpdate();
+
+        AppState.addEventListener('change', this._handleAppStateChange.bind(this));
+    }
+
+    _handleAppStateChange(nextAppState){
+        if (this.state.currentAppState.match(/inactive|background/) && nextAppState === 'active') {
+            this._checkUpdate();
+        }
+        this.setState({currentAppState: nextAppState});
     }
 
     _doUpdate(info) {
