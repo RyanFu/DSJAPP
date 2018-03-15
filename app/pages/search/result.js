@@ -15,7 +15,7 @@ import {
     NativeEventEmitter,
     Vibration,
     Clipboard,
-    WebView
+    WebView, InteractionManager
 } from 'react-native';
 import styles from './style';
 import Toolbar from '../../components/toolbar';
@@ -37,6 +37,9 @@ import baiChuanApi from 'react-native-taobao-baichuan-api';
 import SyncTipsPopup from '../../components/syncTipsPopup';
 import {isIphoneX} from "../../utils/common";
 import StorageKeys from '../../constants/StorageKeys';
+import SearchPage from "./index";
+import deprecatedComponents from "react-native-deprecated-custom-components";
+const Navigator = deprecatedComponents.Navigator;
 
 class SearchResult extends React.Component {
     constructor(props) {
@@ -129,7 +132,22 @@ class SearchResult extends React.Component {
 
     _goBack() {
         const { navigator } = this.props;
-        naviGoBack(navigator);
+        if(this.props.route.from === 'tbk'){
+            // naviGoBack(navigator);
+
+            InteractionManager.runAfterInteractions(() => {
+                navigator.push({
+                    component: SearchPage,
+                    name: 'SearchPage',
+                    sceneConfigs: Navigator.SceneConfigs.FadeAndroid,
+                    text: this.props.route.text
+                });
+            });
+
+        } else {
+            naviGoBack(navigator);
+        }
+
     }
 
     _onChangeTab(data) {

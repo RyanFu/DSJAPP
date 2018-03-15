@@ -20,6 +20,8 @@ import {addRecentView} from "../../actions/recent";
 import StorageKeys from "../../constants/StorageKeys";
 import ResultPage from "../../pages/search/result";
 import configs from "../../constants/configs";
+import deprecatedComponents from "react-native-deprecated-custom-components";
+const Navigator = deprecatedComponents.Navigator;
 
 var {height, width} = Dimensions.get('window');
 
@@ -64,7 +66,9 @@ class TklPopup extends React.Component {
         navigator.push({
             component: ResultPage,
             name: 'ResultPage',
-            text: data.name
+            text: data.name,
+            from: 'tbk',
+            sceneConfigs: Navigator.SceneConfigs.FadeAndroid,
         });
     }
 
