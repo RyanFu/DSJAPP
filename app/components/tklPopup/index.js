@@ -114,6 +114,11 @@ class TklPopup extends React.Component {
         });
     }
 
+    _tryAgain() {
+        this._close();
+        this.props.tryAgain(this.props.data.source);
+    }
+
     render() {
         if (!this.state.show)
             return null;
@@ -123,8 +128,8 @@ class TklPopup extends React.Component {
                     <View style={styles.content}>
 
                         <View>
-                            <Image source={{uri: this.props.data.picUrl.indexOf('http') == 0?this.props.data.picUrl:('http:'+this.props.data.picUrl), width: 290, height: 180}}
-                                   resizeMode={'cover'}
+                            <Image source={{uri: this.props.data.picUrl.indexOf('http') == 0?this.props.data.picUrl:('http:'+this.props.data.picUrl), width: 290, height: 290}}
+                                   resizeMode={'stretch'}
                                    style={{borderTopLeftRadius: 4, borderTopRightRadius: 4}}/>
 
                         </View>
@@ -193,6 +198,16 @@ class TklPopup extends React.Component {
                                 </View> : null
                         }
 
+                        {
+                            !this.props.data.tkCommFee && !this.props.data.couponAmount ?
+                                <View style={styles.row}>
+                                    <Text style={[styles.baseText, styles.dimText, styles.emptyText, {marginLeft: 4}]}
+                                          lineBreakMode={'tail'} numberOfLines={1}>
+                                        此商品目前可能还没有红包可以拿！
+                                    </Text>
+                                </View> : null
+                        }
+
 
                         <View style={[styles.row, styles.btnRow]}>
                             <TouchableOpacity style={styles.Button}
@@ -200,6 +215,14 @@ class TklPopup extends React.Component {
                                 <Text
                                     style={styles.ButtonFont}>{this.props.data.tkCommFee ? (this.props.data.is2in1 ? '领券购买' : '立刻购买') : '找相似'}</Text>
                             </TouchableOpacity>
+                            {
+                                !this.props.data.tkCommFee && !this.props.data.couponAmount ?
+                                    <TouchableOpacity style={[styles.Button,styles.tryButton]}
+                                                      onPress={() => this._tryAgain()}>
+                                        <Text
+                                            style={styles.ButtonFont}>再试试</Text>
+                                    </TouchableOpacity> : null
+                            }
                         </View>
 
 
@@ -238,7 +261,7 @@ const styles = StyleSheet.create({
     },
     rectangle: {
         width: 290,
-        height: 336,
+        height: 446,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -357,6 +380,14 @@ const styles = StyleSheet.create({
     priceNum: {
         fontSize: 18,
         lineHeight: 18,
+    },
+    tryButton: {
+        backgroundColor: '#ff6b6b'
+    },
+    emptyText: {
+        color: '#ff6b6b',
+        flex: 1,
+        textAlign: 'center'
     }
 });
 
