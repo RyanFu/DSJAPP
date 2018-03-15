@@ -91,6 +91,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 10,
         lineHeight: 17
+    },
+    noItems: {
+        height: height-250,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 
