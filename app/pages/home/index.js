@@ -285,7 +285,7 @@ class Home extends React.Component {
             }, 10)
         });
 
-        this.showNotification();
+        // this.showNotification();
 
     }
 
