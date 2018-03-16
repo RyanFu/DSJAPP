@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import Main from './pages/navigator';
 import StorageKeys from './constants/StorageKeys';
-
+import NewFunc from  './components/newFunctions';
 import {
     Alert,
     AsyncStorage,
@@ -29,6 +29,8 @@ import {
     markSuccess,
 } from 'react-native-update';
 import _updateConfig from '../update.json';
+import RootSiblings from 'react-native-root-siblings';
+
 const {appKey} = _updateConfig[Platform.OS];
 
 const store = configureStore();
@@ -38,6 +40,7 @@ class App extends React.Component {
         super(props);
         this._checkUpdate = this._checkUpdate.bind(this);
         this._doUpdate = this._doUpdate.bind(this);
+        this._showNewFunctions = this._showNewFunctions.bind(this);
         this.state = {
             currentAppState: AppState.currentState
         }
@@ -117,13 +120,21 @@ class App extends React.Component {
     _checkIfFirstTime() {
         AsyncStorage.getItem(StorageKeys.IS_FIRST_TIME).then((bFirstTime) => {
             if (bFirstTime !== 'false') {
-                Alert.alert('', '请知晓：剁手记作为电商联盟认证APP，严格遵守电商联盟和支付系统的授权加密协议，系统只得到您的授权，所有操作都在电商端直接完成，系统无权查看您的任何账号和隐私信息。',
+                Alert.alert('请知晓', '剁手记作为电商联盟认证APP，严格遵守电商联盟和支付系统的授权加密协议，系统只得到您的授权，所有操作都在电商端直接完成，系统无权查看您的任何账号和隐私信息。',
                     [{text: '知道了', onPress: () => {
                         AsyncStorage.setItem(StorageKeys.IS_FIRST_TIME, 'false');
+                        this._showNewFunctions();
                     }}]);
             }
         });
     };
+
+    _showNewFunctions() {
+        return new RootSiblings(<NewFunc
+            show={true}
+            {...this.props}
+        />);
+    }
 
     render() {
         return (
