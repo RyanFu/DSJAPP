@@ -44,6 +44,7 @@ import OrdersPage from '../../pages/order';
 import images from "../../constants/images";
 import Home from "../home";
 import RootSiblings from 'react-native-root-siblings';
+import NewFunc from  '../../components/newFunctions';
 
 const {height, width} = Dimensions.get('window');
 const addImg = require('../../assets/header/add.png');
@@ -793,6 +794,13 @@ class RedPacket extends React.Component {
         DeviceEventEmitter.emit('showTip', true);
     }
 
+    _showNewFunctions() {
+        return new RootSiblings(<NewFunc
+            show={true}
+            {...this.props}
+        />);
+    }
+
     render() {
         var rows = [];
         _.each(this.state.searchItemHistory, (v, k) => {
@@ -823,6 +831,9 @@ class RedPacket extends React.Component {
                            source={require('../../assets/search/title.png')}/>
 
                     <View style={styles.searchHeader}>
+                        <TouchableOpacity onPress={() => this._showNewFunctions()}>
+                            <Icon style={[styles.kaokoulingBtn]} size={26} name="ios-key"/>
+                        </TouchableOpacity>
                         <TextInput
                             clearButtonMode='while-editing'
                             style={styles.searchText}

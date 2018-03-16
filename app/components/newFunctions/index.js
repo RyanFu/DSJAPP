@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 var {height, width} = Dimensions.get('window');
 
-class SyncPopup extends React.Component {
+class newFunctions extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -58,15 +58,26 @@ class SyncPopup extends React.Component {
                 <View style={styles.rectangle}>
                     <View style={styles.title}>
                         <View style={styles.titleLine}/>
-                        <Text style={styles.titleContent}>订单号</Text>
+                        <Text style={styles.titleContent}>新功能</Text>
                         <View style={styles.titleLine}/>
                     </View>
                     <View style={styles.content}>
-                        <Text style={styles.content1}>{this.props.order}</Text>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.dimText}>{this.props.text?this.props.text:'五分钟内，我们会审核完成您的订单，请耐心等待，谢谢！'}</Text>
-                        </View>
-
+                        <Text style={styles.content1}>淘口令功能上线了</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.dimText}>秒秒钟帮您定位淘宝中的同款商品</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.dimText}>1：在手淘商品页右上角找到并点击<Text style={styles.important}>”分享“</Text></Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.dimText}>2：点击<Text style={styles.important}>”复制链接“</Text></Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.dimText}>3：关闭手淘，打开剁手记</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.dimText}>4：商品页自动弹出并显示红包，您可以直接购买了哦</Text>
                     </View>
                     <View style={styles.cross}>
                         <TouchableOpacity onPress={() => this._close()}>
@@ -100,8 +111,8 @@ const styles = StyleSheet.create({
         zIndex: 100
     },
     rectangle: {
-        width: width * 8 / 13,
-        height: height *1 / 4,
+        width: 270,
+        height: 260,
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,1)',
@@ -151,7 +162,8 @@ const styles = StyleSheet.create({
     },
     content: {
         flexDirection: 'column',
-        height: 80,
+        height: 30,
+        marginTop: 4,
         alignItems: 'center',
     },
     content1: {
@@ -161,23 +173,9 @@ const styles = StyleSheet.create({
     },
     dimText:{
         color: '#9b9b9b',
+        lineHeight: 20
     },
-    content2: {
-        fontSize: 12,
-        lineHeight:14,
-        marginLeft:4,
-        marginBottom: 6
-    },
-    content3: {
-        fontSize: 12,
-        lineHeight:14,
-        marginLeft:4,
-        marginBottom: 6
-    },
-    redPacket: {
-        fontSize: 14,
-        color: 'red',
-    },
+
     cross: {
         width: 40,
         height: 40,
@@ -199,8 +197,15 @@ const styles = StyleSheet.create({
     },
     important:{
         color: '#F37D30'
+    },
+    row: {
+        width: 240,
+        marginHorizontal: 15,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     }
 });
 
 
-export default SyncPopup;
+export default newFunctions;

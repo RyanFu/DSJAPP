@@ -341,6 +341,9 @@ const styles = StyleSheet.create({
     },
     searchTitle: {
         height: 20
+    },
+    kaokoulingBtn: {
+        color: '#DAA520'
     }
 });
 
