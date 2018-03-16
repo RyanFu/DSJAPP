@@ -223,7 +223,7 @@ class TklPopup extends React.Component {
                         }
 
                         {
-                            !this.props.data.tkCommFee && !this.props.data.couponAmount ?
+                            this.props.data.is2in1 !== 'true' && !this.props.data.tkCommFee && !this.props.data.couponAmount ?
                                 <View style={styles.row}>
                                     <Text style={[styles.baseText, styles.dimText, styles.emptyText, {marginLeft: 4}]}
                                           lineBreakMode={'tail'} numberOfLines={1}>
