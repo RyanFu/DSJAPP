@@ -36,10 +36,6 @@ import ResultPage from '../search/result';
 import PrefetchImage from '../../components/prefetchImage';
 import {fetchRecentView, fetchRecentBuy} from '../../actions/recent';
 import SyncPopup from '../../components/syncPopup';
-
-const {height, width} = Dimensions.get('window');
-const addImg = require('../../assets/header/add.png');
-const searchImg = require('../../assets/header/search.png');
 import AddFriends from '../addFriends';
 import SearchPage from '../search';
 import baiChuanApi from 'react-native-taobao-baichuan-api';
@@ -47,7 +43,11 @@ import deprecatedComponents from 'react-native-deprecated-custom-components';
 import OrdersPage from '../../pages/order';
 import images from "../../constants/images";
 import Home from "../home";
+import RootSiblings from 'react-native-root-siblings';
 
+const {height, width} = Dimensions.get('window');
+const addImg = require('../../assets/header/add.png');
+const searchImg = require('../../assets/header/search.png');
 const Navigator = deprecatedComponents.Navigator;
 const moreIcon = <Icon style={[styles.moreIcon]} size={20} name="ios-arrow-dropright"/>;
 
@@ -65,7 +65,7 @@ class RedPacket extends React.Component {
         this._getRecentBuy = this._getRecentBuy.bind(this);
         this._buySource = this._buySource.bind(this);
         this._syncOrder = this._syncOrder.bind(this);
-
+        this._showSyncResultPopup = this._showSyncResultPopup.bind(this);
         this.state = {
             keyWord: '',
             searchItemHistory: [],
@@ -718,14 +718,20 @@ class RedPacket extends React.Component {
                                     name: 'Home'
                                 });
 
-                            the._onRefresh(false);
-                            // this._getRecentBuy();
+                            InteractionManager.runAfterInteractions(() => {
+                                the._onRefresh(false);
+                                // this._getRecentBuy();
 
-                            the.setState({
-                                order: orderId,
-                                showTip: true,
-                                syncMsg: res.resultValues.message
+                                the.setState({
+                                    order: orderId,
+                                    syncMsg: res.resultValues.message
+                                });
+
+                                the._showSyncResultPopup();
                             });
+
+
+
                         } else {
                             toast(res.resultValues.message);
                         }
@@ -741,6 +747,18 @@ class RedPacket extends React.Component {
                     });
             }
         });
+    }
+
+    _showSyncResultPopup(data) {
+        return new RootSiblings(<SyncPopup
+            onPressCross={this._onPressCross}
+            order={this.state.order}
+            show={true}
+            text={this.state.syncMsg}
+            {...this.props}
+        />);
+
+
     }
 
     _onRefresh(manual) {
@@ -794,14 +812,7 @@ class RedPacket extends React.Component {
                     onLeftIconClicked={this._onLeftIconClicked}
                     onRightIconClicked={this._onRightIconClicked}
                 />
-                {
-                    this.state.showTip ? <SyncPopup
-                        onPressCross={this._onPressCross}
-                        order={this.state.order}
-                        show={true}
-                        text={this.state.syncMsg}
-                    /> : null
-                }
+
                 <View style={[styles.block, styles.search]}>
                     <Image style={styles.searchTitle}
                            resizeMode={Image.resizeMode.stretch}
@@ -923,8 +934,7 @@ class RedPacket extends React.Component {
                 }
 
                 <View>
-                    <TouchableOpacity onPress={() => this._jumpToOrderPage()}>
-                        <View style={styles.suspend}>
+                    <TouchableOpacity style={styles.suspend} onPress={() => this._jumpToOrderPage()}>
                             <Icon
                                 name='ios-copy-outline'
                                 size={30}
@@ -934,7 +944,6 @@ class RedPacket extends React.Component {
                             <Text style={[styles.baseText,styles.suspendText]}>
                                 复制单号
                             </Text>
-                        </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.whatSuspend]}
                                       onPress={() => this._showTip()}>
