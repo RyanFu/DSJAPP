@@ -361,7 +361,7 @@ class SearchItem extends React.Component {
                                 size={70}
                                 name={'logo-freebsd-devil'}
                             />
-                            <Text style={styles.dimText}>缩短关键字再试试吧</Text>
+                            <Text style={styles.dimText}>缩短搜索关键词再试试吧</Text>
                         </View>
                 }
 

@@ -9,7 +9,7 @@ import {
     StyleSheet,
     Dimensions,
     TouchableWithoutFeedback,
-    Image, Linking, AsyncStorage,DeviceEventEmitter
+    Image, Linking, AsyncStorage, DeviceEventEmitter
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {decimals, isIphoneX, Token} from "../../utils/common";
@@ -21,6 +21,8 @@ import StorageKeys from "../../constants/StorageKeys";
 import ResultPage from "../../pages/search/result";
 import configs from "../../constants/configs";
 import deprecatedComponents from "react-native-deprecated-custom-components";
+import H5Page from "../../pages/h5";
+
 const Navigator = deprecatedComponents.Navigator;
 
 var {height, width} = Dimensions.get('window');
@@ -28,6 +30,7 @@ var {height, width} = Dimensions.get('window');
 class TklPopup extends React.Component {
     constructor(props) {
         super(props);
+        this._gotoH5Page = this._gotoH5Page.bind(this);
         this.state = {
             show: this.props.show,
             ratio: 0.8
@@ -74,8 +77,9 @@ class TklPopup extends React.Component {
 
     _jumpToItemPage(data) {
         const {dispatch} = this.props;
+        const the = this;
         this._close();
-        if (!data.tkCommFee) {
+        if (!data.tkCommFee && data.is2in1 !== "true") {
             this._searchByTitle(data);
             return;
         }
@@ -88,14 +92,14 @@ class TklPopup extends React.Component {
         };
         dispatch(addRecentView(patchData));
         DeviceEventEmitter.emit('newView', true);
-        if (data.is2in1 && data.couponLink) {
-            const couponLink = data.couponLink.replace('https://','');
+        if (data.is2in1 === "true" && data.couponLink) {
+            const couponLink = data.couponLink.replace('https://', '');
             const url = configs.taobaoLink + couponLink;
             Linking.canOpenURL(url).then(supported => {
                 if (supported) {
                     Linking.openURL(url);
                 } else {
-                    this._jumpToTaobaoPage(data);
+                    the._gotoH5Page('优惠券详情',data.couponLink);
                 }
             });
             return;
@@ -123,6 +127,18 @@ class TklPopup extends React.Component {
         this.props.tryAgain(this.props.data.source);
     }
 
+    _gotoH5Page(title, uri) {
+        const {navigator} = this.props;
+        if (navigator) {
+            navigator.push({
+                name: 'H5Page',
+                component: H5Page,
+                uri: uri,
+                title: title
+            })
+        }
+    }
+
     render() {
         if (!this.state.show)
             return null;
@@ -132,7 +148,11 @@ class TklPopup extends React.Component {
                     <View style={styles.content}>
 
                         <View>
-                            <Image source={{uri: this.props.data.picUrl.indexOf('http') == 0?this.props.data.picUrl:('http:'+this.props.data.picUrl), width: 290, height: 290}}
+                            <Image source={{
+                                uri: this.props.data.picUrl.indexOf('http') == 0 ? this.props.data.picUrl : ('http:' + this.props.data.picUrl),
+                                width: 290,
+                                height: 290
+                            }}
                                    resizeMode={'stretch'}
                                    style={{borderTopLeftRadius: 4, borderTopRightRadius: 4}}/>
 
@@ -216,12 +236,13 @@ class TklPopup extends React.Component {
                         <View style={[styles.row, styles.btnRow]}>
                             <TouchableOpacity style={styles.Button}
                                               onPress={() => this._jumpToItemPage(this.props.data)}>
-                                <Text
-                                    style={styles.ButtonFont}>{this.props.data.tkCommFee ? (this.props.data.is2in1 ? '领券购买' : '立刻购买') : '找相似'}</Text>
+                                <Text style={styles.ButtonFont}>
+                                    {this.props.data.is2in1 === 'true' ? '领券购买' : (this.props.data.tkCommFee ? '立刻购买' : '找相似')}
+                                </Text>
                             </TouchableOpacity>
                             {
-                                !this.props.data.tkCommFee && !this.props.data.couponAmount ?
-                                    <TouchableOpacity style={[styles.Button,styles.tryButton]}
+                                this.props.data.is2in1 !== 'true' &&  !this.props.data.tkCommFee && !this.props.data.couponAmount ?
+                                    <TouchableOpacity style={[styles.Button, styles.tryButton]}
                                                       onPress={() => this._tryAgain()}>
                                         <Text
                                             style={styles.ButtonFont}>再试试</Text>
