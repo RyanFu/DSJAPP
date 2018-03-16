@@ -42,6 +42,7 @@ import LoginPage from '../login/LoginPage';
 const Navigator = deprecatedComponents.Navigator;
 import DetailPage from '../../pages/detail';
 import SyncTipsPopup from '../../components/syncTipsPopup';
+import Popup from '../../components/popup';
 import StorageKeys from "../../constants/StorageKeys";
 import {Clipboard} from "react-native";
 
@@ -63,6 +64,7 @@ class Home extends React.Component {
             newNote: false,
             fetchMessage: 1,
             showTip: false,
+            notificationPopup: null
         }
     }
 
@@ -199,6 +201,8 @@ class Home extends React.Component {
             }, 10)
         });
 
+        this.showNotification();
+
     }
 
     _showFilter() {
@@ -289,6 +293,34 @@ class Home extends React.Component {
         }
     }
 
+    showNotification() {
+        var that = this;
+
+        Token.getToken(navigator).then((token) => {
+            if (token) {
+                request('system/getConfig?name=start_notification', 'GET', null, token)
+                    .then((res) => {
+                        if (res.resultCode === 0) {
+                            var config = JSON.parse(res.resultValues.configValue);
+                            var notificationPopup = <Popup title={config.header} style={{height: 120,alignItems: 'flex-start'}}>
+                                <Text>{config.subheader}</Text>
+                                {config.lines.map((line) => {
+                                    return <Text style={{textAlign: 'left'}}>{line.line}</Text>
+                                })}
+                                </Popup>;
+                            that.setState({'notificationPopup': notificationPopup});
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    })
+                    .catch(() => {
+                        console.log('network error');
+                    });
+            }
+            }
+        );
+    }
+
     render() {
         return (
             <View style={[styles.container, Platform.OS === 'android' ? null : (isIphoneX()? {marginTop: 41}: {marginTop: 21})]} visible='hidden'>
@@ -312,6 +344,9 @@ class Home extends React.Component {
                         onPressCross={(never) => this._onPressCross(never)}
                         show={true}
                     /> : null
+                }
+                {
+                    this.state.notificationPopup
                 }
 
                 <ScrollableTabView
