@@ -726,8 +726,12 @@ class RedPacket extends React.Component {
                                     order: orderId,
                                     syncMsg: res.resultValues.message
                                 });
+                                const msg = {
+                                    order: orderId,
+                                    syncMsg: res.resultValues.message
+                                };
 
-                                the._showSyncResultPopup();
+                                the._showSyncResultPopup(msg);
                             });
 
 
@@ -752,9 +756,9 @@ class RedPacket extends React.Component {
     _showSyncResultPopup(data) {
         return new RootSiblings(<SyncPopup
             onPressCross={this._onPressCross}
-            order={this.state.order}
+            order={this.state.order||data.order}
             show={true}
-            text={this.state.syncMsg}
+            text={this.state.syncMsg||data.syncMsg}
             {...this.props}
         />);
 
