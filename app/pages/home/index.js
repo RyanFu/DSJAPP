@@ -177,6 +177,8 @@ class Home extends React.Component {
             if (data
                 && !/^[0-9]*$/.test(data)) {
                 this._tklParse(data);
+            } else {
+                this.state.read = false;
             }
 
         });
