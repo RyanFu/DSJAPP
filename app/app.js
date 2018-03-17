@@ -73,6 +73,12 @@ class App extends React.Component {
         this._checkUpdate();
 
         AppState.addEventListener('change', this._handleAppStateChange.bind(this));
+
+        AsyncStorage.getItem(StorageKeys.IS_FIRST_TIME).then((bFirstTime) => {
+            if (bFirstTime === 'false') {
+                this._showNewFunctions();
+            }
+        });
     }
 
     _handleAppStateChange(nextAppState){
@@ -123,7 +129,7 @@ class App extends React.Component {
                 Alert.alert('请知晓', '剁手记作为电商联盟认证APP，严格遵守电商联盟和支付系统的授权加密协议，系统只得到您的授权，所有操作都在电商端直接完成，系统无权查看您的任何账号和隐私信息。',
                     [{text: '知道了', onPress: () => {
                         AsyncStorage.setItem(StorageKeys.IS_FIRST_TIME, 'false');
-                        this._showNewFunctions();
+                            this._showNewFunctions();
                     }}]);
             }
         });

@@ -68,10 +68,10 @@ class newFunctions extends React.Component {
                         <Text style={styles.dimText}>秒秒钟帮您定位淘宝中的同款商品</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text style={styles.dimText}>1：在手淘商品页右上角找到并点击<Text style={styles.important}>”分享“</Text></Text>
+                        <Text style={styles.dimText}>1：在手淘商品页右上角找到并点击<Text style={styles.important}>"分享"</Text></Text>
                     </View>
                     <View style={styles.row}>
-                        <Text style={styles.dimText}>2：点击<Text style={styles.important}>”复制链接“</Text></Text>
+                        <Text style={styles.dimText}>2：点击<Text style={styles.important}>"复制链接"</Text></Text>
                     </View>
                     <View style={styles.row}>
                         <Text style={styles.dimText}>3：关闭手淘，打开剁手记</Text>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         zIndex: 100
     },
     rectangle: {
-        width: 270,
+        width: 300,
         height: 260,
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
         color: '#F37D30'
     },
     row: {
-        width: 240,
-        marginHorizontal: 15,
+        width: 276,
+        marginHorizontal: 18,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
