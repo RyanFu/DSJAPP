@@ -90,7 +90,8 @@ class TklPopup extends React.Component {
             itemPicUrl: data.picUrl,
             itemId: data.id
         };
-        dispatch(addRecentView(patchData));
+        if(itemId)
+            dispatch(addRecentView(patchData));
         DeviceEventEmitter.emit('newView', true);
         if (data.is2in1 === "true" && data.couponLink) {
             const couponLink = data.couponLink.replace('https://', '');

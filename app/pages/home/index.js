@@ -214,9 +214,11 @@ class Home extends React.Component {
 
                 }, function (error) {
                     console.log(error);
+                    this.state.read = false;
                 })
                 .catch(() => {
                     console.log('network error');
+                    this.state.read = false;
                 });
         });
     }
