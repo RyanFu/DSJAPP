@@ -72,7 +72,7 @@ class App extends React.Component {
         this._checkIfFirstTime();
         this._checkUpdate();
 
-        AppState.addEventListener('change', this._handleAppStateChange.bind(this));
+        // AppState.addEventListener('change', this._handleAppStateChange.bind(this));
 
         AsyncStorage.getItem(StorageKeys.IS_FIRST_TIME).then((bFirstTime) => {
             if (bFirstTime === 'false') {
