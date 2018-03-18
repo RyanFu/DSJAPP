@@ -27,7 +27,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.4</string>
+	<string>1.1.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -149,16 +149,12 @@
 	<string>亲，此功能需要您的同意才能拍照上传，您是否允许打开相机? </string>
 	<key>NSContactsUsageDescription</key>
 	<string>亲，此功能需要开启通讯录权限才能查看好友，您是否允许读取通讯录?</string>
-
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>亲，记录您的发笔记位置，记住精彩瞬间，您是否允许读取定位?</string>
-
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>亲，开启添加到相册权限才能够保存图片，您是否允许开启?</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>亲，剁手记需要读取您的相册才能够发布笔记并上传照片，您是否允许打开相机?</string>
-
-	<key>NSPhotoLibraryAddUsageDescription</key>
-    <string>亲，开启添加到相册权限才能够保存图片，您是否允许开启?</string>
-
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
