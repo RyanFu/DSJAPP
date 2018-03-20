@@ -84,7 +84,7 @@ class TklPopup extends React.Component {
             return;
         }
         const patchData = {
-            tkCommFee: data.tkCommFee || 0,
+            tkCommFee: decimals(data.tkCommFee * this.state.ratio, 2) || 0,
             itemPrice: data.Price || 0,
             itemTitle: data.name,
             itemPicUrl: data.picUrl,
