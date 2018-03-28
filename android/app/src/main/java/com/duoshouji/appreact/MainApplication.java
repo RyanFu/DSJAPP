@@ -27,8 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
         @Override
-        protected boolean getUseDeveloperSupport() {
-            return BuildConfig.DEBUG;
+        public boolean getUseDeveloperSupport() {
+            return false;
         }
 
         @Override
@@ -38,7 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
 //            new WeiboPackage(),
                     new WeChatPackage(),
                     new RNSpinkitPackage(),
-                    new ReactNativeContacts(),
+                    new ReactNativeContacts()
 //                    new BaiChuanPackage(),
 //                    new ReactNativePushNotificationPackage()
             );
