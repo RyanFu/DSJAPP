@@ -1,4 +1,4 @@
-rootProject.name = 'AppReact'
+rootProject.name = 'DSJAPP'
 include ':react-native-update'
 project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
 include ':react-native-wx'
@@ -7,16 +7,16 @@ include ':react-native-weibo'
 project(':react-native-weibo').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-weibo/android')
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
-include ':react-native-taobao-baichuan-api'
+/*include ':react-native-taobao-baichuan-api'
 project(':react-native-taobao-baichuan-api').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-taobao-baichuan-api/android')
+*/
 include ':react-native-spinkit'
 project(':react-native-spinkit').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-spinkit/android')
-include ':react-native-push-notification'
+/*include ':react-native-push-notification'
 project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
+*/
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
-include ':react-native-http-cache'
-project(':react-native-http-cache').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-http-cache/android')
 include ':react-native-contacts'
 project(':react-native-contacts').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-contacts/android')
 

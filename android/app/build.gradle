@@ -97,7 +97,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.1'
     defaultConfig {
-        applicationId "com.appreact"
+        applicationId "com.duoshouji.appreact"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -145,18 +145,17 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-picker')
     compile project(':react-native-update')
     compile project(':react-native-wx')
     compile project(':react-native-weibo')
     compile project(':react-native-vector-icons')
-    compile project(':react-native-taobao-baichuan-api')
+    //compile project(':react-native-taobao-baichuan-api')
     compile project(':react-native-spinkit')
-    compile project(':react-native-push-notification')
-    compile project(':react-native-image-picker')
-    compile project(':react-native-http-cache')
+//    compile project(':react-native-push-notification')
     compile project(':react-native-contacts')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.0.3'
+    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
     // From node_modules
 }
