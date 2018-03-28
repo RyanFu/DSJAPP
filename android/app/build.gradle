@@ -148,7 +148,7 @@ dependencies {
     compile project(':react-native-image-picker')
     compile project(':react-native-update')
     compile project(':react-native-wx')
-    compile project(':react-native-weibo')
+//    compile project(':react-native-weibo')
     compile project(':react-native-vector-icons')
     //compile project(':react-native-taobao-baichuan-api')
     compile project(':react-native-spinkit')
