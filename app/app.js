@@ -31,7 +31,8 @@ import {
 import _updateConfig from '../update.json';
 import RootSiblings from 'react-native-root-siblings';
 
-const {appKey} = _updateConfig[Platform.OS];
+//const {appKey} = _updateConfig[Platform.OS];
+const appKey  = "jmULyMv6fqYAMJpG7Md8iorS37aPcPeg";
 
 const store = configureStore();
 
