@@ -103,3 +103,4 @@ ios/bundle/
 .update
 ios/ipa/
 android/app/src/main/res/*
+android/app/src/main/assets/*
