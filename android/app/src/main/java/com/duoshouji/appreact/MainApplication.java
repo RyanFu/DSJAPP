@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 //import cn.reactnative.modules.weibo.WeiboPackage;
+import cn.reactnative.modules.update.UpdatePackage;
 import cn.reactnative.modules.wx.WeChatPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -38,7 +39,8 @@ public class MainApplication extends Application implements ReactApplication {
 //            new WeiboPackage(),
                     new WeChatPackage(),
                     new RNSpinkitPackage(),
-                    new ReactNativeContacts()
+                    new ReactNativeContacts(),
+                    new UpdatePackage()
 //                    new BaiChuanPackage(),
 //                    new ReactNativePushNotificationPackage()
             );

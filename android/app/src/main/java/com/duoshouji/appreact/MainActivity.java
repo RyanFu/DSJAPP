@@ -1,6 +1,8 @@
 package com.duoshouji.appreact;
 
 import com.facebook.react.ReactActivity;
+import cn.reactnative.modules.update.UpdatePackage;
+//import com.react.taobaobaichuanapi.BaiChuanPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -14,6 +16,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "DSJAPP";
+        return "AppReact";
     }
 }
