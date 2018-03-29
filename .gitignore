@@ -102,3 +102,4 @@ ios/AppReact.xcodeproj/project.pbxproj
 ios/bundle/
 .update
 ios/ipa/
+android/app/src/main/res/*
