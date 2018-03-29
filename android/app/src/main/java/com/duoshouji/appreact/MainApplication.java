@@ -14,6 +14,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
+import cn.reactnative.modules.update.UpdateContext;
+
 //import com.react.taobaobaichuanapi.BaiChuanPackage;
 //import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 //import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
@@ -50,6 +52,10 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public ReactNativeHost getReactNativeHost() {
         return mReactNativeHost;
+    }
+
+    protected String getJSBundleFile() {
+        return UpdateContext.getBundleUrl(MainApplication.this);
     }
 
     @Override
