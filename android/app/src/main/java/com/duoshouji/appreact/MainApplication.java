@@ -31,7 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
-            return false;
+            return BuildConfig.DEBUG;
         }
 
         @Override
@@ -47,6 +47,12 @@ public class MainApplication extends Application implements ReactApplication {
 //                    new ReactNativePushNotificationPackage()
             );
         }
+
+        @Override
+        protected String getJSBundleFile() {
+            return UpdateContext.getBundleUrl(MainApplication.this);
+        }
+
     };
 
     @Override
@@ -54,9 +60,6 @@ public class MainApplication extends Application implements ReactApplication {
         return mReactNativeHost;
     }
 
-    protected String getJSBundleFile() {
-        return UpdateContext.getBundleUrl(MainApplication.this);
-    }
 
     @Override
     public void onCreate() {
