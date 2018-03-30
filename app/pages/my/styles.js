@@ -12,6 +12,8 @@ var {height, width} = Dimensions.get('window');
 export default styles = StyleSheet.create({
     container: {
         flex: 1,
+        minHeight: height,
+        overflow: 'scroll',
         backgroundColor: '#f1f1f1'
     },
     text:{
@@ -205,7 +207,8 @@ export default styles = StyleSheet.create({
         width: '70%',
         alignSelf: 'center',
         alignItems: 'center',
-
+        height: height,
+        marginTop: 20
     },
     emptyTipText: {
         textAlign: 'center',
