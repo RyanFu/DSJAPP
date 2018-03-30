@@ -30,12 +30,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         borderBottomWidth: 1,
         borderColor: '#f1f1f1',
     },
     back: {
         marginLeft: 10,
-        marginTop: Platform.OS === 'android' ? 6 : 0
+        // marginTop: Platform.OS === 'android' ? 6 : 0
     },
     searchText: {
         height: 24,

@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
     },
     back: {
         marginLeft: 10,
-        marginTop:  Platform.OS === 'android' ? 6 : 0
+        // marginTop:  Platform.OS === 'android' ? 6 : 0
     },
     magnifier: {
         position: 'absolute',
-        top: Platform.OS === 'android' ? 18 : 15,
+        // top: Platform.OS === 'android' ? 18 : 15,
         left: 42,
         //zIndex: 1
     },
