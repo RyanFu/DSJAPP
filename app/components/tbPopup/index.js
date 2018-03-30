@@ -118,17 +118,17 @@ class TbPopup extends React.Component {
                             <Text style={styles.countDownText}>{this.state.countDown}秒后自动进入</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.cross}>
-                        <TouchableOpacity onPress={() => this._notGo()}>
-                            <Icon
-                                style={styles.crossIcon}
-                                name='md-close'
-                                size={30}
-                                color={'#fff'}
-                            />
-                        </TouchableOpacity>
-                    </View>
 
+                </View>
+                <View style={styles.cross}>
+                    <TouchableOpacity onPress={() => this._notGo()}>
+                        <Icon
+                            style={styles.crossIcon}
+                            name='md-close'
+                            size={30}
+                            color={'#fff'}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -244,11 +244,10 @@ const styles = StyleSheet.create({
         height: 40,
         borderWidth: 2,
         borderRadius: 20,
-        bottom: -50,
         borderColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'absolute'
+        marginTop: 12
     },
     crossIcon: {
         paddingTop: 2,

@@ -64,17 +64,17 @@ class Popup extends React.Component {
                     <View style={[styles.content, this.props.style]}>
                         {this.props.children}
                     </View>
-                    <View style={styles.cross}>
-                        <TouchableOpacity onPress={() => this._close()}>
-                            <Icon
-                                style={styles.crossIcon}
-                                name='md-close'
-                                size={30}
-                                color={'#fff'}
-                            />
-                        </TouchableOpacity>
-                    </View>
 
+                </View>
+                <View style={styles.cross}>
+                    <TouchableOpacity onPress={() => this._close()}>
+                        <Icon
+                            style={styles.crossIcon}
+                            name='md-close'
+                            size={30}
+                            color={'#fff'}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -180,11 +180,10 @@ const styles = StyleSheet.create({
         height: 40,
         borderWidth: 2,
         borderRadius: 20,
-        bottom: -50,
         borderColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'absolute'
+        marginTop: 12
     },
     crossIcon: {
         paddingTop: 2,

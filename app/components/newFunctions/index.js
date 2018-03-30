@@ -79,17 +79,16 @@ class newFunctions extends React.Component {
                     <View style={styles.row}>
                         <Text style={styles.dimText}>4：商品页自动弹出并显示红包，您可以直接购买了哦</Text>
                     </View>
-                    <View style={styles.cross}>
-                        <TouchableOpacity onPress={() => this._close()}>
-                            <Icon
-                                style={styles.crossIcon}
-                                name='md-close'
-                                size={30}
-                                color={'#fff'}
-                            />
-                        </TouchableOpacity>
-                    </View>
-
+                </View>
+                <View style={styles.cross}>
+                    <TouchableOpacity onPress={() => this._close()}>
+                        <Icon
+                            style={styles.crossIcon}
+                            name='md-close'
+                            size={30}
+                            color={'#fff'}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -181,11 +180,10 @@ const styles = StyleSheet.create({
         height: 40,
         borderWidth: 2,
         borderRadius: 20,
-        bottom: -50,
         borderColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'absolute'
+        marginTop: 12
     },
     crossIcon: {
         paddingTop: 2,
