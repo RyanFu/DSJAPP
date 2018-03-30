@@ -303,7 +303,6 @@ const styles = StyleSheet.create({
     },
     suspendIcon: {
         position: 'absolute',
-        lineHeight: 50,
         backgroundColor: 'rgba(255,255,255,0)',
     },
     whatSuspend: {
